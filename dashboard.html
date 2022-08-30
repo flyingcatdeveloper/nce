@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1d">
+		<title>ZYTK Code Editor Alpha | Dashboard</title>
+		<meta name="description" content="Online JavaScript Compiler">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.">
+        <link rel="stylesheet" href="./style.css">
+        <link rel="icon" type="image/x-icon" href="./favicon.png">
+        <style>
+            html {
+                font-size: 100%;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="editor-menu">
+            <img id="logo" src="./favicon.png">
+            <button class="btn btn-lo">Log Out</button>
+        </div>
+        
+        <div class="projects-container">
+            <br>
+            <form id="newProjectForm">
+               <input type="text" id="name">
+               <input type="button" id="new" value="Create">
+            </form>
+            <br>
+            <a id="project" class="project" style="color: blue; text-decoration: underline; font-weight: bold;">loading...</a>
+        </div>
+    </body>
+    <script src="dashboard.js"></script>
+</html>
