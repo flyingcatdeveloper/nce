@@ -125,11 +125,13 @@ function saveEditor(id, edit) {
 
 function showData(Data) {
     window.projects = Data.editor;
+    var count = 0-1;
     if (projects != "") {
        var splitData = projects.split(";");
-       splitData.forEach((project) => {
-           if (project != "") {
-                var splitName = project.split(":");
+       Array.from({length: splitData.length} () => {
+           count += 1;
+           if (splitData[count] != "") {
+                var splitName = splitData[count].split(":");
                 var newProject = document.querySelector(".project").cloneNode(true);
                 var newLine = document.createElement("br");
            
