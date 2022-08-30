@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="./style.css">
+<link rel="icon" type="image/x-icon" href="./favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1d">
+<title>ZYTK Code Editor Alpha</title>
+<meta name="description" content="Online JavaScript Compiler">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.">
+<style>
+  html {
+    font-size: 100%;
+  }
+</style>
+
+<button class="btn" onclick="showLogin()" id="lib">Log In</button>
+<button class="btn" onclick="showSignUp()" id="sub">Sign Up</button>
+
+<form id="signup" style="width: 18%; background-color: gray; padding: 5px; display: none;">
+  <p style="font-family: Arial; font-size: 25px; font-weight: bold;">Log In:</p>
+  <br><br>
+  <input id="username2" type="text" placeholder="username">
+  <br><br>
+  <input id="password2" type="password" placeholder="password">
+  <br><br>
+  <input id="name" type="text" placeholder="name">
+  <br><br>
+  <input class="btn" type="button" id="submit2" value="Submit">
+</form>
+
+<form id="login" style="width: 18%; background-color: gray; padding: 5px; display: none;">
+  <p style="font-family: Arial; font-size: 25px; font-weight: bold;">Log In:</p>
+  <br><br>
+  <input id="username" type="text" placeholder="username">
+  <br><br>
+  <input id="password" type="password" placeholder="password">
+  <br><br>
+  <input class="btn" type="button" id="submit" value="Submit">
+</form>
+
+<p id="response"></p>
+<p onclick="window.location.reload()" id="back" style="display: none; cursor: pointer; color: blue; text-decoration: underline;">Back to home</p>
+<noscript>Please Enable Javascript.</noscript>
+<script src="./account.js"></script>
