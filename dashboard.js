@@ -90,7 +90,6 @@ function openNewProject(Data) {
         count += 1;
         if (getCookie("li") === Data[count].account) {
             saveEditor(Data[count]._id, projects);
-            window.location.replace("./editor.html?id=" + Data[count]._id);
         }
     })
 }
@@ -111,7 +110,8 @@ function saveEditor(id, edit) {
     
     xhr4.addEventListener("readystatechange", function () {
         if (xhr4.readyState === XMLHttpRequest.DONE && xhr4.status === 200) {
-            console.log("saved to account.")
+            console.log("saved to account.");
+            window.location.replace("./editor.html?id=" + id);
         }
     })
     
