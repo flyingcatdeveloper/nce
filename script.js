@@ -259,9 +259,9 @@ calculateVCountdown(); */
   function validate(Data) {
       if (Data.account === getCookie("li")) {
           document.getElementById("load").style.display = "none";
-          editorhtml.value = decodeURI(Data.html);
-          editorcss.value = decodeURI(Data.css);
-          editorjs.value = decodeURI(Data.js);
+          editorhtml.value = decodeURIComponent(Data.html);
+          editorcss.value = decodeURIComponent(Data.css);
+          editorjs.value = decodeURIComponent(Data.js);
           document.querySelector(".container").style.display = "flex";
       } else {
           alert("wrong user logged in.");
@@ -272,9 +272,9 @@ calculateVCountdown(); */
   function saveCode() {
       saveBtn.innerHTML = "Saving...";
       var data = JSON.stringify({
-          "html": encodeURI(editorhtml.value),
-          "css": encodeURI(editorcss.value),
-          "js": encodeURI(editorjs.value)
+          "html": encodeURIComponent(editorhtml.value),
+          "css": encodeURIComponent(editorcss.value),
+          "js": encodeURIComponent(editorjs.value)
       })
       
       var xhr2 = new XMLHttpRequest();
