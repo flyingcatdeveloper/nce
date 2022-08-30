@@ -98,7 +98,7 @@ function openNewProject(Data) {
 function saveEditor(id, edit) {
     if (projects != "") {
         var data = JSON.stringify({
-        "editor":  edit + id + ":" + document.getElementById("name").value + ";"
+            "editor":  edit + id + ":" + document.getElementById("name").value + ";"
         })
     } else {
         var data = JSON.stringify({
