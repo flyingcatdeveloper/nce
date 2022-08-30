@@ -1,4 +1,4 @@
-var projects;
+var projects = "";
 
 if (getCookie("li") === "" || getCookie("li") === undefined) {
     window.location.replace("./index.html")
@@ -124,7 +124,7 @@ function saveEditor(id, edit) {
 }
 
 function showData(Data) {
-    window.projects = Data.editor;
+    window.projects = JSON.stringify(Data.editor);
     if (projects != "") {
        var splitData = projects.split(";");
        splitData.forEach((project) => {
