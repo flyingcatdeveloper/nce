@@ -124,7 +124,7 @@ function saveEditor(id, edit) {
 }
 
 function showData(Data) {
-    window.projects = JSON.stringify(Data.editor);
+    window.projects = Data.editor;
     if (projects != "") {
        var splitData = projects.split(";");
        splitData.forEach((project) => {
