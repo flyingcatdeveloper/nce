@@ -290,7 +290,7 @@ calculateVCountdown(); */
           }
       })
       
-      xhr2.open("PUT", "https://zball-ec41.restdb.io/rest/editor/" + queryString["id"]);
+      xhr2.open("PUT", "https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/editor/" + queryString["id"]);
       xhr2.setRequestHeader("content-type", "application/json");
       xhr2.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
       xhr2.setRequestHeader("cache-control", "no-cache");
@@ -325,7 +325,7 @@ window.onload = function () {
             }
         })
         
-        xhr.open("GET", "https://zball-ec41.restdb.io/rest/editor/" + queryString["id"]);
+        xhr.open("GET", "https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/editor/" + queryString["id"]);
         xhr.setRequestHeader("content-type", "application/json");
         xhr.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
         xhr.setRequestHeader("cache-control", "no-cache");
