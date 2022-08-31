@@ -71,11 +71,11 @@ function successMsg(type) {
 // setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": "bobmcbob", "password": "bob", "name": "sean"}), successMsg, setError);
 
 document.getElementById("submit").onclick = function() {
-   loadJSON(`https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/username`, "6228c7c7dced170e8c83a0b8", myData, setError);
+   loadJSON(`https://zball-ec41.restdb.io/rest/username`, "6228c7c7dced170e8c83a0b8", myData, setError);
 }
 
 document.getElementById("submit2").onclick = function() {
-   loadJSON("https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/username", "6228c7c7dced170e8c83a0b8", testIfAvailable, setError);
+   loadJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", testIfAvailable, setError);
 }
 
 function testIfAvailable(Data, success, error) {
@@ -90,7 +90,7 @@ function testIfAvailable(Data, success, error) {
          }
       })
       if (taken === false) {
-         setJSON("https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "editor": "", "editors": -1}), successMsg, setError);
+         setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "editor": "", "editors": -1}), successMsg, setError);
       }
    } else {
       if (document.getElementById("username2").value.length < 3 && document.getElementById("password2").value.length < 8) {
