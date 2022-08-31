@@ -18,7 +18,7 @@ if (getCookie("li") === "" || getCookie("li") === undefined) {
         }
     })
     
-    xhr.open("GET", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
+    xhr.open("GET", "https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/username/" + getCookie("li"));
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
     xhr.setRequestHeader("cache-control", "no-cache");
@@ -29,7 +29,7 @@ if (getCookie("li") === "" || getCookie("li") === undefined) {
 document.getElementById("new").onclick = function() {
     if (document.getElementById("name").value != "") {
         document.getElementById("new").value = "creating...";
-        createNewProjectData("https://zball-ec41.restdb.io/rest/editor", "6228c7c7dced170e8c83a0b8", getData, document.getElementById("name").value); 
+        createNewProjectData("https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/editor", "6228c7c7dced170e8c83a0b8", getData, document.getElementById("name").value); 
     } else {
         alert("please enter a name!");
     }
@@ -58,7 +58,7 @@ function createNewProjectData(path, api, success, name) {
    xhr2.addEventListener("readystatechange", function () {
       if (xhr2.readyState === XMLHttpRequest.DONE && xhr2.status === 201) {
          document.getElementById("new").innerHTML = "Create";
-         success("https://zball-ec41.restdb.io/rest/editor", "6228c7c7dced170e8c83a0b8", openNewProject);
+         success("https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/editor", "6228c7c7dced170e8c83a0b8", openNewProject);
       }
    })
    
@@ -131,7 +131,7 @@ function saveEditor(id, edit, editors) {
         }
     })
     
-    xhr4.open("PUT", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
+    xhr4.open("PUT", "https://cors-proxy.htmldriven.com/?url=https://db.soratobuneko.tech/rest/username/" + getCookie("li"));
     xhr4.setRequestHeader("content-type", "application/json");
     xhr4.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
     xhr4.setRequestHeader("cache-control", "no-cache");
