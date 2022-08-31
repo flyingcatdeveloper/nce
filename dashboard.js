@@ -98,8 +98,6 @@ function openNewProject(Data) {
         splitAccount = Data[count].account.split(":");
         if (getCookie("li") == splitAccount[0] && window.np == splitAccount[1]) {
             saveEditor(Data[count]._id, projects, window.np);
-        } else {
-            alert("error");
         }
     })
 }
