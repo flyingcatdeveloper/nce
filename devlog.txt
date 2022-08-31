@@ -1,6 +1,9 @@
  ZYTK Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.0.5 08/31/2022:
+   - Fixed Dashboard
+
 Update/Bug Fix v1.0.4 08/30/2022:
    - Added Account System
    - Added Dashboard to Manage Projects
