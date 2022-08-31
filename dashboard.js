@@ -1,4 +1,8 @@
-var projects = "";
+var projects;
+var newLine;
+var newProject;
+var splitName;
+var np;
 
 if (getCookie("li") === "" || getCookie("li") === undefined) {
     window.location.replace("./index.html")
@@ -37,9 +41,11 @@ document.querySelector(".btn-lo").onclick = function () {
 }
 
 function createNewProjectData(path, api, success, name) {
+   var equal = window.np + 1;
+   window.np = equal;
    var data = JSON.stringify({
       "name": name,
-      "account": getCookie("li"),
+      "account": getCookie("li") + ":" + window.np,
       "html": "",
       "css": "",
       "js": "",
@@ -86,22 +92,32 @@ function getData(path, api, success) {
 
 function openNewProject(Data) {
     var count = 0-1;
+    var splitAccount;
+    alert(window.np);
     Array.from({length: Data.length}, () => {
         count += 1;
-        if (getCookie("li") === Data[count].account) {
-            saveEditor(Data[count]._id, projects);
+        splitAccount = Data[count].account.split(":");
+        alert(splitAccount);
+        alert(splitAccount[0]);
+        alert(splitAccount[1]);
+        if (getCookie("li") == splitAccount[0] && window.np == splitAccount[1]) {
+            saveEditor(Data[count]._id, projects, window.np);
+        } else {
+            alert("error");
         }
     })
 }
 
-function saveEditor(id, edit) {
+function saveEditor(id, edit, editors) {
     if (projects != "") {
         var data = JSON.stringify({
-            "editor":  edit + id + ":" + document.getElementById("name").value + ";"
+        "editor":  edit + ";" + id + ":" + document.getElementById("name").value,
+        "editors": editors
         })
     } else {
         var data = JSON.stringify({
-            "editor": id + ":" + document.getElementById("name").value + ";"
+            "editor": id + ":" + document.getElementById("name").value,
+            "editors": editors
         })
     }
     
@@ -125,26 +141,40 @@ function saveEditor(id, edit) {
 
 function showData(Data) {
     window.projects = Data.editor;
-    var count = 0-1;
-    if (projects != "") {
+    window.np = Data.editors;
+    if (projects != "" && projects.indexOf(";") != -1) {
        var splitData = projects.split(";");
-       Array.from({length: splitData.length} () => {
-           count += 1;
-           if (splitData[count] != "") {
-                var splitName = splitData[count].split(":");
-                var newProject = document.querySelector(".project").cloneNode(true);
-                var newLine = document.createElement("br");
+       splitData.forEach((project) => {
+           if (project != "") {
+                splitName = project.split(":");
+                newProject = document.querySelector(".project").cloneNode(true);
+                newLine = document.createElement("br");
            
                 newProject.innerHTML = splitName[1];
                 newProject.href = "./editor.html?id=" + splitName[0];
            
                 document.querySelector(".projects-container").appendChild(newLine);
-                document.querySelector(".projects-container").appendChild(newProject);   
+                document.querySelector(".projects-container").appendChild(newProject);
+                document.querySelector(".project").innerHTML = "";
+                document.getElementById("newProjectForm").style.display = "block";
            }
        })
        document.getElementById("project").innerHTML = "";
+    } else if (projects != "") {
+        splitName = projects.split(":");
+        newProject = document.querySelector(".project").cloneNode(true);
+        newLine = document.createElement("br");
+        
+        newProject.innerHTML = splitName[1];
+        newProject.href = "./editor.html?id=" + splitName[0];
+        
+        document.querySelector(".projects-container").appendChild(newLine);
+        document.querySelector(".projects-container").appendChild(newProject);
+        document.querySelector(".project").innerHTML = "";
+        document.getElementById("newProjectForm").style.display = "block";
     } else {
-        document.querySelector(".project").innerHTML = "No projects available."
+        document.querySelector(".project").innerHTML = "No projects found.";
+        document.getElementById("newProjectForm").style.display = "block";
     }
 }
 
