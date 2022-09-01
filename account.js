@@ -21,15 +21,18 @@ xhr.send(data);
 
 function myData(Data, success, error) {
    var count = 0-1;
+   var li = false;
    Array.from({length: Data.length}, () => {
       count += 1;
       if (document.getElementById("username").value === Data[count].username & document.getElementById("password").value === Data[count].password) {
          setCookie("li", Data[count]._id, 60);
-         window.location.replace("./dashboard.html")
-      } else if (count === Data.length) {
-         error("incorrect username and/or password");
+         window.location.replace("./dashboard.html");
+         li = true;
       }
-   })
+   }) 
+   if (li === false) {
+      error("incorrect username/password");
+   }
 }
 
 function setError(type) {
