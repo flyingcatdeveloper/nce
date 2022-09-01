@@ -145,9 +145,9 @@ function saveEditor(id, edit, editors) {
 
 function showData(Data) {
     window.projects = Data.editor;
-    document.getElementById("account").src = Data.pfp;
-    document.getElementById("account").style.width = "40px";
-    document.getElementById("account").style.height = "40px";
+//     document.getElementById("account").src = Data.pfp;
+//     document.getElementById("account").style.width = "40px";
+//     document.getElementById("account").style.height = "40px";
     window.np = Data.editors;
     if (projects != "" && projects.indexOf(";") != -1) {
        var splitData = projects.split(";");
