@@ -131,52 +131,52 @@ function loadData() {
 function showData(Data) {
     var username = Data.username;
     var name = Data.name;
-    var pfp = Data.pfp;
+//     var pfp = Data.pfp;
     document.getElementById("changeDetails").style.display = "none";
     document.querySelector(".details").style.display = "block";
     document.getElementById("editBtn").style.display = "block";
     
-    if (pfp != undefined) {
-        document.getElementById("pfp").src = pfp;
-        document.getElementById("pfp").style.width = "150px";
-        document.getElementById("pfp").style.height = "150px";
-    }
+//     if (pfp != undefined) {
+//         document.getElementById("pfp").src = pfp;
+//         document.getElementById("pfp").style.width = "150px";
+//         document.getElementById("pfp").style.height = "150px";
+//     }
     document.getElementById("name-details").innerHTML = name;
     document.getElementById("username-details").innerHTML = username;
     document.getElementById("password-details").innerHTML = "***";
 }
 
-function updatePfp(id) {
+// function updatePfp(id) {
     
-    var pfp = "https://zball-ec41.restdb.io/media/" + id;
+//     var pfp = "https://zball-ec41.restdb.io/media/" + id;
     
-    document.getElementById("pfp").src = pfp;
-    document.getElementById("pfp").style.width = "150px";
-    document.getElementById("pfp").style.height = "150px";
-    savePfpToAccount(pfp);
-}
+//     document.getElementById("pfp").src = pfp;
+//     document.getElementById("pfp").style.width = "150px";
+//     document.getElementById("pfp").style.height = "150px";
+//     savePfpToAccount(pfp);
+// }
 
-function savePfpToAccount(picture) {
-    var data = JSON.stringify({
-        "pfp": picture
-    })
+// function savePfpToAccount(picture) {
+//     var data = JSON.stringify({
+//         "pfp": picture
+//     })
     
-    var xhr3 = new XMLHttpRequest();
-    xhr3.withCredentials = false;
+//     var xhr3 = new XMLHttpRequest();
+//     xhr3.withCredentials = false;
     
-    xhr3.addEventListener("readystatechange", () => {
-        if (xhr3.readyState = XMLHttpRequest.DONE && xhr3.status === 201) {
-            console.log("saved.")
-        }
-    })
+//     xhr3.addEventListener("readystatechange", () => {
+//         if (xhr3.readyState = XMLHttpRequest.DONE && xhr3.status === 201) {
+//             console.log("saved.")
+//         }
+//     })
     
-    xhr3.open("PUT", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
-    xhr3.setRequestHeader("content-type", "application/json");
-    xhr3.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
-    xhr3.setRequestHeader("cache-control", "no-cache");
+//     xhr3.open("PUT", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
+//     xhr3.setRequestHeader("content-type", "application/json");
+//     xhr3.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+//     xhr3.setRequestHeader("cache-control", "no-cache");
     
-    xhr3.send(data);
-}
+//     xhr3.send(data);
+// }
 
 function getCookie(cname) {
 	let name = cname + "=";
