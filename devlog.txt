@@ -1,6 +1,9 @@
  ZYTK Code Editor Devlog
 |-----------------------|
 
+Update v1.0.6 09/01/2022:
+   - Added Account Settings Menu
+
 Bug Fix v1.0.5 08/31/2022:
    - Fixed Dashboard
 
