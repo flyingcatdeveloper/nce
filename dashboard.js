@@ -40,6 +40,10 @@ document.querySelector(".btn-lo").onclick = function () {
     window.location.replace("./index.html")
 }
 
+document.getElementById("account").onclick = function() {
+    window.location.replace("./account.html");
+}
+
 function createNewProjectData(path, api, success, name) {
    var equal = window.np + 1;
    window.np = equal;
@@ -93,11 +97,17 @@ function getData(path, api, success) {
 function openNewProject(Data) {
     var count = 0-1;
     var splitAccount;
+    alert(window.np);
     Array.from({length: Data.length}, () => {
         count += 1;
         splitAccount = Data[count].account.split(":");
+        alert(splitAccount);
+        alert(splitAccount[0]);
+        alert(splitAccount[1]);
         if (getCookie("li") == splitAccount[0] && window.np == splitAccount[1]) {
             saveEditor(Data[count]._id, projects, window.np);
+        } else {
+            alert("error");
         }
     })
 }
@@ -135,6 +145,9 @@ function saveEditor(id, edit, editors) {
 
 function showData(Data) {
     window.projects = Data.editor;
+    document.getElementById("account").src = Data.pfp;
+    document.getElementById("account").style.width = "40px";
+    document.getElementById("account").style.height = "40px";
     window.np = Data.editors;
     if (projects != "" && projects.indexOf(";") != -1) {
        var splitData = projects.split(";");
