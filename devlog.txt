@@ -1,6 +1,9 @@
  ZYTK Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.0.8 09/07/2022:
+   - Fixed Dark Mode/Light Mode Bug
+
 Bug Fix v1.0.7 09/07/2022:
    - Fixed Console
    - Fixed Download Code Feature
