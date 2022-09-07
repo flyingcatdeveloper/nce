@@ -97,17 +97,17 @@ function getData(path, api, success) {
 function openNewProject(Data) {
     var count = 0-1;
     var splitAccount;
-    alert(window.np);
+    // alert(window.np);
     Array.from({length: Data.length}, () => {
         count += 1;
         splitAccount = Data[count].account.split(":");
-        alert(splitAccount);
-        alert(splitAccount[0]);
-        alert(splitAccount[1]);
+        // alert(splitAccount);
+        // alert(splitAccount[0]);
+        // alert(splitAccount[1]);
         if (getCookie("li") == splitAccount[0] && window.np == splitAccount[1]) {
             saveEditor(Data[count]._id, projects, window.np);
         } else {
-            alert("error");
+            // alert("error");
         }
     })
 }
