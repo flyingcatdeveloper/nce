@@ -1,6 +1,12 @@
  ZYTK Code Editor Devlog
 |-----------------------|
 
+Update/Bug Fix v1.1 09/12/2022:
+   - Added Monaco Editor Functionality
+   - Fixed Console Bug
+   - Added "Theme" Settings
+   - Added "Switch Code Language" Settings
+
 Bug Fix v1.0.9 09/07/2022:
    - Fixed Dashboard
 
