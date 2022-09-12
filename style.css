@@ -22,6 +22,11 @@ body {
     padding: 10px;
 }
 
+#editor {
+    width: 50%;
+    height: 100%;
+}
+
 .editor-menu {
     width: 100%;
     height: 6rem;
@@ -132,7 +137,7 @@ body {
     cursor: pointer;
 }
 
-.container {
+#container {
     position: absolute;
     bottom: 0;
     top: 7rem;
@@ -151,7 +156,7 @@ body {
 .right {
     flex: 1;
 }
-.editor-html {
+.editor-html, #tags {
     width: 100%;
     height: 30%;
     border-radius: 10px;
