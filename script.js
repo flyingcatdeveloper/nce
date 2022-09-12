@@ -2,11 +2,11 @@ if (getCookie("li") === "") {
     window.location.replace("./index.html");
 }
 
+var html = "loading...", css = "loading...", js = "loading...";
+var cType;
+
 const left = document.querySelector(".left"),
 right = document.querySelector(".right"),
-editorhtml = document.querySelector(".editor-html"),
-editorcss = document.querySelector(".editor-css"),
-editorjs = document.querySelector(".editor-js"),
 ver = document.querySelector("#ver"),
 save = document.querySelector(".btn-save"),
 tocl1 = document.querySelector(".tocl-1"),
@@ -27,7 +27,8 @@ con2 = document.querySelector("#log-container"),
 devlog = document.querySelector(".btn-dev"),
 body = document.querySelector(".body"),
 saveBtn = document.querySelector(".btn-so"),
-dbBtn = document.querySelector(".btn-db2");
+dbBtn = document.querySelector(".btn-db2"),
+lpicker = document.querySelector(".language-picker");
 
 // Variables used for ldm btn
 let ldm = 0;
@@ -51,89 +52,88 @@ run.addEventListener("click", runcode);
 // });
 
 // Set Light Mode/Dark Mode
-darkLightMode.addEventListener("click", () => {
+// darkLightMode.addEventListener("click", () => {
     
-    if (ldm == '0') {
-        ldm = 1;
-        darkLightMode.innerHTML = "Light Mode";
-        editorhtml.style.backgroundColor = "#363836";
-        editorhtml.style.color = "#eee";
-        editorcss.style.backgroundColor = "#363836";
-        editorcss.style.color = "#eee";
-        editorjs.style.backgroundColor = "#363836";
-        editorjs.style.color = "#eee";
-        iframe.style.backgroundColor = "white";
-        tocl1.style.backgroundColor = "darkslategray";
-        devlog.style.backgroundColor = "darkslategray";
-        tocl1.style.color = "#eee";
-        tocl4.style.backgroundColor = "darkslategray";
-        con.style.backgroundColor = "darkslategray";
-        // save.style.backgroundColor = "darkslategray";
-        // save.style.color = "#eee";
-        con.style.color = "#eee";
-        tocl4.style.color = "#eee";
-        left.style.backgroundColor = "#363836";
-        right.style.backgroundColor = "#363836";
-        pre.style.color = "#eee";
-        con2.style.backgroundColor = "#363836";
-        con2.style.color = "#eee";
-        tocl2.style.backgroundColor = "darkslategray";
-        tocl2.style.color = "#eee";    
-        tocl3.style.backgroundColor = "darkslategray";
-        tocl3.style.color = "#eee";
-        menu.style.backgroundColor = "#363836";    
-        body.style.backgroundColor = "#363836";
-        darkLightMode.style.backgroundColor = "darkslategray";
-        live.style.backgroundColor = "darkslategray";
-        ontb.style.backgroundColor = "darkslategray";
-        run.style.backgroundColor = "darkslategray";
-        darkLightMode.style.color = "#eee";
-        devlog.style.color = "#eee";
-        ontb.style.color = "#eee";
-        run.style.color = "#eee";
-        live.style.color = "#eee";
-    } else if (ldm == '1') {
-        ldm = 0;
-        darkLightMode.innerHTML = "Dark Mode";
-        editorhtml.style.backgroundColor = "";
-        editorhtml.style.color = "";
-        editorcss.style.backgroundColor = "";
-        editorcss.style.color = "";    
-        editorjs.style.backgroundColor = "";
-        left.style.backgroundColor = "";
-        right.style.backgroundColor = "";
-        // save.style.backgroundColor = "#37474F";
-        // save.style.color = "#eee";
-        editorjs.style.color = "";
-        pre.style.color = "";
-        iframe.style.backgroundColor = "";
-        tocl1.style.backgroundColor = "#37474F";
-        tocl4.style.backgroundColor = "#37474F";
-        con2.style.backgroundColor = "";
-        con2.style.color = "#eee";
-        con.style.backgroundColor = "";
-        con.style.color = "#eee";
-        tocl4.style.color = "#eee";
-        devlog.style.backgroundColor = "#37474F";
-        tocl1.style.color = "#eee";
-        tocl2.style.backgroundColor = "#37474F";
-        tocl2.style.color = "#eee";
-        tocl3.style.backgroundColor = "#37474F";
-        tocl3.style.color = "#eee";
-        body.style.backgroundColor = "";
-        menu.style.backgroundColor = "#eee";
-        darkLightMode.style.backgroundColor = "#37474F";
-        live.style.backgroundColor = "#37474F";
-        ontb.style.backgroundColor = "#37474F";
-        run.style.backgroundColor = "#37474F";
-        darkLightMode.style.color = "#fff";
-        devlog.style.color = "#fff";
-        ontb.style.color = "#fff";
-        run.style.color = "#fff";
-        live.style.color = "";
-    }
+//     if (ldm == '0') {
+//         ldm = 1;
+//         darkLightMode.innerHTML = "Light Mode";
+//         changeTheme('vs-dark');
+//         iframe.style.backgroundColor = "white";
+//         // tocl1.style.backgroundColor = "darkslategray";
+//         devlog.style.backgroundColor = "darkslategray";
+//         // tocl1.style.color = "#eee";
+//         // tocl4.style.backgroundColor = "darkslategray";
+//         con.style.backgroundColor = "darkslategray";
+//         lpicker.style.backgroundColor = "darkslategray";
+//         lpicker.style.color = "#eee";
+//         // save.style.backgroundColor = "darkslategray";
+//         // save.style.color = "#eee";
+//         con.style.color = "#eee";
+//         // tocl4.style.color = "#eee";
+//         left.style.backgroundColor = "#363836";
+//         right.style.backgroundColor = "#363836";
+//         pre.style.color = "#eee";
+//         con2.style.backgroundColor = "#363836";
+//         con2.style.color = "#eee";
+//         saveBtn.style.backgroundColor = "darkslategray";
+//         dbBtn.style.backgroundColor = "darkslategray";
+//         // tocl2.style.backgroundColor = "darkslategray";
+//         // tocl2.style.color = "#eee";    
+//         // tocl3.style.backgroundColor = "darkslategray";
+//         // tocl3.style.color = "#eee";
+//         menu.style.backgroundColor = "#222222";    
+//         body.style.backgroundColor = "#363836";
+//         darkLightMode.style.backgroundColor = "darkslategray";
+//         live.style.backgroundColor = "darkslategray";
+//         ontb.style.backgroundColor = "darkslategray";
+//         run.style.backgroundColor = "darkslategray";
+//         darkLightMode.style.color = "#eee";
+//         devlog.style.color = "#eee";
+//         ontb.style.color = "#eee";
+//         run.style.color = "#eee";
+//         live.style.color = "#eee";
+//     } else if (ldm == '1') {
+//         ldm = 0;
+//         darkLightMode.innerHTML = "Dark Mode";
+//         changeTheme("vs");
+//         lpicker.style.backgroundColor = "#37474F";
+//         lpicker.style.color = "#fff";
+//         left.style.backgroundColor = "";
+//         right.style.backgroundColor = "";
+//         saveBtn.style.backgroundColor = "#37474F";
+//         dbBtn.style.backgroundColor = "#37474F";
+//         // save.style.backgroundColor = "#37474F";
+//         // save.style.color = "#eee";
+//         // editorjs.style.color = "";
+//         pre.style.color = "";
+//         iframe.style.backgroundColor = "";
+//         // tocl1.style.backgroundColor = "#37474F";
+//         // tocl4.style.backgroundColor = "#37474F";
+//         con2.style.backgroundColor = "";
+//         con2.style.color = "#eee";
+//         con.style.backgroundColor = "";
+//         con.style.color = "#eee";
+//         // tocl4.style.color = "#eee";
+//         devlog.style.backgroundColor = "#37474F";
+//         // tocl1.style.color = "#eee";
+//         // tocl2.style.backgroundColor = "#37474F";
+//         // tocl2.style.color = "#eee";
+//         // tocl3.style.backgroundColor = "#37474F";
+//         // tocl3.style.color = "#eee";
+//         body.style.backgroundColor = "";
+//         menu.style.backgroundColor = "#eee";
+//         darkLightMode.style.backgroundColor = "#37474F";
+//         live.style.backgroundColor = "#37474F";
+//         ontb.style.backgroundColor = "#37474F";
+//         run.style.backgroundColor = "#37474F";
+//         darkLightMode.style.color = "#fff";
+//         devlog.style.color = "#fff";
+//         ontb.style.color = "#fff";
+//         run.style.color = "#fff";
+//         live.style.color = "";
+//     }
 
-});
+// });
 
 // Live Code
 livebtn.addEventListener("click", () => {
@@ -159,11 +159,8 @@ conbtn.addEventListener("click", () => {
 
 // Open your code in a new window
 ontb.addEventListener('click', () => {
-    let html = editorhtml.value;
-    let css = "<style>"+editorcss.value+"</style";
-    let js = editorjs.value;
     var myWindow = window.open("", "View Code");
-    myWindow.document.body.innerHTML=html+css;
+    myWindow.document.body.innerHTML=html+"<style>"+css+"</style>";
     myWindow.window.eval(js);
 });
 
@@ -174,10 +171,7 @@ devlog.addEventListener('click', () => {
 
 // Runs the code
 function runcode() {
-    let html = editorhtml.value;
-    let css = "<style>"+editorcss.value+"</style>";
-    let js = editorjs.value;
-    iframe.contentDocument.body.innerHTML=html+css;
+    iframe.contentDocument.body.innerHTML=html+"<style>"+css+"</style>";
     iframe.contentWindow.eval(js);
 }
 
@@ -210,6 +204,15 @@ function getCookie(cname) {
       window.location.replace("./dashboard.html");
   }
 
+window.addEventListener("keyup", () => {
+    if (window.cType === "html") {
+        window.html = window.editor.getValue();
+    } else if (window.cType === "css") {
+        window.css = window.editor.getValue();
+    } else if (window.cType === "javascript") {
+        window.js = window.editor.getValue();
+    }
+})
 
 // Valentines Countdown
 /* function calculateVCountdown() {
@@ -260,10 +263,10 @@ calculateVCountdown(); */
       var splitData = Data.account.split(":");
       if (splitData[0] === getCookie("li")) {
           document.getElementById("load").style.display = "none";
-          editorhtml.value = decodeURIComponent(Data.html);
-          editorcss.value = decodeURIComponent(Data.css);
-          editorjs.value = decodeURIComponent(Data.js);
-          document.querySelector(".container").style.display = "flex";
+          window.html = decodeURIComponent(Data.html);
+          window.css = decodeURIComponent(Data.css);
+          window.js = decodeURIComponent(Data.js);
+          window.editor.getModel().setValue(window.html);
       } else {
           alert("wrong user logged in.");
           window.location.replace("./index.html");
@@ -273,9 +276,9 @@ calculateVCountdown(); */
   function saveCode() {
       saveBtn.innerHTML = "Saving...";
       var data = JSON.stringify({
-          "html": encodeURIComponent(editorhtml.value),
-          "css": encodeURIComponent(editorcss.value),
-          "js": encodeURIComponent(editorjs.value)
+          "html": encodeURIComponent(window.html),
+          "css": encodeURIComponent(window.css),
+          "js": encodeURIComponent(window.js)
       })
       
       var xhr2 = new XMLHttpRequest();
@@ -333,6 +336,3 @@ window.onload = function () {
         xhr.send(data);
     }
 };
-
-
-
