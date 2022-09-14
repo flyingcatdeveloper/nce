@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="./style.css">
 <link rel="icon" type="image/x-icon" href="./favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1d">
-<title>ZYTK Code Editor Alpha</title>
+<title>NEKO Code Editor | Log-In</title>
 <meta name="description" content="Online JavaScript Compiler">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.">
 <style>
@@ -15,6 +15,8 @@
 
 <form id="signup" style="width: 18%; background-color: gray; padding: 5px; display: none;">
   <p style="font-family: Arial; font-size: 25px; font-weight: bold;">Log In:</p>
+  <br><br>
+  <input id="email2" type="email" placeholder="email">
   <br><br>
   <input id="username2" type="text" placeholder="username">
   <br><br>
@@ -33,6 +35,14 @@
   <input id="password" type="password" placeholder="password">
   <br><br>
   <input class="btn" type="button" id="submit" value="Submit">
+</form>
+
+<form id="codeForm" style="width: 18%; background-color: gray; padding: 5px; display: none;">
+  <p>Enter The Code Sent To Your Email</p>
+  <br><br>
+  <input id="code" type="text" placeholder="code">
+  <br><br>
+  <input type="button" id="codeSubmit" value="Verify">
 </form>
 
 <p id="response"></p>
