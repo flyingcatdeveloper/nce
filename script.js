@@ -4,6 +4,7 @@ if (getCookie("li") === "") {
 
 var html = "loading...", css = "loading...", js = "loading...";
 var cType;
+var resources = [];
 
 const left = document.querySelector(".left"),
 right = document.querySelector(".right"),
@@ -160,7 +161,24 @@ conbtn.addEventListener("click", () => {
 // Open your code in a new window
 ontb.addEventListener('click', () => {
     var myWindow = window.open("", "View Code");
-    myWindow.document.body.innerHTML=html+"<style>"+css+"</style>";
+    myWindow.document.head.innerHTML = "<style>"+css+"</style>";
+    myWindow.document.body.innerHTML=html;
+        window.resources.forEach((resource) => {
+        if (resource[1] === "css") {
+            var newResource = document.createElement("link");
+            
+            newResource.rel = "stylesheet";
+            newResource.href = resource[0];
+            
+            myWindow.document.head.appendChild(newResource);
+        } else if (resource[1] === "javascript") {
+            var newResource2 = document.createElement("script");
+            
+            newResource2.src = resource[0];
+            
+            myWindow.document.head.appendChild(newResource2);
+        }
+    })
     myWindow.window.eval(js);
 });
 
@@ -171,7 +189,27 @@ devlog.addEventListener('click', () => {
 
 // Runs the code
 function runcode() {
-    iframe.contentDocument.body.innerHTML=html+"<style>"+css+"</style>";
+    var newResource;
+    var style = document.createElement("style");
+    style.innerHTML = css;
+    iframe.contentDocument.body.innerHTML=html;
+    iframe.contentDocument.body.appendChild(style);
+    window.resources.forEach((resource) => {
+        if (resource[1] === "css") {
+            newResource = document.createElement("link");
+            
+            newResource.rel = "stylesheet";
+            newResource.href = resource[0];
+            
+            iframe.contentDocument.head.appendChild(newResource);
+        } else if (resource[1] === "javascript") {
+            newResource = document.createElement("script");
+            
+            newResource.src = resource[0];
+            
+            iframe.contentDocument.head.appendChild(newResource);
+        }
+    })
     iframe.contentWindow.eval(js);
 }
 
@@ -213,6 +251,19 @@ window.addEventListener("keyup", () => {
         window.js = window.editor.getValue();
     }
 })
+
+document.getElementById("addResource").onclick = function() {
+    let resource = prompt("Enter the resource link:", "");
+    
+    if (resource != null || resource != "") {
+        window.resources.push([resource, window.cType]);
+    }
+}
+
+document.getElementById("removeSources").onclick = function() {
+    window.resources = [];
+    saveBtn.click();
+}
 
 // Valentines Countdown
 /* function calculateVCountdown() {
@@ -267,6 +318,7 @@ calculateVCountdown(); */
           window.css = decodeURIComponent(Data.css);
           window.js = decodeURIComponent(Data.js);
           window.editor.getModel().setValue(window.html);
+          window.resources = Data.sources;
       } else {
           alert("wrong user logged in.");
           window.location.replace("./index.html");
@@ -278,7 +330,8 @@ calculateVCountdown(); */
       var data = JSON.stringify({
           "html": encodeURIComponent(window.html),
           "css": encodeURIComponent(window.css),
-          "js": encodeURIComponent(window.js)
+          "js": encodeURIComponent(window.js),
+          "sources": window.resources
       })
       
       var xhr2 = new XMLHttpRequest();
