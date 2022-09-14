@@ -53,7 +53,8 @@ function createNewProjectData(path, api, success, name) {
       "html": "",
       "css": "",
       "js": "",
-      "shared": ""
+      "shared": "",
+      "sources": []
    })
    
    var xhr2 = new XMLHttpRequest();
