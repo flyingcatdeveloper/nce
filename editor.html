@@ -2,7 +2,7 @@
 <html lang="en" style="overflow: hidden;">
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1d">
-		<title>ZYTK Code Editor Alpha</title>
+		<title>NEKO Code Editor</title>
 		<meta name="description" content="Online JavaScript Compiler">
 		<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.">-->
 		<link rel="stylesheet" href="./style.css">
@@ -48,7 +48,7 @@
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<p id="ver">v1.1</p>
+				<p id="ver">v1.1.1</p>
 			</div>
         <p id="load">loading...</p>
 		<div id="container" style="">
@@ -58,6 +58,8 @@
 					<option value="13">CSS</option>
 					<option value="35">JavaScript</option>
 				</select>
+				<button id="addResource" style="background-color: #37474F; color: #fff; display: none;">Add Resource</button>
+				<button id="removeSources" style="background-color: #37474F; color: #fff; display: none;">Delete Resources</button>
 				<div style="width: 100%; height: 100%;" id="editor"></div>
 			</div>
 			<div class="right">
@@ -99,6 +101,16 @@ $("#container").ready(function() {
 		$(".language-picker").change(function() {
 			loadSample(MODES[this.value]);
 			window.cType = MODES[this.value].modeId;
+			if (window.cType === "css") {
+				$("#addResource").css("display", "");
+				$("#removeSources").css("display", "");
+			} else if (window.cType === "javascript") {
+				$("#addResource").css("display", "");
+				$("removeSources").css("display", "");
+			} else {
+				$("#addResource").css("display", "none");
+				$("#removeSources").css("display", "none");
+			}
 		});
 // 		$('.language-picker').selectpicker({
 // 			size: 10
