@@ -1,5 +1,9 @@
- ZYTK Code Editor Devlog
+ NEKO Code Editor Devlog
 |-----------------------|
+
+Update/Bug Fix v1.1.1 09/14/2022:
+   - Added "Add Resources" Feature
+   - Fixed Code Processing
 
 Update/Bug Fix v1.1 09/12/2022:
    - Added Monaco Editor Functionality
