@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.1.2 09/14/2022:
+   - Fixed "Remove Sources" Feature
+
 Update/Bug Fix v1.1.1 09/14/2022:
    - Added "Add Resources" Feature
    - Fixed Code Processing
