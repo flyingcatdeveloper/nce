@@ -35,6 +35,7 @@
 				<button class="btn btn-ont">Open In A New Tab</button>
 				<!--<button class="btn btn-save">Download Code</button>-->
 				<button class="btn btn-so">Save</button>
+				<button class="btn btn-share">Share</button>
 				<button class="btn btn-dev">Devlog</button>
 				<div class="test">
 					<label class="check">Console
@@ -48,7 +49,7 @@
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<p id="ver">v1.1.2</p>
+				<p id="ver">v1.1.3</p>
 			</div>
         <p id="load">loading...</p>
 		<div id="container" style="">
@@ -70,6 +71,14 @@
 					<div style="display: none;" id="log-container">
 						<pre id="log"></pre>
 				</div>
+			</div>
+		<div class="hover_bkgr_fricc">
+    		<span class="helper"></span>
+    		<div>
+        		<div class="popupCloseButton">&times;</div>
+        			<h4>Share Link: <a id="link">loading...</a></h4>
+        			<!--<h4>Add Editor: <a id="editorLink">loading...</a></h4>-->
+    			</div>
 			</div>
 		</div>
 		
@@ -106,7 +115,7 @@ $("#container").ready(function() {
 				$("#removeSources").css("display", "");
 			} else if (window.cType === "javascript") {
 				$("#addResource").css("display", "");
-				$("#removeSources").css("display", "");
+				$("removeSources").css("display", "");
 			} else {
 				$("#addResource").css("display", "none");
 				$("#removeSources").css("display", "none");
