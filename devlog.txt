@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.1.5 09/20/2022:
+   - Fixed Title Bug In Shared Projects
+
 Bug Fix v1.1.4 09/20/2022:
    - Fixed Security Issues
 
