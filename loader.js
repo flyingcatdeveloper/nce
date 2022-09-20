@@ -22,7 +22,7 @@
     var newScript = document.createElement("script");
     newScript.innerHTML = window.js;
     window.document.body.appendChild(newScript);
-    if (typeOf(document.title) === null) {
+    if (document.getElementsByTagName("TITLE")[0] === null) {
       document.title = t;
     }
 }
