@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.1.3 09/20/2022:
+   - Added "Share" Feature So Others Can View Your Projects
+
 Bug Fix v1.1.2 09/14/2022:
    - Fixed "Remove Sources" Feature
 
