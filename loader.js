@@ -1,7 +1,6 @@
   var html, css, js, resources = [];
   
   function loadcode() {
-    var t = document.title;
     window.document.body.innerHTML=window.html;
     window.document.head.innerHTML = "<style>"+window.css+"</style>";
     window.resources.forEach((resource) => {
@@ -23,7 +22,7 @@
     var newScript = document.createElement("script");
     newScript.innerHTML = window.js;
     window.document.body.appendChild(newScript);
-    if (document.title === null || document.title === undefined || document.title === "") {
+    if (typeOf(document.title) === null) {
       document.title = t;
     }
 }
