@@ -29,7 +29,8 @@ devlog = document.querySelector(".btn-dev"),
 body = document.querySelector(".body"),
 saveBtn = document.querySelector(".btn-so"),
 dbBtn = document.querySelector(".btn-db2"),
-lpicker = document.querySelector(".language-picker");
+lpicker = document.querySelector(".language-picker"),
+shareBtn = document.querySelector(".btn-share");
 
 // Variables used for ldm btn
 let ldm = 0;
@@ -144,6 +145,13 @@ livebtn.addEventListener("click", () => {
         removeEventListener("keyup", runcode);
     }
 });
+
+shareBtn.onclick = function() {
+    document.querySelector(".hover_bkgr_fricc").style.display = "inline-block";
+    document.querySelector(".popupCloseButton").onclick = function() {
+        document.querySelector(".hover_bkgr_fricc").style.display = "none";
+    }
+}
 
 // Toggle the console
 conbtn.addEventListener("click", () => {
@@ -375,6 +383,14 @@ window.onload = function () {
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                 validate(JSON.parse(xhr.responseText));
+                document.getElementById("link").innerHTML = window.location.hostname + "/nce/view.html?id=" + queryString["id"];
+                document.getElementById("link").href = "./view.html?id=" + queryString["id"];
+                document.getElementById("link").target = "_blank";
+                document.getElementById("link").rel = "noopener noreferrer";
+                // document.getElementById("editorLink").innerHTML = window.location.hostname + "/nce/update.html?id=" + queryString["id"];
+                // document.getElementById("editorLink").href = "./update.html?id=" + queryString["id"];
+                // document.getElementById("editorLink").target = "_blank";
+                // document.getElementById("editorLink").rel = "noopener noreferrer";
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 alert("id is invalid.");
                 window.location.replace("./index.html");
