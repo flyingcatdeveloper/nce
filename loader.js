@@ -26,6 +26,8 @@
     var titles = document.getElementsByName("title");
     if (titles.length) {
       document.title = t;
+    } else {
+      alert("err");
     }
 }
   
