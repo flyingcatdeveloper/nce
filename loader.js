@@ -1,9 +1,12 @@
   var html, css, js, resources = [];
   
   function loadcode() {
-    var t = document.title;
     window.document.body.innerHTML=window.html;
     window.document.head.innerHTML = "<style>"+window.css+"</style>";
+    var titles = document.getElementsByTagName("title");
+    if (!titles.length) {
+        document.title = "NCE View";
+    }
     window.resources.forEach((resource) => {
         if (resource[1] === "css") {
             var newResource = document.createElement("link");
@@ -23,12 +26,6 @@
     var newScript = document.createElement("script");
     newScript.innerHTML = window.js;
     window.document.body.appendChild(newScript);
-    var titles = document.getElementsByName("title");
-    if (titles.length) {
-      document.title = t;
-    } else {
-      alert("err");
-    }
 }
   
   function validate(Data) {
