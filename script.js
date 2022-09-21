@@ -4,6 +4,7 @@ if (getCookie("li") === "") {
 
 var html = "loading...", css = "loading...", js = "loading...";
 var cType;
+var rat;
 var resources = [];
 
 const left = document.querySelector(".left"),
@@ -319,15 +320,20 @@ document.getElementById("removeSources").onclick = function() {
 calculateVCountdown(); */
   
   function validate(Data) {
-      var splitData = Data.account.split(":");
-      if (splitData[0] === getCookie("li")) {
-          document.getElementById("load").style.display = "none";
-          window.html = decodeURIComponent(Data.html);
-          window.css = decodeURIComponent(Data.css);
-          window.js = decodeURIComponent(Data.js);
-          window.editor.getModel().setValue(window.html);
-          window.resources = Data.sources;
-      } else {
+      var splitData = Data.account.split(";");
+      splitData.forEach((data) => {
+          var splitAccountData = data.split(":");
+          if (splitAccountData[0] === getCookie("li")) {
+            document.getElementById("load").style.display = "none";
+            window.html = decodeURIComponent(Data.html);
+            window.css = decodeURIComponent(Data.css);
+            window.js = decodeURIComponent(Data.js);
+            window.editor.getModel().setValue(window.html);
+            window.resources = Data.sources;
+          }
+      })
+      
+      if (window.rat === false) {
           alert("wrong user logged in.");
           window.location.replace("./index.html");
       }
@@ -387,10 +393,10 @@ window.onload = function () {
                 document.getElementById("link").href = "./view.html?id=" + queryString["id"];
                 document.getElementById("link").target = "_blank";
                 document.getElementById("link").rel = "noopener noreferrer";
-                // document.getElementById("editorLink").innerHTML = window.location.hostname + "/nce/update.html?id=" + queryString["id"];
-                // document.getElementById("editorLink").href = "./update.html?id=" + queryString["id"];
-                // document.getElementById("editorLink").target = "_blank";
-                // document.getElementById("editorLink").rel = "noopener noreferrer";
+                document.getElementById("editorLink").innerHTML = window.location.hostname + "/nce/update.html?id=" + queryString["id"];
+                document.getElementById("editorLink").href = "./update.html?id=" + queryString["id"];
+                document.getElementById("editorLink").target = "_blank";
+                document.getElementById("editorLink").rel = "noopener noreferrer";
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 alert("id is invalid.");
                 window.location.replace("./index.html");
