@@ -1,3 +1,5 @@
+var code;
+
 function loadJSON(path, api, success, error) {
 document.getElementById("response").innerHTML = "loading...";
 var data = null;
@@ -6,7 +8,7 @@ var xhr = new XMLHttpRequest();
 xhr.withCredentials = false;
 
 xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === 4) {
+  if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
     success(JSON.parse(xhr.responseText), successMsg, setError);
   }
 });
@@ -19,6 +21,14 @@ xhr.setRequestHeader("cache-control", "no-cache");
 xhr.send(data);
 }
 
+document.getElementById("code").onclick = function() {
+   if (this.value === window.code) {
+      setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "editor": "", "editors": -1, "email": document.getElementById("email2").value}), successMsg, setError);
+   } else {
+      alert("invalid code!");
+   }
+}
+
 function myData(Data, success, error) {
    var count = 0-1;
    var li = false;
@@ -26,8 +36,13 @@ function myData(Data, success, error) {
       count += 1;
       if (document.getElementById("username").value === Data[count].username & document.getElementById("password").value === Data[count].password) {
          setCookie("li", Data[count]._id, 60);
-         window.location.replace("./dashboard.html");
-         li = true;
+         if (queryString["re"] != null) {
+            li = true;
+            window.location.replace(decodeURIComponent(queryString["re"]));
+         } else {
+            li = true;
+            window.location.replace("./dashboard.html");
+         }
       }
    }) 
    if (li === false) {
@@ -93,7 +108,32 @@ function testIfAvailable(Data, success, error) {
          }
       })
       if (taken === false) {
-         setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "editor": "", "editors": -1}), successMsg, setError);
+         window.code = Math.floor((Math.random() * 8999) + 1000);
+         var data = JSON.stringify({
+            "to": document.getElementById("email").value,
+            "subject": "Your Verification Code",
+            "html": "<p>Your Code Is: " + code + "</p><br><p>Do not share this code with anyone.</p>",
+            "company": "Soratobu Neko",
+            "sendername": "Soratobu Neko"
+         })
+         
+         var xhr2 = new XMLHttpRequest();
+         xhr2.withCredentials = false;
+         
+         xhr2.addEventListener("readystatechange", () => {
+            alert(this.readyState);
+            alert(this.status);
+            if (xhr2.readyState === XMLHttpRequest.DONE && xhr2.status === 201) {
+               document.getElementById("codeForm").style.display = "block";
+            }
+         })
+         
+         xhr2.open("POST", "https://zball-ec41.restdb.io/mail");
+         xhr2.setRequestHeader("content-type", "application/json");
+         xhr2.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+         xhr2.setRequestHeader("cache-control", "no-cache");
+         
+         xhr2.send(data);
       }
    } else {
       if (document.getElementById("username2").value.length < 3 && document.getElementById("password2").value.length < 8) {
@@ -144,4 +184,18 @@ function getCookie(cname) {
 	}
 	return "";
   }
+  
+  var queryString = new Array();
+window.onload = function () {
+    if (queryString.length == 0) {
+        if (window.location.search.split('?').length > 1) {
+            var params = window.location.search.split('?')[1].split('&');
+            for (var i = 0; i < params.length; i++) {
+                var key = params[i].split('=')[0];
+                var value = decodeURIComponent(params[i].split('=')[1]);
+                queryString[key] = value;
+            }
+        }
+    }
+}
 
