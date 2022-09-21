@@ -28,6 +28,11 @@ Open your code directly in a new tab, so you can see it exactly as it would look
 
 Share your projects with anyone so they can see your best work [Editor Access Sharing Coming Soon!].
 
+### Share Editor Access With Others (Beta)
+
+Share your editor access with others so they can edit your project with you.
+NOTE: This is in early beta so some features like removing editors, seeing who has access, etc. may not be available yet.
+
 ### Dashboard:
 
 See all your editors in one place, anywhere.
