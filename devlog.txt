@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.1.6 09/21/2022:
+   - Added Feature Where You Can Share Editor Access (Beta)
+
 Bug Fix v1.1.5 09/20/2022:
    - Fixed Title Bug In Shared Projects
 
