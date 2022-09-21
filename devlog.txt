@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.1.8 09/21/2022:
+   - Fixed "Remove Sources" Button
+
 Bug Fix v1.1.7 09/21/2022:
    - Fixed Sign Up Form
 
