@@ -21,13 +21,13 @@ xhr.setRequestHeader("cache-control", "no-cache");
 xhr.send(data);
 }
 
-document.getElementById("code").onclick = function() {
-   if (this.value === window.code) {
-      setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "editor": "", "editors": -1, "email": document.getElementById("email2").value}), successMsg, setError);
-   } else {
-      alert("invalid code!");
-   }
-}
+// document.getElementById("code").onclick = function() {
+//    if (this.value === window.code) {
+//       setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "editor": "", "editors": -1, "email": document.getElementById("email2").value}), successMsg, setError);
+//    } else {
+//       alert("invalid code!");
+//    }
+// }
 
 function myData(Data, success, error) {
    var count = 0-1;
