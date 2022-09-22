@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.1.9 09/22/2022:
+   - Added Email Account Setting (2-Step, Change Email, and More Coming Later)
+   - Reset Our Database
+
 Bug Fix v1.1.8 09/21/2022:
    - Fixed "Remove Sources" Button
 
