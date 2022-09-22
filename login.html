@@ -27,23 +27,45 @@
   <input class="btn" type="button" id="submit2" value="Submit">
 </form>
 
+<form id="pr" style="width: 18%; background-color: gray; padding: 5px; display: none;">
+	<input id="rp" type="password" placeholder="new password">
+	<input id="rs2" type="button" value="Set">
+</form>
+
 <form id="login" style="width: 18%; background-color: gray; padding: 5px; display: none;">
   <p style="font-family: Arial; font-size: 25px; font-weight: bold;">Log In:</p>
   <br><br>
-  <input id="username" type="text" placeholder="username">
+  <input id="username" type="text" placeholder="username/email">
   <br><br>
   <input id="password" type="password" placeholder="password">
   <br><br>
   <input class="btn" type="button" id="submit" value="Submit">
 </form>
 
-<!-- <form id="codeForm" style="width: 18%; background-color: gray; padding: 5px; display: none;">
-  <p>Enter The Code Sent To Your Email</p>
-  <br><br>
-  <input id="code" type="text" placeholder="code">
-  <br><br>
-  <input type="button" id="codeSubmit" value="Verify">
-</form> -->
+<form id="reset" style="width: 18%; background-color: gray; padding: 5px; display: none;">
+	<input id="re" type="email" placeholder="email">
+	<input id="rs" type="button" value="Send Code">
+</form>
+
+<form id="email" style="width: 18%; background-color: gray; padding: 5px; display: none;">-->
+ <h1>Please Enter your email to verify your account.</h1>
+ <br><br>
+ <input id="ei" type="text" placeholder="email">
+ <br><br>
+ <input id="es" type="button" value="Send Code">
+</form>
+
+<form id="code" style="width: 18%; background-color: gray; padding: 5px; display: none;">
+ <h1>Please enter the code you recieved in your email.</h1>
+ <br><br>
+ <input id="ci" type="text" placeholder="code">
+ <br><br>
+ <input id="cs" type="button" value="Verify">
+ <br><br>
+ <p id="code-error"></p>
+</form>
+
+
 
 <p id="response"></p>
 <p onclick="window.location.reload()" id="back" style="display: none; cursor: pointer; color: blue; text-decoration: underline;">Back to home</p>
