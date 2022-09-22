@@ -1,3 +1,5 @@
+var code, reset = false, d;
+
 function loadJSON(path, api, success, error) {
 document.getElementById("response").innerHTML = "loading...";
 var data = null;
@@ -20,24 +22,24 @@ xhr.send(data);
 }
 
 function myData(Data, success, error) {
-   var count = 0-1;
    var li = false;
+   var count = 0-1;
    Array.from({length: Data.length}, () => {
       count += 1;
-      if (document.getElementById("username").value === Data[count].username & document.getElementById("password").value === Data[count].password) {
-         setCookie("li", Data[count]._id, 60);
-         if (queryString["re"] != null) {
-            li = true;
-            window.location.replace(decodeURIComponent(queryString["re"]));
-         } else {
-            li = true;
-            window.location.replace("./dashboard.html");
-         }
+      if (document.getElementById("username").value === Data[count].username && document.getElementById("password").value === Data[count].password) {
+          li = true;
+          setCookie("li", Data[count]._id);
+          window.location.replace("./dashboard.html");
+      } else if (document.getElementById("username").value === Data[count].email && document.getElementById("password").value === Data[count].password) {
+          li = true;
+          setCookie("li", Data[count]._id);
+          window.location.replace("./dashboard.html");
       }
-   }) 
-   if (li === false) {
-      error("incorrect username/password");
+   })
+   if (li != true) {
+      error("Invalid Username or Password");
    }
+   
 }
 
 function setError(type) {
@@ -69,6 +71,8 @@ function setJSON(path, api, data, success, error) {
 function successMsg(type) {
    document.getElementById("login").style.display = "none";
    document.getElementById("signup").style.display = "none";
+   document.getElementById("code").style.display = "none";
+   document.getElementById("email").style.display= "none";
    document.getElementById("response").innerHTML = type;
    document.getElementById("back").style.display = "block";
 }
@@ -86,6 +90,15 @@ document.getElementById("submit2").onclick = function() {
    loadJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", testIfAvailable, setError);
 }
 
+document.getElementById("es").onclick = function() {
+   window.reset = false;
+   sendCode(document.getElementById("ei").value);
+}
+
+document.getElementById("cs").onclick = function() {
+   checkCode(document.getElementById("ei").value);
+}
+
 function testIfAvailable(Data, success, error) {
    var count = 0-1;
    var taken = false;
@@ -98,7 +111,8 @@ function testIfAvailable(Data, success, error) {
          }
       })
       if (taken === false) {
-         setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "editor": "", "editors": -1}), successMsg, setError);
+         document.getElementById("signup").style.display = "none";
+         document.getElementById("email").style.display = "block";
       }
    } else {
       if (document.getElementById("username2").value.length < 3 && document.getElementById("password2").value.length < 8) {
@@ -113,8 +127,6 @@ function testIfAvailable(Data, success, error) {
    }
 }
 
-
-
 function showLogin() {
    document.querySelector("#sub").style.display = "none";
    document.querySelector("#lib").style.display = "none";
@@ -127,11 +139,88 @@ function showSignUp() {
    document.getElementById("signup").style.display = "block";
 }
 
-function setCookie(cname,cvalue,exdays) {
-  const d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  let expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+function sendCode(mail) {
+	document.getElementById("response").innerHTML = "";
+   window.code = Math.floor((Math.random() * 9000) + 1000);
+   document.getElementById("es").value = "Sending...";
+   document.getElementById("rs").value = "Sending...";
+
+   var data2 = JSON.stringify({
+		"to": mail,
+		"subject": "NCE Verification Code",
+		"html": "Your verification code is: " + window.code + "</p><br><p>Do not share this with anyone</p>",
+		"company": "Soratobu Neko",
+		"sendername": "NCE Auth"
+   })
+
+   var xhr2 = new XMLHttpRequest();
+   xhr2.withCredentials = false;
+
+   xhr2.addEventListener("readystatechange", () => {
+		if (xhr2.readyState === XMLHttpRequest.DONE && xhr2.status === 201) {
+			document.getElementById("email").style.display = "none";
+			document.getElementById("reset").style.display = "none";
+			document.getElementById("code").style.display = "";
+			console.log(xhr2.responseText);
+		}
+   })
+
+   xhr2.open("POST", "https://zball-ec41.restdb.io/mail");
+   xhr2.setRequestHeader("content-type", "application/json");
+   xhr2.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+   xhr2.setRequestHeader("cache-control", "no-cache");
+
+   xhr2.send(data2);
+}  
+
+function checkCode(mail) {
+   if (parseInt(document.getElementById("ci").value) === window.code && window.reset === false) {
+      setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "email": mail, "editor": "", "editors": -1}), successMsg, setError);
+   } else if (parseInt(document.getElementById("ci").value) === window.code && window.reset === true) {
+      document.getElementById("code").style.display = "none";
+	  document.getElementById("pr").style.display = "";
+   } else {
+		document.getElementById("code-error").innerHTML = "Invalid Code!";
+   }
+}
+
+function reset() {
+	document.getElementById("login").style.display = "none";
+	document.getElementById("reset").style.display = "";
+}
+
+function setPass(Data) {
+
+	var count = 0-1;
+	alert(Data);
+	Array.from({length: Data.length}, () => {
+	count += 1;
+	alert(Data[count].email);
+	if (document.getElementById("re").value === Data[count].email) {
+		var data3 = JSON.stringify({
+			"password": document.getElementById("rp").value
+		})
+
+		var xhr3 = new XMLHttpRequest();
+		xhr3.withCredentials = false;
+
+		xhr3.addEventListener("readystatechange", () => {
+			alert(xhr3.status);
+			if (xhr3.readyState === XMLHttpRequest.DONE && xhr3.status === 200) {
+				document.getElementById("pr").style.display = "none";
+				document.getElementById("login").style.display = "";
+				document.getElementById("response").innerHTML = "";
+			}
+		})
+
+		xhr3.open("PUT", "https://zball-ec41.restdb.io/rest/username/" + Data[count]._id);
+		xhr3.setRequestHeader("content-type", "application/json");
+		xhr3.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+		xhr3.setRequestHeader("cache-control", "no-cache");
+
+		xhr3.send(data3);			
+    }
+	})
 }
 
 function getCookie(cname) {
@@ -150,16 +239,21 @@ function getCookie(cname) {
 	return "";
   }
 
-  var queryString = new Array();
-window.onload = function () {
-    if (queryString.length == 0) {
-        if (window.location.search.split('?').length > 1) {
-            var params = window.location.search.split('?')[1].split('&');
-            for (var i = 0; i < params.length; i++) {
-                var key = params[i].split('=')[0];
-                var value = decodeURIComponent(params[i].split('=')[1]);
-                queryString[key] = value;
-            }
-        }
-    }
+  document.getElementById("rsp").onclick = function() {
+	document.getElementById("login").style.display = "none";
+	document.getElementById("reset").style.display = "";
+  }
+  document.getElementById("rs").onclick = function() {
+	sendCode(document.getElementById("re").value);
+	window.reset = true;
+  }
+  document.getElementById("rs2").onclick = function() {
+		loadJSON(`https://zball-ec41.restdb.io/rest/username`, "6228c7c7dced170e8c83a0b8", setPass, setError, true);
+  }
+  
+ function setCookie(cname, cvalue, exdays) {
+	const d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	let expires = "expires=" + d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
