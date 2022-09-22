@@ -28,12 +28,22 @@ function myData(Data, success, error) {
       count += 1;
       if (document.getElementById("username").value === Data[count].username && document.getElementById("password").value === Data[count].password) {
           li = true;
-          setCookie("li", Data[count]._id);
-          window.location.replace("./dashboard.html");
+	  if (queryString["re"] === null) {
+	  	setCookie("li", Data[count]._id);
+          	window.location.replace("./dashboard.html");
+	  } else {
+		  setCookie("li", Data[count]._id);
+		  window.location.replace(decodeURIComponent(queryString["re"]));
+	  }
       } else if (document.getElementById("username").value === Data[count].email && document.getElementById("password").value === Data[count].password) {
           li = true;
-          setCookie("li", Data[count]._id);
-          window.location.replace("./dashboard.html");
+	  if (queryString["re"] === null) {
+	  	setCookie("li", Data[count]._id);
+          	window.location.replace("./dashboard.html");
+	  } else {
+		  setCookie("li", Data[count]._id);
+		  window.location.replace(decodeURIComponent(queryString["re"]));
+	  }
       }
    })
    if (li != true) {
@@ -256,4 +266,18 @@ function getCookie(cname) {
 	d.setTime(d.getTime() + (exdays*24*60*60*1000));
 	let expires = "expires=" + d.toUTCString();
 	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+var queryString = new Array();
+window.onload = function () {
+    if (queryString.length == 0) {
+        if (window.location.search.split('?').length > 1) {
+            var params = window.location.search.split('?')[1].split('&');
+            for (var i = 0; i < params.length; i++) {
+                var key = params[i].split('=')[0];
+                var value = decodeURIComponent(params[i].split('=')[1]);
+                queryString[key] = value;
+            }
+        }
+    }
 }
