@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.2.0 09/22/2022:
+   - Fixed Share Editor Access Feature
+
 Update v1.1.9 09/22/2022:
    - Added Email Account Setting (2-Step, Change Email, and More Coming Later)
    - Reset Our Database
@@ -30,7 +33,7 @@ Update/Bug Fix v1.1.1 09/14/2022:
    - Added "Add Resources" Feature
    - Fixed Code Processing
 
-Update/Bug Fix v1.1 09/12/2022:
+Update/Bug Fix v1.1.0 09/12/2022:
    - Added Monaco Editor Functionality
    - Fixed Console Bug
    - Added "Theme" Settings
