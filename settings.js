@@ -98,12 +98,14 @@ function updateAccount() {
         document.getElementById("in").value = "";
         document.getElementById("ip").value = "";
         document.getElementById("iu").value = "";
+        document.getElementById("ie").value = "";
     } else {
         alert("either username or password is invalid.");
         document.getElementById("is").value = "Change Settings";
         document.getElementById("in").value = "";
         document.getElementById("ip").value = "";
         document.getElementById("iu").value = "";
+        document.getElementById("ie").value = "";
     }
 }
 
@@ -131,6 +133,7 @@ function loadData() {
 function showData(Data) {
     var username = Data.username;
     var name = Data.name;
+    var mail = Data.email;
 //     var pfp = Data.pfp;
     document.getElementById("changeDetails").style.display = "none";
     document.querySelector(".details").style.display = "block";
@@ -144,6 +147,7 @@ function showData(Data) {
     document.getElementById("name-details").innerHTML = name;
     document.getElementById("username-details").innerHTML = username;
     document.getElementById("password-details").innerHTML = "***";
+    document.getElementById("email-details").innerHTML = mail;
 }
 
 // function updatePfp(id) {
