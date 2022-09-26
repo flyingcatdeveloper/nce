@@ -1,5 +1,25 @@
 var code, reset = false, d;
 
+const validateEmail = (email) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
+};
+
+var queryString = new Array();
+window.onload = function () {
+    if (queryString.length == 0) {
+        if (window.location.search.split('?').length > 1) {
+            var params = window.location.search.split('?')[1].split('&');
+            for (var i = 0; i < params.length; i++) {
+                var key = params[i].split('=')[0];
+                var value = decodeURIComponent(params[i].split('=')[1]);
+                queryString[key] = value;
+            }
+        }
+    }
+}
+
 function loadJSON(path, api, success, error) {
 document.getElementById("response").innerHTML = "loading...";
 var data = null;
@@ -27,23 +47,25 @@ function myData(Data, success, error) {
    Array.from({length: Data.length}, () => {
       count += 1;
       if (document.getElementById("username").value === Data[count].username && document.getElementById("password").value === Data[count].password) {
-          li = true;
-	  if (queryString["re"] === null) {
-	  	setCookie("li", Data[count]._id);
-          	window.location.replace("./dashboard.html");
-	  } else {
-		  setCookie("li", Data[count]._id);
-		  window.location.replace(decodeURIComponent(queryString["re"]));
-	  }
+	      if (queryString["re"] != null) {
+	         li = true;
+	         setCookie("li", Data[count]._id);
+		      window.location.replace(decodeURIComponent(queryString["re"]));
+	      } else {
+	         li = true;
+		      setCookie("li", Data[count]._id);
+            window.location.replace("./dashboard.html");
+	      }
       } else if (document.getElementById("username").value === Data[count].email && document.getElementById("password").value === Data[count].password) {
-          li = true;
-	  if (queryString["re"] === null) {
-	  	setCookie("li", Data[count]._id);
-          	window.location.replace("./dashboard.html");
-	  } else {
-		  setCookie("li", Data[count]._id);
-		  window.location.replace(decodeURIComponent(queryString["re"]));
-	  }
+	      if (queryString["re"] != null) {
+	         li = true;
+            setCookie("li", Data[count]._id);
+		      window.location.replace(decodeURIComponent(queryString["re"]));
+	      } else {
+	         li = true;
+	         setCookie("li", Data[count]._id);
+            window.location.replace("./dashboard.html");
+	      }
       }
    })
    if (li != true) {
@@ -55,6 +77,7 @@ function myData(Data, success, error) {
 function setError(type) {
    document.getElementById("login").style.display = "none";
    document.getElementById("signup").style.display = "none";
+   document.getElementById("email").style.display = "none";
    document.getElementById("response").innerHTML = type;
    document.getElementById("back").style.display = "block";
 }
@@ -100,11 +123,6 @@ document.getElementById("submit2").onclick = function() {
    loadJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", testIfAvailable, setError);
 }
 
-document.getElementById("es").onclick = function() {
-   window.reset = false;
-   sendCode(document.getElementById("ei").value);
-}
-
 document.getElementById("cs").onclick = function() {
    checkCode(document.getElementById("ei").value);
 }
@@ -123,6 +141,25 @@ function testIfAvailable(Data, success, error) {
       if (taken === false) {
          document.getElementById("signup").style.display = "none";
          document.getElementById("email").style.display = "block";
+         document.getElementById("es").onclick = function() {
+            if (validateEmail(document.getElementById("ei").value)) {
+               var count = 0-1;
+               var eTaken = false;
+               Array.from({length: Data.length}, () => {
+                  count +=1;
+                  if (document.getElementById("ei").value === Data[count].email) {
+                     eTaken = true;
+                     error("Sorry, but that email is taken.");
+                  }
+               })
+               if (eTaken === false) {
+                  window.reset = false;
+                  sendCode(document.getElementById("ei").value);
+               }
+            } else {
+               error("Invalid email.");
+            }
+         }
       }
    } else {
       if (document.getElementById("username2").value.length < 3 && document.getElementById("password2").value.length < 8) {
@@ -266,18 +303,4 @@ function getCookie(cname) {
 	d.setTime(d.getTime() + (exdays*24*60*60*1000));
 	let expires = "expires=" + d.toUTCString();
 	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-var queryString = new Array();
-window.onload = function () {
-    if (queryString.length == 0) {
-        if (window.location.search.split('?').length > 1) {
-            var params = window.location.search.split('?')[1].split('&');
-            for (var i = 0; i < params.length; i++) {
-                var key = params[i].split('=')[0];
-                var value = decodeURIComponent(params[i].split('=')[1]);
-                queryString[key] = value;
-            }
-        }
-    }
 }
