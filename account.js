@@ -1,4 +1,4 @@
-var code, reset = false, d;
+var code, reset = false, d, ots = false;
 
 const validateEmail = (email) => {
   return email.match(
@@ -46,7 +46,7 @@ function myData(Data, success, error) {
    var count = 0-1;
    Array.from({length: Data.length}, () => {
       count += 1;
-      if (document.getElementById("username").value === Data[count].username && document.getElementById("password").value === Data[count].password) {
+      if (document.getElementById("username").value === Data[count].username && document.getElementById("password").value === Data[count].password && Data[count].twostep != true) {
 	      if (queryString["re"] != null) {
 	         li = true;
 	         setCookie("li", Data[count]._id);
@@ -56,7 +56,7 @@ function myData(Data, success, error) {
 		      setCookie("li", Data[count]._id);
             window.location.replace("./dashboard.html");
 	      }
-      } else if (document.getElementById("username").value === Data[count].email && document.getElementById("password").value === Data[count].password) {
+      } else if (document.getElementById("username").value === Data[count].email && document.getElementById("password").value === Data[count].password && Data[count].twostep != true) {
 	      if (queryString["re"] != null) {
 	         li = true;
             setCookie("li", Data[count]._id);
@@ -66,9 +66,53 @@ function myData(Data, success, error) {
 	         setCookie("li", Data[count]._id);
             window.location.replace("./dashboard.html");
 	      }
+      } else if (Data[count].twostep === true) {
+         if (Data[count].email === document.getElementById("username").value && Data[count].password === document.getElementById("password").value) {
+            var aid = Data[count]._id;
+            sendCode(Data[count].email);
+            document.getElementById("login").style.display = "none";
+            document.getElementById("code").style.display = "";
+            window.ots = true;
+            document.getElementById("cs").onclick = function() {
+               if (parseInt(document.getElementById("ci").value) === window.code) {
+                  if (queryString["re"] != null) {
+                     li = true;
+                     setCookie("li", aid);
+                     window.location.replace(decodeURIComponent(queryString["re"]));
+                  } else {
+                     li = true;
+                     setCookie("li", aid);
+                     window.location.replace("./dashboard.html");
+                  }
+               } else {
+                  document.getElementById("code-error").innerHTML = "Invalid Code!";
+               }
+            }
+         } else if (Data[count].username === document.getElementById("username").value && Data[count].password === document.getElementById("password").value) {
+            var aid = Data[count]._id;
+            sendCode(Data[count].email);
+            document.getElementById("login").style.display = "none";
+            document.getElementById("code").style.display = "";
+            window.ots = true;
+            document.getElementById("cs").onclick = function() {
+               if (parseInt(document.getElementById("ci").value) === window.code) {
+                  if (queryString["re"] != null) {
+                     li = true;
+                     setCookie("li", aid);
+                     window.location.replace(decodeURIComponent(queryString["re"]));
+                  } else {
+                     li = true;
+                     setCookie("li", aid);
+                     window.location.replace("./dashboard.html");
+                  }
+               } else {
+                  document.getElementById("code-error").innerHTML = "Invalid Code!";
+               }
+            }
+         }
       }
    })
-   if (li != true) {
+   if (li != true && window.ots === false) {
       error("Invalid Username or Password");
    }
    
