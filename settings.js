@@ -1,4 +1,4 @@
-var taken;
+var taken, username, name, mail, twostep;
 
 if (getCookie("li") === "" || getCookie("li") === null) {
     window.location.replace("./index.html");
@@ -10,6 +10,13 @@ document.getElementById("editBtn").onclick = function() {
     document.getElementById("editBtn").style.display = "none";
     document.querySelector(".details").style.display = "none";
     document.getElementById("changeDetails").style.display = "block";
+    document.getElementById("in").value = window.name;
+    document.getElementById("iu").value = window.username;
+    if (window.twostep === true) {
+        document.getElementById("2step").checked = true;
+    } else {
+        document.getElementById("2step").checked = false;
+    }
 }
 
 document.getElementById("ic").onclick = function() {
@@ -56,7 +63,9 @@ function checkIfAvailable(Data) {
     Array.from({length: Data.length}, () => {
         count += 1;
         if (document.getElementById("iu").value === Data[count].username) {
-            window.taken = true;
+            if (window.username != Data[count].username) {
+                window.taken = true;
+            }
         }
         if (count === Data.length - 1) {
             updateAccount();
@@ -66,11 +75,21 @@ function checkIfAvailable(Data) {
 
 function updateAccount() {
         if (document.getElementById("ip").value.length >= 8 &&  document.getElementById("iu").value.length >= 3 && window.taken === false) {
-        var data = JSON.stringify({
-            "username": document.getElementById("iu").value,
-            "password": document.getElementById("ip").value,
-            "name": document.getElementById("in").value
-        })
+        if (document.getElementById("2step").checked) {
+            var data = JSON.stringify({
+                "username": document.getElementById("iu").value,
+                "password": document.getElementById("ip").value,
+                "name": document.getElementById("in").value,
+                "twostep": true
+            })
+        } else {
+            var data = JSON.stringify({
+                "username": document.getElementById("iu").value,
+                "password": document.getElementById("ip").value,
+                "name": document.getElementById("in").value,
+                "twostep": false
+            })
+        }
         
         var xhr2 = new XMLHttpRequest();
         xhr2.withCredentials = false;
@@ -131,9 +150,10 @@ function loadData() {
 }
 
 function showData(Data) {
-    var username = Data.username;
-    var name = Data.name;
-    var mail = Data.email;
+    window.username = Data.username;
+    window.name = Data.name;
+    window.mail = Data.email;
+    window.twostep = Data.twostep;
 //     var pfp = Data.pfp;
     document.getElementById("changeDetails").style.display = "none";
     document.querySelector(".details").style.display = "block";
@@ -144,10 +164,11 @@ function showData(Data) {
 //         document.getElementById("pfp").style.width = "150px";
 //         document.getElementById("pfp").style.height = "150px";
 //     }
-    document.getElementById("name-details").innerHTML = name;
-    document.getElementById("username-details").innerHTML = username;
+    document.getElementById("name-details").innerHTML = window.name;
+    document.getElementById("username-details").innerHTML = window.username;
     document.getElementById("password-details").innerHTML = "***";
-    document.getElementById("email-details").innerHTML = mail;
+    document.getElementById("email-details").innerHTML = window.mail;
+    document.getElementById("2step-details").innerHTML = window.twostep;
 }
 
 // function updatePfp(id) {
