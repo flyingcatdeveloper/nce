@@ -35,7 +35,7 @@ NOTE: This is in early beta so some features like removing editors, seeing who h
 
 ### Dashboard:
 
-See all your editors in one place, anywhere.
+See all your editors and when you last opened them in one place, anywhere.
 
 ### It's completly Free:
 
