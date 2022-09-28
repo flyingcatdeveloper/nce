@@ -169,9 +169,12 @@ conbtn.addEventListener("click", () => {
 
 // Open your code in a new window
 ontb.addEventListener('click', () => {
-    var myWindow = window.open("", "View Code");
-    myWindow.document.head.innerHTML = "<style>"+css+"</style>";
-    myWindow.document.body.innerHTML=html;
+        var myWindow = window.open("", "View Code");
+        var newResource;
+        var style = document.createElement("style");
+        style.innerHTML = css;
+        myWindow.document.body.innerHTML=html;
+        myWindow.document.body.appendChild(style);
         window.resources.forEach((resource) => {
         if (resource[1] === "css") {
             var newResource = document.createElement("link");
@@ -181,14 +184,16 @@ ontb.addEventListener('click', () => {
             
             myWindow.document.head.appendChild(newResource);
         } else if (resource[1] === "javascript") {
-            var newResource2 = document.createElement("script");
+            var newResource = document.createElement("script");
             
-            newResource2.src = resource[0];
+            newResource.src = resource[0];
             
-            myWindow.document.head.appendChild(newResource2);
+            myWindow.document.head.appendChild(newResource);
         }
     })
-    myWindow.window.eval(js);
+    var newScript = document.createElement("script");
+    newScript.innerHTML = window.js;
+    myWindow.document.head.appendChild(newScript);
 });
 
 // Opens the devlog
@@ -318,8 +323,33 @@ document.getElementById("removeSources").onclick = function() {
 }
 
 calculateVCountdown(); */
+
+function createTimestamp(id) {
+    var time = new Date();
+    
+    var data5 = JSON.stringify({
+        "opened": time
+    });
+    
+    var xhr5 = new XMLHttpRequest();
+    xhr5.withCredentials = false;
+    
+    xhr5.addEventListener("readystatechange", () => {
+        if (xhr5.readyState === XMLHttpRequest.DONE && xhr5.status === 200) {
+            console.log(xhr5.responseText);
+        }
+    });
+    
+    xhr5.open("PUT", "https://zball-ec41.restdb.io/rest/editor/" + id);
+    xhr5.setRequestHeader("content-type", "application/json");
+    xhr5.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+    xhr5.setRequestHeader("cache-control", "no-cache");
+    
+    xhr5.send(data5);
+}
   
   function validate(Data) {
+      createTimestamp(Data._id);
       var splitData = Data.account.split(";");
       splitData.forEach((data) => {
           var splitAccountData = data.split(":");
