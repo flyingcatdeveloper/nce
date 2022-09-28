@@ -5,7 +5,7 @@ var splitName;
 var np;
 
 if (getCookie("li") === "" || getCookie("li") === undefined) {
-    window.location.replace("./index.html")
+    window.location.replace("./index.html");
 } else {
     var data = null;
     
@@ -16,7 +16,7 @@ if (getCookie("li") === "" || getCookie("li") === undefined) {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             showData(JSON.parse(xhr.responseText));
         }
-    })
+    });
     
     xhr.open("GET", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
     xhr.setRequestHeader("content-type", "application/json");
@@ -33,16 +33,16 @@ document.getElementById("new").onclick = function() {
     } else {
         alert("please enter a name!");
     }
-}
+};
 
 document.querySelector(".btn-lo").onclick = function () {
     setCookie("li", "", 1);
-    window.location.replace("./index.html")
-}
+    window.location.replace("./index.html");
+};
 
 document.getElementById("account").onclick = function() {
     window.location.replace("./account.html");
-}
+};
 
 function createNewProjectData(path, api, success, name) {
    var equal = window.np + 1;
@@ -55,7 +55,7 @@ function createNewProjectData(path, api, success, name) {
       "js": "",
       "shared": "",
       "sources": []
-   })
+   });
    
    var xhr2 = new XMLHttpRequest();
    xhr2.withCredentials = false;
@@ -65,9 +65,9 @@ function createNewProjectData(path, api, success, name) {
          document.getElementById("new").innerHTML = "Create";
          success("https://zball-ec41.restdb.io/rest/editor", "6228c7c7dced170e8c83a0b8", openNewProject);
       }
-   })
+   });
    
-   xhr2.open("POST", path)
+   xhr2.open("POST", path);
    xhr2.setRequestHeader("content-type", "application/json");
    xhr2.setRequestHeader("x-apikey", api);
    xhr2.setRequestHeader("cache-control", "no-cache");
@@ -83,9 +83,9 @@ function getData(path, api, success) {
     
     xhr3.addEventListener("readystatechange", function () {
         if (xhr3.readyState === XMLHttpRequest.DONE && xhr3.status === 200) {
-            success(JSON.parse(xhr3.responseText))
+            success(JSON.parse(xhr3.responseText));
         }
-    })
+    });
     
     xhr3.open("GET", path);
     xhr3.setRequestHeader("content-type", "application/json");
@@ -110,20 +110,20 @@ function openNewProject(Data) {
         } else {
             // alert("error");
         }
-    })
+    });
 }
 
 function saveEditor(id, edit, editors) {
     if (projects != "") {
-        var data = JSON.stringify({
+        var data2 = JSON.stringify({
         "editor":  edit + ";" + id + ":" + document.getElementById("name").value,
         "editors": editors
-        })
+        });
     } else {
-        var data = JSON.stringify({
+        var data2 = JSON.stringify({
             "editor": id + ":" + document.getElementById("name").value,
             "editors": editors
-        })
+        });
     }
     
     var xhr4 = new XMLHttpRequest();
@@ -134,14 +134,68 @@ function saveEditor(id, edit, editors) {
             console.log("saved to account.");
             window.location.replace("./editor.html?id=" + id);
         }
-    })
+    });
     
     xhr4.open("PUT", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
     xhr4.setRequestHeader("content-type", "application/json");
     xhr4.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
     xhr4.setRequestHeader("cache-control", "no-cache");
     
-    xhr4.send(data)
+    xhr4.send(data2);
+}
+
+function checkTime(did, d) {
+    var newDate = new Date();
+    var oldDate = new Date(d);
+            
+    var diffseconds = Math.floor((oldDate.getTime() - newDate.getTime()) / 1000);
+    var days = 0;
+    var hours = 0;
+    var minutes = 0;
+    var seconds = 0;
+            
+    days = Math.floor(diffseconds / (3600*24));
+    hours   = Math.floor(diffseconds / 3600);
+    minutes = Math.floor(diffseconds / 60);
+    seconds = Math.floor(diffseconds);
+            
+    if (days != -1) {
+        document.getElementById(did).innerHTML = " (Opened " + Math.abs(days) + " Days Ago)";
+    } else if (hours != -1) {
+        document.getElementById(did).innerHTML = " (Opened " + Math.abs(hours) + " Hours Ago)";
+    } else if (minutes != -1) {
+        document.getElementById(did).innerHTML = " (Opened " + Math.abs(minutes) + " Minutes Ago)";
+    } else {
+        document.getElementById(did).innerHTML = " (Opened " + Math.abs(seconds) + " Seconds Ago)";
+    }
+}
+
+function loadTimestamp(aid) {
+    var data6 = null;
+    
+    var xhr6 = new XMLHttpRequest();
+    xhr6.withCredentials = false;
+    
+    xhr6.addEventListener("readystatechange", () => {
+        if (xhr6.readyState === XMLHttpRequest.DONE && xhr6.status === 200) {
+            var newData = JSON.parse(xhr6.responseText);
+            
+            var dt = newData.opened;
+    
+            if (dt != undefined) {
+                checkTime(aid, dt);
+            } else {
+                document.getElementById(aid).innerHTML = " (Not Opened Recently)";
+            }
+        }
+    });
+    
+    xhr6.open("GET", "https://zball-ec41.restdb.io/rest/editor/" + aid);
+    xhr6.setRequestHeader("content-type", "application/json");
+    xhr6.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+    xhr6.setRequestHeader("cache-control", "no-cache");
+    
+    xhr6.send(data6);
 }
 
 function showData(Data) {
@@ -158,7 +212,8 @@ function showData(Data) {
                 newProject = document.querySelector(".project").cloneNode(true);
                 newLine = document.createElement("br");
            
-                newProject.innerHTML = splitName[1];
+                newProject.innerHTML = splitName[1] + "<i id='" + splitName[0] + "'> (loading...)</i>";
+                loadTimestamp(splitName[0]);
                 newProject.href = "./editor.html?id=" + splitName[0];
            
                 document.querySelector(".projects-container").appendChild(newLine);
@@ -166,14 +221,15 @@ function showData(Data) {
                 document.querySelector(".project").innerHTML = "";
                 document.getElementById("newProjectForm").style.display = "block";
            }
-       })
+       });
        document.getElementById("project").innerHTML = "";
     } else if (projects != "") {
         splitName = projects.split(":");
         newProject = document.querySelector(".project").cloneNode(true);
         newLine = document.createElement("br");
         
-        newProject.innerHTML = splitName[1];
+        newProject.innerHTML = splitName[1] + "<i id='" + splitName[0] + "'> (loading...)</i>";
+        loadTimestamp(splitName[0]);
         newProject.href = "./editor.html?id=" + splitName[0];
         
         document.querySelector(".projects-container").appendChild(newLine);
