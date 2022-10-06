@@ -29,7 +29,7 @@ body {
 
 .editor-menu {
     width: 100%;
-    height: 6rem;
+    height: 2rem;
     background-color: #eee;
     display: flex;
     justify-content: flex-start;
@@ -55,7 +55,7 @@ body {
 
 .btn {
     background-color: #37474F;
-    border-radius: 8px;
+    border-radius: 12px;
     border-width: 0;
     color: #fff;
     cursor: pointer;
@@ -66,7 +66,7 @@ body {
     line-height: 20px;
     list-style: none;
     margin-right: 8px;
-    padding: 10px 12px;
+    padding: 2px 4px;
     text-align: center;
     transition: all .3s;
     vertical-align: baseline;
@@ -77,8 +77,8 @@ body {
 }
 
 #logo {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     margin-right: 10px;
 }
 
@@ -140,10 +140,11 @@ body {
 #container {
     position: absolute;
     bottom: 0;
-    top: 7rem;
-    width: 100%;
+    top: 1rem;
+    width: 98%;
     display: flex;
     transition: all .3s;
+    margin-left: 28px; /* Same as the width of the sidenav */
 }
 
 .left, .right {
@@ -219,7 +220,7 @@ textarea {
 
 .iframe {
     width: 100%;
-    height: 100%;
+    height: 98%;
     border-radius: 10px;
     background-color: #fff;
     overflow-y: auto;
@@ -230,10 +231,21 @@ textarea {
 
 #ver {
     font-family: 'Source Code Pro', monospace;
-    font-size: 2.5rem;
+    font-size: 1rem;
     text-align: right;
     color: lightgray;
     transition: all .3s;
+}
+
+#name {
+    border-radius: 12px;
+}
+
+.project {
+    border: 1px solid gray;
+    border-radius: 8px;
+    width: 400px;
+    padding: 5px;
 }
 
 /* The container */
@@ -373,3 +385,44 @@ textarea {
     font-weight: bold;
 }
 /* Popup box BEGIN */
+
+[data-title]:hover:after {
+    opacity: 0.9;
+    transition: all 0.1s ease 0.5s;
+    visibility: var(--show);
+}
+[data-title]:after {
+    content: attr(data-title);
+    background-color: #2B2D2F;
+    border-radius: 4px;
+    color: #eee;
+    font-size: 75%;
+    position: absolute;
+    padding: 1px 5px 2px 5px;
+    top: var(--mouse-y);
+    left: var(--mouse-x);
+    white-space: nowrap;
+    opacity: 0.5;
+    border: 1px solid #111111;
+    z-index: 99999;
+    visibility: hidden;
+}
+[data-title] {
+    /*position: relative;*/
+}
+
+.sidenav {
+  height: 100%;
+  width: 28px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #eee;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
