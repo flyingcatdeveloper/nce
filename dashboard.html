@@ -5,6 +5,7 @@
 		<title>NEKO Code Editor | Dashboard</title>
 		<meta name="description" content="Online JavaScript Compiler">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.">
+		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/jquery-1.9.1.min.js"></script>
         <link rel="stylesheet" href="./style.css">
         <link rel="icon" type="image/x-icon" href="./favicon.png">
         <style>
@@ -18,18 +19,20 @@
         <div class="editor-menu">
             <img id="logo" src="./favicon.png">
             <button class="btn btn-lo">Log Out</button>
-            <img id="account" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" style="width: 40px; height: 40px; cursor: pointer;" title="Account Settings">
+            <button class="btn" data-title="Account Settings" id="account">Account Settings</button>
+            <p id="ver">v1.2.3</p>
         </div>
         
         <div class="projects-container">
             <br>
             <form style="display: none;" id="newProjectForm">
                <input type="text" id="name">
-               <input type="button" id="new" value="Create">
+               <input class="btn" type="button" id="new" value="Create">
             </form>
             <br>
-            <a id="project" class="project" style="color: blue; text-decoration: underline; font-weight: bold; cursor: pointer;">loading...</a>
+            <p id="load">loading...</p>
         </div>
     </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js" integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ==" crossorigin="anonymous"></script>
     <script src="dashboard.js"></script>
 </html>
