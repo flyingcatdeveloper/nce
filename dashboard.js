@@ -3,6 +3,7 @@ var newLine;
 var newProject;
 var splitName;
 var np;
+var e;
 
 if (getCookie("li") === "" || getCookie("li") === undefined) {
     window.location.replace("./index.html");
@@ -145,8 +146,9 @@ function saveEditor(id, edit, editors) {
 }
 
 function checkTime(did, d) {
+    var dap = d.split("/.///.//");
     var newDate = new Date();
-    var oldDate = new Date(d);
+    var oldDate = new Date(dap[0]);
             
     var diffseconds = Math.floor((oldDate.getTime() - newDate.getTime()) / 1000);
     var days = 0;
@@ -160,13 +162,13 @@ function checkTime(did, d) {
     seconds = Math.floor(diffseconds);
             
     if (days != -1) {
-        document.getElementById(did).innerHTML = " (Opened " + Math.abs(days) + " Days Ago)";
+        document.getElementById(did).innerHTML = " Opened " + Math.abs(days) + " Days Ago By " + dap[1];
     } else if (hours != -1) {
-        document.getElementById(did).innerHTML = " (Opened " + Math.abs(hours) + " Hours Ago)";
+        document.getElementById(did).innerHTML = " Opened " + Math.abs(hours) + " Hours Ago By " + dap[1];
     } else if (minutes != -1) {
-        document.getElementById(did).innerHTML = " (Opened " + Math.abs(minutes) + " Minutes Ago)";
+        document.getElementById(did).innerHTML = " Opened " + Math.abs(minutes) + " Minutes Ago By " + dap[1];
     } else {
-        document.getElementById(did).innerHTML = " (Opened " + Math.abs(seconds) + " Seconds Ago)";
+        document.getElementById(did).innerHTML = " Opened " + Math.abs(seconds) + " Seconds Ago By " + dap[1];
     }
 }
 
@@ -185,7 +187,7 @@ function loadTimestamp(aid) {
             if (dt != undefined) {
                 checkTime(aid, dt);
             } else {
-                document.getElementById(aid).innerHTML = " (Not Opened Recently)";
+                document.getElementById(aid).innerHTML = " Not Opened Recently";
             }
         }
     });
@@ -209,32 +211,59 @@ function showData(Data) {
        splitData.forEach((project) => {
            if (project != "") {
                 splitName = project.split(":");
-                newProject = document.querySelector(".project").cloneNode(true);
+                newProject = document.createElement("div");
+                newProject.setAttribute("class", "project");
                 newLine = document.createElement("br");
-           
-                newProject.innerHTML = splitName[1] + "<i id='" + splitName[0] + "'> (loading...)</i>";
+                var newDAP = document.createElement("p");
+                var newID = document.createElement("p");
+                var newLink = document.createElement("a");
+                
+                newLink.setAttribute("class", "project-btn");
+                newLink.style = "color: blue; text-decoration: underline; font-weight: bold; cursor: pointer; font-family: Arial;";
+                newLink.innerHTML = splitName[1];
+                newProject.setAttribute("data-title", splitName[1]);
+                newDAP.setAttribute("id", splitName[0]);
+                newDAP.innerHTML = "loading...";
                 loadTimestamp(splitName[0]);
-                newProject.href = "./editor.html?id=" + splitName[0];
+                newLink.href = "./editor.html?id=" + splitName[0];
+                newID.innerHTML = "id: " + splitName[0];
+                newID.style = "color: #555555; font-size: 0.6rem;";
+                newDAP.style = "color: #555555; font-size: 0.6rem;";
+                
            
                 document.querySelector(".projects-container").appendChild(newLine);
                 document.querySelector(".projects-container").appendChild(newProject);
-                document.querySelector(".project").innerHTML = "";
+                newProject.appendChild(newLink);
+                newProject.appendChild(newDAP);
+                newProject.appendChild(newID);
+                document.getElementById("load").style.display = "none";
                 document.getElementById("newProjectForm").style.display = "block";
            }
        });
        document.getElementById("project").innerHTML = "";
     } else if (projects != "") {
         splitName = projects.split(":");
-        newProject = document.querySelector(".project").cloneNode(true);
+        newProject = document.createElement("div");
+        newProject.setAttribute("class", "project");
         newLine = document.createElement("br");
+        var newDAP = document.createElement("p");
+        var newID = document.createElement("p");
+        var newLink = document.createElement("a");
         
-        newProject.innerHTML = splitName[1] + "<i id='" + splitName[0] + "'> (loading...)</i>";
+        newLink.innerHTML = splitName[1];
+        newLine.setAttribute("class", "project-btn");
+        newDAP.setAttribute("id", splitName[0]);
+        newDAP.innerHTML = "loading...";
         loadTimestamp(splitName[0]);
-        newProject.href = "./editor.html?id=" + splitName[0];
+        newLink.href = "./editor.html?id=" + splitName[0];
+        newID.innerHTML = "id: " + splitName[0];
+        newID.style = "color: #A9A9A9; font-size: 0.6rem;";
+        newDAP.style = "color: #A9A9A9; font-size: 0.6rem;";
+        newLink.style = "color: blue; text-decoration: underline; font-weight: bold; cursor: pointer; font-family: Arial;";
         
         document.querySelector(".projects-container").appendChild(newLine);
         document.querySelector(".projects-container").appendChild(newProject);
-        document.querySelector(".project").innerHTML = "";
+        document.getElementById("load").style.display = "none";
         document.getElementById("newProjectForm").style.display = "block";
     } else {
         document.querySelector(".project").innerHTML = "No projects found.";
