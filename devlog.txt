@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.2.3 10/06/2022:
+   - Updated Styles To Give Editor A More Refreshing Look
+
 Update v1.2.2 09/28/2022:
    - Added Feature For the Dashboard Where You Can See When You Last Opened Your Project
 
