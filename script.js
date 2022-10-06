@@ -324,11 +324,33 @@ document.getElementById("removeSources").onclick = function() {
 
 calculateVCountdown(); */
 
-function createTimestamp(id) {
+function getUsername(Data) {
+    var data = null;
+    
+    var xhr6 = new XMLHttpRequest();
+    xhr6.withCredentials = false;
+    
+    xhr6.addEventListener("readystatechange", () => {
+        if (xhr6.readyState === XMLHttpRequest.DONE && xhr6.status === 200) {
+            var d = JSON.parse(xhr6.responseText);
+            
+            createTimestamp(Data, d.username);
+        }
+    })
+    
+    xhr6.open("GET", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
+    xhr6.setRequestHeader("content-type", "application/json");
+    xhr6.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+    xhr6.setRequestHeader("cache-control", "no-cache");
+    
+    xhr6.send(data);
+}
+
+function createTimestamp(Data2, uname) {
     var time = new Date();
     
     var data5 = JSON.stringify({
-        "opened": time
+        "opened": time + "/.///.//" + uname
     });
     
     var xhr5 = new XMLHttpRequest();
@@ -337,10 +359,11 @@ function createTimestamp(id) {
     xhr5.addEventListener("readystatechange", () => {
         if (xhr5.readyState === XMLHttpRequest.DONE && xhr5.status === 200) {
             console.log(xhr5.responseText);
+            validate(Data2);
         }
     });
     
-    xhr5.open("PUT", "https://zball-ec41.restdb.io/rest/editor/" + id);
+    xhr5.open("PUT", "https://zball-ec41.restdb.io/rest/editor/" + Data2._id);
     xhr5.setRequestHeader("content-type", "application/json");
     xhr5.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
     xhr5.setRequestHeader("cache-control", "no-cache");
@@ -349,7 +372,6 @@ function createTimestamp(id) {
 }
   
   function validate(Data) {
-      createTimestamp(Data._id);
       var splitData = Data.account.split(";");
       splitData.forEach((data) => {
           var splitAccountData = data.split(":");
@@ -370,7 +392,7 @@ function createTimestamp(id) {
   }
   
   function saveCode() {
-      saveBtn.innerHTML = "Saving...";
+      saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2767/2767294.png";
       var data = JSON.stringify({
           "html": encodeURIComponent(window.html),
           "css": encodeURIComponent(window.css),
@@ -383,7 +405,7 @@ function createTimestamp(id) {
       
       xhr2.addEventListener("readystatechange", function () {
           if (xhr2.readyState === 4 && xhr2.status === 200) {
-              saveBtn.innerHTML = "Save";
+              saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2874/2874091.png";
               console.log("saved code.");
           } else if (xhr2.readyState === XMLHttpRequest.DONE) {
               alert("there was some error saving.");
@@ -418,7 +440,7 @@ window.onload = function () {
         
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                validate(JSON.parse(xhr.responseText));
+                getUsername(JSON.parse(xhr.responseText));
                 document.getElementById("link").innerHTML = window.location.hostname + "/nce/view.html?id=" + queryString["id"];
                 document.getElementById("link").href = "./view.html?id=" + queryString["id"];
                 document.getElementById("link").target = "_blank";
