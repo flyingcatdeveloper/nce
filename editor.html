@@ -24,46 +24,50 @@
 	</head>
 
 	<body class="body">
-		<div class="editor-menu">
-			    <button class="btn btn-db2">Dashboard</button>
+		<div class="sidenav">
+				<img src="https://cdn-icons-png.flaticon.com/512/1828/1828765.png" width="25px" height="25px" class="btn-db2" title="Dashboard" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/27/27223.png" width="25px" height="25px" class="btn-run" title="Run" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/7824/7824725.png" width="25px" height="25px" class="btn-ont" title="Open In New Tab" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/2874/2874091.png" width="25px" height="25px" class="btn-so" title="Save" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/2958/2958791.png" width="25px" height="25px" class="btn-share" title="Share" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/569/569837.png" width="25px" height="25px" class="btn-dev" title="Devlog" style="cursor: pointer;">
+			</div>
+        <p id="load">loading...</p>
+		<div id="container" style="">
+			<div class="left">
+				<select style="background-color: #37474F; color: #fff;" class="btn language-picker">
+					<option value="32">HTML</option>
+					<option value="13">CSS</option>
+					<option value="35">JavaScript</option>
+				</select>
 				<select class="btn btn-dark-light">
 					<option>Theme | Visual Studio</option>
 					<option>Theme | Visual Studio Dark</option>
 					<option>Theme | High Contrast Dark</option>
 				</select>
-				<button class="btn btn-run">Run</button>
-				<button class="btn btn-ont">Open In A New Tab</button>
-				<!--<button class="btn btn-save">Download Code</button>-->
-				<button class="btn btn-so">Save</button>
-				<button class="btn btn-share">Share</button>
-				<button class="btn btn-dev">Devlog</button>
-				<div class="test">
-					<label class="check">Console
-						<input type="checkbox" id="test">
-						<span class="checkmark"></span>
-					  </label>
-				</div>
-				<div class="live">
+				<button class="btn" id="addResource" style="background-color: #37474F; color: #fff; display: none;">Add Resource</button>
+				<button class="btn" id="removeSources" style="background-color: #37474F; color: #fff; display: none;">Delete Resources</button>
+				<div style="width: 100%; height: 100%;" id="editor"></div>
+			</div>
+			<div class="right">
+				<div class="btn">
 					<label class="check">Live Mode
 						<input type="checkbox" id="live">
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<p id="ver">v1.2.2</p>
-			</div>
-        <p id="load">loading...</p>
-		<div id="container" style="">
-			<div class="left">
-				<select style="background-color: #37474F; color: #fff;" class="language-picker">
-					<option value="32">HTML</option>
-					<option value="13">CSS</option>
-					<option value="35">JavaScript</option>
-				</select>
-				<button id="addResource" style="background-color: #37474F; color: #fff; display: none;">Add Resource</button>
-				<button id="removeSources" style="background-color: #37474F; color: #fff; display: none;">Delete Resources</button>
-				<div style="width: 100%; height: 100%;" id="editor"></div>
-			</div>
-			<div class="right">
+				<div class="btn">
+					<label class="check">Console
+						<input type="checkbox" id="test">
+						<span class="checkmark"></span>
+					  </label>
+				</div>
+				<i id="ver" style="font-size: 2rem;">v1.2.3</i>
 				<iframe frameborder="0"  class="iframe" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
