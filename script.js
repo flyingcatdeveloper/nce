@@ -441,13 +441,13 @@ window.onload = function () {
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                 getUsername(JSON.parse(xhr.responseText));
-                document.getElementById("link").innerHTML = window.location.hostname + "/nce/view.html?id=" + queryString["id"];
                 document.getElementById("link").href = "./view.html?id=" + queryString["id"];
                 document.getElementById("link").target = "_blank";
+                document.getElementById("link").innerHTML = document.getElementById("link").href;
                 document.getElementById("link").rel = "noopener noreferrer";
-                document.getElementById("editorLink").innerHTML = window.location.hostname + "/nce/update.html?id=" + queryString["id"];
                 document.getElementById("editorLink").href = "./update.html?id=" + queryString["id"];
                 document.getElementById("editorLink").target = "_blank";
+                document.getElementById("editorLink").innerHTML = document.getElementById("editorLink").href;
                 document.getElementById("editorLink").rel = "noopener noreferrer";
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 alert("id is invalid.");
