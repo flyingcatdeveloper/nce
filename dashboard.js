@@ -2,6 +2,9 @@ var projects;
 var newLine;
 var newProject;
 var splitName;
+var newDAP;
+var newID;
+var newLink;
 var np;
 var e;
 
@@ -214,9 +217,9 @@ function showData(Data) {
                 newProject = document.createElement("div");
                 newProject.setAttribute("class", "project");
                 newLine = document.createElement("br");
-                var newDAP = document.createElement("p");
-                var newID = document.createElement("p");
-                var newLink = document.createElement("a");
+                newDAP = document.createElement("p");
+                newID = document.createElement("p");
+                newLink = document.createElement("a");
                 
                 newLink.setAttribute("class", "project-btn");
                 newLink.style = "color: blue; text-decoration: underline; font-weight: bold; cursor: pointer; font-family: Arial;";
@@ -246,9 +249,9 @@ function showData(Data) {
         newProject = document.createElement("div");
         newProject.setAttribute("class", "project");
         newLine = document.createElement("br");
-        var newDAP = document.createElement("p");
-        var newID = document.createElement("p");
-        var newLink = document.createElement("a");
+        newDAP = document.createElement("p");
+        newID = document.createElement("p");
+        newLink = document.createElement("a");
         
         newLink.innerHTML = splitName[1];
         newLine.setAttribute("class", "project-btn");
@@ -263,10 +266,13 @@ function showData(Data) {
         
         document.querySelector(".projects-container").appendChild(newLine);
         document.querySelector(".projects-container").appendChild(newProject);
+        newProject.appendChild(newLink);
+        newProject.appendChild(newDAP);
+        newProject.appendChild(newID);
         document.getElementById("load").style.display = "none";
         document.getElementById("newProjectForm").style.display = "block";
     } else {
-        document.querySelector(".project").innerHTML = "No projects found.";
+        document.querySelector("#load").innerHTML = "No projects found.";
         document.getElementById("newProjectForm").style.display = "block";
     }
 }
