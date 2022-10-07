@@ -2,7 +2,7 @@
 |-----------------------|
 
 Bug Fix v1.2.4 10/07/2022:
-   - Fixed Projects On The Dashbaord
+   - Fixed Projects On The Dashboard
    - Text Fixes
 
 Update v1.2.3 10/06/2022:
