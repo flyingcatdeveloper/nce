@@ -21,7 +21,7 @@ window.onload = function () {
 }
 
 function loadJSON(path, api, success, error) {
-document.getElementById("response").innerHTML = "loading...";
+document.querySelectorAll(".response").innerHTML = "loading...";
 var data = null;
 
 var xhr = new XMLHttpRequest();
@@ -81,7 +81,7 @@ function myData(Data, success, error) {
                      window.location.replace(decodeURIComponent(queryString["re"]));
                   } else {
                      li = true;
-                     setCookie("li", aid);
+                     setCookie("li", );
                      window.location.replace("./dashboard.html");
                   }
                } else {
@@ -122,12 +122,12 @@ function setError(type) {
    document.getElementById("login").style.display = "none";
    document.getElementById("signup").style.display = "none";
    document.getElementById("email").style.display = "none";
-   document.getElementById("response").innerHTML = type;
+   document.querySelectorAll(".response").innerHTML = type;
    document.getElementById("back").style.display = "block";
 }
 
 function setJSON(path, api, data, success, error) {
-    document.getElementById("response").innerHTML = "loading...";
+    document.querySelectorAll(".response").innerHTML = "loading...";
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = false;
     
@@ -150,7 +150,7 @@ function successMsg(type) {
    document.getElementById("signup").style.display = "none";
    document.getElementById("code").style.display = "none";
    document.getElementById("email").style.display= "none";
-   document.getElementById("response").innerHTML = type;
+   document.querySelectorAll(".response").innerHTML = type;
    document.getElementById("back").style.display = "block";
 }
 
@@ -224,14 +224,13 @@ function showLogin() {
    document.getElementById("login").style.display = "block";
 }
 
-function showSignUp() {
-   document.querySelector("#sub").style.display = "none";
-   document.querySelector("#lib").style.display = "none";
-   document.getElementById("signup").style.display = "block";
+document.getElementById("ssu").onclick = function() {
+   document.getElementById("login").style.display = "none";
+   document.getElementById("signup").style.display = "";
 }
 
 function sendCode(mail) {
-	document.getElementById("response").innerHTML = "";
+	document.querySelectorAll(".response").innerHTML = "";
    window.code = Math.floor((Math.random() * 9000) + 1000);
    document.getElementById("es").value = "Sending...";
    document.getElementById("rs").value = "Sending...";
@@ -300,7 +299,7 @@ function setPass(Data) {
 			if (xhr3.readyState === XMLHttpRequest.DONE && xhr3.status === 200) {
 				document.getElementById("pr").style.display = "none";
 				document.getElementById("login").style.display = "";
-				document.getElementById("response").innerHTML = "";
+				document.querySelectorAll(".response").innerHTML = "";
 			}
 		})
 
