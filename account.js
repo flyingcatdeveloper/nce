@@ -282,10 +282,8 @@ function reset() {
 function setPass(Data) {
 
 	var count = 0-1;
-	alert(Data);
 	Array.from({length: Data.length}, () => {
 	count += 1;
-	alert(Data[count].email);
 	if (document.getElementById("re").value === Data[count].email) {
 		var data3 = JSON.stringify({
 			"password": document.getElementById("rp").value
