@@ -10,64 +10,59 @@
   }
 </style>
 
-<button class="btn" onclick="showLogin()" id="lib">Log In</button>
-<button class="btn" onclick="showSignUp()" id="sub">Sign Up</button>
+<div id="login">
+    <p class="sign" align="center">Sign In</p>
+    <form class="form1">
+      <input id="username" type="text" align="center" placeholder="Username/Email">
+      <input id="password" type="password" align="center" placeholder="Password">
+      <a id="submit" align="center">Sign in</a>
+      <p id="suf" align="center">Don't Have an Account? <a id="ssu" style="cursor: pointer;">Sign Up</a></p>
+      <p id="rsp" align="center">Forgot Password?</p>
+      <p class="response"></p>
+</div>
 
-<form id="signup" style="width: 18%; background-color: gray; padding: 5px; display: none;">
-  <p style="font-family: Arial; font-size: 25px; font-weight: bold;">Log In:</p>
-<!--   <br><br>
-  <input id="email2" type="email" placeholder="email"> -->
-  <br><br>
-  <input id="username2" type="text" placeholder="username">
-  <br><br>
-  <input id="password2" type="password" placeholder="password">
-  <br><br>
-  <input id="name" type="text" placeholder="name">
-  <br><br>
-  <input class="btn" type="button" id="submit2" value="Submit">
-</form>
+<div id="signup" style="display: none;">
+    <p class="sign" align="center">Sign Up</p>
+    <form class="form2">
+      <input id="username2" type="text" align="center" placeholder="Username">
+      <input id="password2" type="password" align="center" placeholder="Password">
+      <input id="name" type="text" align="center" placeholder="Name">
+      <a id="submit2" align="center">Sign Up</a>
+      <p class="response"></p>
+</div>
 
-<form id="pr" style="width: 18%; background-color: gray; padding: 5px; display: none;">
-	<input id="rp" type="password" placeholder="new password">
-	<input id="rs2" class="btn" type="button" value="Set">
-</form>
+<div id="code" style="display: none;">
+    <p class="sign" align="center">Enter The Code You Recieved:</p>
+    <form class="form3">
+      <input id="ci" type="text" align="center" placeholder="Code">
+      <a id="cs" align="center">Verify</a>
+      <p class="response"></p>
+</div>
 
-<form id="login" style="width: 18%; background-color: gray; padding: 5px; display: none;">
-  <p style="font-family: Arial; font-size: 25px; font-weight: bold;">Log In:</p>
-  <br><br>
-  <input id="username" type="text" placeholder="username/email">
-  <br><br>
-  <input id="password" type="password" placeholder="password">
-  <br><br>
-  <input class="btn" type="button" id="submit" value="Submit">
-</form>
+<div id="email" style="display: none;">
+    <p class="sign" align="center">Enter The Code You Recieved:</p>
+    <form class="form4">
+      <input id="ei" type="text" align="center" placeholder="Email">
+      <a id="es" align="center">Verify</a>
+      <p class="response"></p>
+</div>
 
-<form id="reset" style="width: 18%; background-color: gray; padding: 5px; display: none;">
-	<input id="re" type="email" placeholder="email">
-	<input id="rs" class="btn" type="button" value="Send Code">
-</form>
+<div id="reset" style="display: none;">
+    <p class="sign" align="center">Enter Your Email To Reset Your Password:</p>
+    <form class="form5">
+      <input id="re" type="text" align="center" placeholder="Email">
+      <a id="rs" align="center">Verify</a>
+      <p class="response"></p>
+</div>
 
-<form id="email" style="width: 18%; background-color: gray; padding: 5px; display: none;">-->
- <h1>Please Enter your email to verify your account.</h1>
- <br><br>
- <input id="ei" type="text" placeholder="email">
- <br><br>
- <input id="es" class="btn" type="button" value="Send Code">
-</form>
+<div id="pr" style="display: none;">
+    <p class="sign" align="center">Enter A New Password:</p>
+    <form class="form6">
+      <input id="rp" type="password" align="center" placeholder="Password">
+      <a id="rs2" align="center">Set</a>
+      <p class="response"></p>
+</div>
 
-<form id="code" style="width: 18%; background-color: gray; padding: 5px; display: none;">
- <h1>Please enter the code you recieved in your email.</h1>
- <br><br>
- <input id="ci" type="text" placeholder="code">
- <br><br>
- <input id="cs" class="btn" type="button" value="Verify">
- <br><br>
- <p id="code-error"></p>
-</form>
-
-
-
-<p id="response"></p>
 <p onclick="window.location.reload()" id="back" style="display: none; cursor: pointer; color: blue; text-decoration: underline;">Back to home</p>
 <noscript>Please Enable Javascript.</noscript>
 <script src="./account.js"></script>
