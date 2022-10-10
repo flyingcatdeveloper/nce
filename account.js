@@ -293,7 +293,6 @@ function setPass(Data) {
 		xhr3.withCredentials = false;
 
 		xhr3.addEventListener("readystatechange", () => {
-			alert(xhr3.status);
 			if (xhr3.readyState === XMLHttpRequest.DONE && xhr3.status === 200) {
 				document.getElementById("pr").style.display = "none";
 				document.getElementById("login").style.display = "";
