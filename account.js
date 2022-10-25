@@ -21,7 +21,7 @@ window.onload = function () {
 }
 
 function loadJSON(path, api, success, error) {
-document.querySelectorAll(".response").innerHTML = "loading...";
+document.getElementById("submit").innerHTML = "...";
 var data = null;
 
 var xhr = new XMLHttpRequest();
@@ -122,12 +122,12 @@ function setError(type) {
    document.getElementById("login").style.display = "none";
    document.getElementById("signup").style.display = "none";
    document.getElementById("email").style.display = "none";
-   document.querySelectorAll(".response").innerHTML = type;
+   document.getElementById("response").innerHTML = type;
    document.getElementById("back").style.display = "block";
 }
 
 function setJSON(path, api, data, success, error) {
-    document.querySelectorAll(".response").innerHTML = "loading...";
+    document.getElementById("submit2").innerHTML = "loading...";
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = false;
     
@@ -150,7 +150,7 @@ function successMsg(type) {
    document.getElementById("signup").style.display = "none";
    document.getElementById("code").style.display = "none";
    document.getElementById("email").style.display= "none";
-   document.querySelectorAll(".response").innerHTML = type;
+   document.getElementById("su-success").innerHTML = type;
    document.getElementById("back").style.display = "block";
 }
 
