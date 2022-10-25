@@ -52,7 +52,9 @@
 				</select>
 				<button class="btn" id="addResource" style="background-color: #37474F; color: #fff; display: none;">Add Resource</button>
 				<button class="btn" id="removeSources" style="background-color: #37474F; color: #fff; display: none;">Delete Resources</button>
-				<div style="width: 100%; height: 100%;" id="editor"></div>
+				<div style="width: 100%; height: 100%;" id="editor">
+					<h1 align="center" id="loader"></h1>
+				</div>
 			</div>
 			<div class="right">
 				<div class="btn">
@@ -67,7 +69,7 @@
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<i id="ver" style="font-size: 2rem;">v1.2.5</i>
+				<i id="ver" style="font-size: 2rem;">v1.2.6</i>
 				<iframe frameborder="0"  class="iframe" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -98,7 +100,7 @@ require.config({
 
 var editor = null, diffEditor = null;
 
-$("#container").ready(function() {
+function loadEditor() {
 	require(['vs/editor/editor.main'], function () {
 		var MODES = (function() {
 			var modesIds = monaco.languages.getLanguages().map(function(lang) { return lang.id; });
@@ -155,7 +157,7 @@ $("#container").ready(function() {
 			diffEditor.layout();
 		}
 	};
-});
+};
 
 function loadSample(mode) {
 	$.ajax({
@@ -261,6 +263,31 @@ function changeTheme(theme) {
 		diffEditor.updateOptions({ 'theme': newTheme });
 	}
 }
+
+function animateLoader() {
+	var count = 0;
+	function change() {
+		count += 1;
+		if (count !== 4) {
+			if (count === 1) {
+				document.getElementById("loader").innerHTML = ".";
+			} else if (count === 2) {
+				document.getElementById("loader").innerHTML = "..";
+			} else if (count === 3) {
+				document.getElementById("loader").innerHTML = "...";
+			} else {
+				document.getElementById("loader").innerHTML = "...";
+			}
+		} else {
+			count = 0;
+			change();
+		}
+	}
+	
+	setInterval(change, 200);
+}
+
+animateLoader();
 		</script>
 	</body>
 
