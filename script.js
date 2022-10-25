@@ -2,7 +2,7 @@ if (getCookie("li") === "") {
     window.location.replace("./index.html");
 }
 
-var html = "loading...", css = "loading...", js = "loading...";
+var html = "", css = "", js = "";
 var cType;
 var rat;
 var resources = [];
@@ -380,6 +380,7 @@ function createTimestamp(Data2, uname) {
             window.html = decodeURIComponent(Data.html);
             window.css = decodeURIComponent(Data.css);
             window.js = decodeURIComponent(Data.js);
+            window.loadEditor();
             window.editor.getModel().setValue(window.html);
             window.resources = Data.sources;
           }
