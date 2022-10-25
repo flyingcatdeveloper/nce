@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update/Bug Fix v1.2.6 10/25/2022:
+   - Added Loader To Editor
+   - Text Fixes
+
 Update v1.2.5 10/10/2022:
    - Updated Styles For Login Forms
 
