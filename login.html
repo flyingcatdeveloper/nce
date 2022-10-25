@@ -16,9 +16,9 @@
       <input id="username" type="text" align="center" placeholder="Username/Email">
       <input id="password" type="password" align="center" placeholder="Password">
       <a id="submit" align="center">Sign in</a>
-      <p id="suf" align="center">Don't Have an Account? <a id="ssu" style="cursor: pointer;">Sign Up</a></p>
-      <p id="rsp" align="center">Forgot Password?</p>
-      <p class="response"></p>
+      <p id="suf" align="center">Don't Have an Account? <a id="ssu" style="cursor: pointer; text-decoration: underline;">Sign Up</a></p>
+      <p id="rsp" style="cursor: pointer; text-decoration: underline;" align="center">Forgot Password?</p>
+      <p align="center" id="response">.</p>
 </div>
 
 <div id="signup" style="display: none;">
@@ -36,7 +36,6 @@
     <form class="form3">
       <input id="ci" type="text" align="center" placeholder="Code">
       <a id="cs" align="center">Verify</a>
-      <p class="response"></p>
 </div>
 
 <div id="email" style="display: none;">
@@ -62,6 +61,9 @@
       <a id="rs2" align="center">Set</a>
       <p class="response"></p>
 </div>
+
+<p id="su-success"></p>
+<p align="center" id="code-error"></p>
 
 <p onclick="window.location.reload()" id="back" style="display: none; cursor: pointer; color: blue; text-decoration: underline;">Back to home</p>
 <noscript>Please Enable Javascript.</noscript>
