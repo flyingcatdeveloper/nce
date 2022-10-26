@@ -30,7 +30,7 @@ body {
 .editor-menu {
     width: 100%;
     height: 2rem;
-    background-color: #eee;
+    background-color: #fff;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -74,6 +74,11 @@ body {
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+}
+
+img:hover {
+    width: 30px;
+    height: 30px;
 }
 
 #logo {
@@ -144,7 +149,8 @@ body {
     width: 98%;
     display: flex;
     transition: all .3s;
-    margin-left: 28px; /* Same as the width of the sidenav */
+    margin-left: 40px; /* Same as the width of the sidenav */
+    background-color: #fff;
 }
 
 .left, .right {
@@ -409,12 +415,12 @@ textarea {
     visibility: hidden;
 }
 [data-title] {
-    /*position: relative;*/
+    position: relative;
 }
 
 .sidenav {
   height: 100%;
-  width: 28px;
+  width: 40px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -422,14 +428,17 @@ textarea {
   background-color: #eee;
   overflow-x: hidden;
   padding-top: 20px;
+  padding-left: 7px;
 }
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
 
-        body {
-        background-color: #F3EBF6;
+    body {
+        padding-top: 0;
+        margin-top: 0;
+        background-color: #fff;
         font-family: 'Ubuntu', sans-serif;
     }
     
@@ -450,7 +459,7 @@ textarea {
         font-size: 23px;
     }
     
-    #username, #username2, #ci, #ei, #re, #name {
+    #username, #username2, #ci, #ei, #re, #name2 {
     width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;
@@ -538,5 +547,4 @@ textarea {
         .main {
             border-radius: 0px;
         }
-        
-        
+    }
