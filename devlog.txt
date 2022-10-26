@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.2.8 10/26/2022:
+   - Fixed Loading Resources
+
 Update/Bug Fix v1.2.7 10/26/2022:
    - Updated Code Emails To Look More Professional
    - Updated Sidenav In Editor
