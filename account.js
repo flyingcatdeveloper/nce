@@ -238,7 +238,7 @@ function sendCode(mail) {
    var data2 = JSON.stringify({
 		"to": mail,
 		"subject": "NCE Verification Code",
-		"html": "Your verification code is: " + window.code + "</p><br><p>Do not share this with anyone</p>",
+		"html": "<body style='background-color: #333333; color: #eee; font-family: monospace, arial, sans-serif; text-align: center; border-radius: 4px;'><img width='45px' height='45px' src='" + "https://github.com/soratobu-neko/nce/blob/main/favicon-white.png?raw=true" + "'><h1 style='color: #eee;'>NCE</h1><hr><p style='color: #eee;'>Your NCE verification code is:</p><div style='background-color: black; opacity: 50%; border-radius: 4px;'><h1 style='color: #eee;'>" + code + "</h1></div><br><br><p style='color: #eee;'>If you did not request this code, please ignore this email.</p></body>",
 		"company": "Soratobu Neko",
 		"sendername": "NCE Auth"
    })
@@ -265,7 +265,7 @@ function sendCode(mail) {
 
 function checkCode(mail) {
    if (parseInt(document.getElementById("ci").value) === window.code && window.reset === false) {
-      setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name").value, "email": mail, "editor": "", "editors": -1}), successMsg, setError);
+      setJSON("https://zball-ec41.restdb.io/rest/username", "6228c7c7dced170e8c83a0b8", JSON.stringify({"username": document.getElementById("username2").value, "password": document.getElementById("password2").value, "name": document.getElementById("name2").value, "email": mail, "editor": "", "editors": -1}), successMsg, setError);
    } else if (parseInt(document.getElementById("ci").value) === window.code && window.reset === true) {
       document.getElementById("code").style.display = "none";
 	  document.getElementById("pr").style.display = "";
