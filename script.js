@@ -5,7 +5,7 @@ if (getCookie("li") === "") {
 var html = "", css = "", js = "";
 var cType;
 var rat;
-var resources = [];
+var resources;
 
 const left = document.querySelector(".left"),
 right = document.querySelector(".right"),
@@ -380,9 +380,9 @@ function createTimestamp(Data2, uname) {
             window.html = decodeURIComponent(Data.html);
             window.css = decodeURIComponent(Data.css);
             window.js = decodeURIComponent(Data.js);
+            window.resources = Data.sources;
             window.loadEditor();
             window.editor.getModel().setValue(window.html);
-            window.resources = Data.sources;
           }
       })
       
