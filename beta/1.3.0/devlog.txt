@@ -1,6 +1,0 @@
- NEKO Code Editor v1.3.0-beta Devlog
-|-----------------------|
-
-Initial Release v1.3.0-beta.1 10/28/2022:
-    - Added Multiple File Functionality
-    - Updated Open In New Tab Feature
