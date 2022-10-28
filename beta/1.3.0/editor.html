@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden;">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1d">
+		<title>NEKO Code Editor</title>
+		<meta name="description" content="Online JavaScript Compiler">
+		<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.">-->
+		<link rel="stylesheet" href="./style.css">
+		<link rel="icon" type="image/x-icon" href="./favicon.png">
+		<!--<link rel="stylesheet" href="./jquery-ui.css">-->
+		<!--<script src="jquery-ui.min.js"></script>-->
+		<!--<script src="./jquery.min.js"></script>-->
+		<!--<script src="./textarea-helper.js"></script>-->
+		<!--<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-cosmo.css" type="text/css" />-->
+		   <!--<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-cosmo.css" type="text/css" />-->
+   <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-responsive.min.css" type="text/css" />
+   <!--<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/all.css" type="text/css" />-->
+   <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/index/index.css" type="text/css" />
+   <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/jquery-1.9.1.min.js"></script>
+   <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/bootstrap.min.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+   <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>
+   <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/editor/editor.main.css" type="text/css" />
+	</head>
+
+	<body class="body">
+		<div class="sidenav">
+				<img src="https://cdn-icons-png.flaticon.com/512/1828/1828765.png" width="25px" height="25px" class="btn-db2" title="Dashboard" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/27/27223.png" width="25px" height="25px" class="btn-run" title="Run" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/7824/7824725.png" width="25px" height="25px" class="btn-ont" title="Open In New Tab" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/2874/2874091.png" width="25px" height="25px" class="btn-so" title="Save" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/2958/2958791.png" width="25px" height="25px" class="btn-share" title="Share" style="cursor: pointer;">
+				<br><br><br>
+				<img src="https://cdn-icons-png.flaticon.com/512/569/569837.png" width="25px" height="25px" class="btn-dev" title="Devlog" style="cursor: pointer;">
+			</div>
+        <p id="load">loading...</p>
+		<div id="container" style="">
+			<div class="left">
+				<select style="background-color: #37474F; color: #fff; display: none;" class="btn language-picker"></select>
+				<select style="display: none;" class="btn btn-dark-light">
+					<option>Theme | Visual Studio</option>
+					<option>Theme | Visual Studio Dark</option>
+					<option>Theme | High Contrast Dark</option>
+				</select>
+				<button class="btn" id="addResource" style="background-color: #37474F; color: #fff; display: none;">Add Resource</button>
+				<button class="btn" id="removeSources" style="background-color: #37474F; color: #fff; display: none;">Delete Resources</button>
+				<button class="btn" id="createFile" style="display: none;">+</button>
+				<div style="width: 100%; height: 100%;" id="editor">
+					<h1 align="center" id="loader"></h1>
+				</div>
+			</div>
+			<div class="right">
+				<div class="btn">
+					<label class="check">Live Mode
+						<input type="checkbox" id="live">
+						<span class="checkmark"></span>
+					  </label>
+				</div>
+				<div class="btn">
+					<label class="check">Console
+						<input type="checkbox" id="test">
+						<span class="checkmark"></span>
+					  </label>
+				</div>
+				<i id="ver" style="font-size: 2rem;">v1.3.0-beta.1</i>
+				<iframe frameborder="0"  class="iframe" id="iframe"></iframe>
+					<div style="display: none;" class="tocl tocl-4">
+						<p class="toclp">Console</p>
+					</div>
+					<div style="display: none;" id="log-container">
+						<pre id="log"></pre>
+				</div>
+			</div>
+		<div class="hover_bkgr_fricc">
+    		<span class="helper"></span>
+    		<div>
+        		<div class="popupCloseButton">&times;</div>
+        			<p>Share Link: <br><a id="link">loading...</a></p>
+        			<p>Add Editor: <br><a id="editorLink">loading...</a></p>
+    			</div>
+			</div>
+		</div>
+		
+		<div class="hover_bkgr_fricc2">
+    		<span class="helper2"></span>
+    		<div id="content">
+        		<div class="popupCloseButton2">&times;</div>
+    		</div>
+			</div>
+		</div>
+		
+		<script src="./script.js"></script>
+		<script src="./console.js"></script>
+		<!--<script src="./auto.js"></script>-->
+		<script>
+       'use strict';
+require.config({
+    baseUrl: 'https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/'
+});
+
+
+var editor = null, diffEditor = null;
+
+function loadEditor() {
+	require(['vs/editor/editor.main'], function () {
+		window.MODES = (function() {
+			var modesIds = monaco.languages.getLanguages().map(function(lang) { return lang.id; });
+			modesIds.sort();
+
+			return modesIds.map(function(modeId) {
+				return {
+					modeId: modeId,
+					sampleURL: 'https://microsoft.github.io/monaco-editor/index/samples/sample.' + modeId + '.txt'
+				};
+			});
+		})();
+// 		$('.language-picker').selectpicker({
+// 			size: 10
+// 		});
+
+		loadSample(MODES[parseInt(document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].value)]);
+		window.cType = window.MODES[window.cType = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].value].modeId;
+		if (window.cType === "css") {
+			document.getElementById("addResource").style.display = "";
+            document.getElementById("removeSources").style.display = "";
+		} else if (window.cType === "js") {
+			document.getElementById("addResource").style.display = "";
+            document.getElementById("removeSources").style.display = "";
+		} else {
+			document.getElementById("addResource").style.display = "none";
+            document.getElementById("removeSources").style.display = "none";
+		}
+
+		$(".btn-dark-light").change(function() {
+			changeTheme(this.selectedIndex);
+		});
+//  		$('.theme-picker').selectpicker({
+// 		  size: 3
+// 		});
+
+		loadDiffSample();
+
+		$('#inline-diff-checkbox').change(function () {
+			diffEditor.updateOptions({
+				renderSideBySide: !$(this).is(':checked')
+			});
+		});
+	});
+
+	window.onresize = function () {
+		if (editor) {
+			editor.layout();
+		}
+		if (diffEditor) {
+			diffEditor.layout();
+		}
+	};
+};
+
+function loadSample(mode) {
+	$.ajax({
+		type: 'GET',
+		url: mode.sampleURL,
+		dataType: 'text',
+		beforeSend: function() {
+			$('.loading.editor').show();
+		},
+		error: function () {
+			if (editor) {
+				if (editor.getModel()) {
+					editor.getModel().dispose();
+				}
+				editor.dispose();
+				editor = null;
+			}
+			$('.loading.editor').fadeOut({ duration: 200 });
+			$('#editor').empty();
+			$('#editor').append('<p class="alert alert-error">Failed to load ' + mode.modeId + ' sample</p>');
+		}
+	}).done(function (data) {
+		if (!editor) {
+			$('#editor').empty();
+			editor = monaco.editor.create(document.getElementById('editor'), {
+				model: null,
+			});
+		}
+
+    var oldModel = editor.getModel();
+    var newModel = monaco.editor.createModel(data, mode.modeId);
+    editor.setModel(newModel);
+		if (oldModel) {
+			oldModel.dispose();
+		}
+		$('.loading.editor').fadeOut({ duration: 300 });
+		editor.getModel().setValue(window.afs[window.s]);
+	});
+}
+
+function loadDiffSample() {
+
+  var onError = function() {
+    $('.loading.diff-editor').fadeOut({ duration: 200 });
+    $('#diff-editor').append('<p class="alert alert-error">Failed to load diff editor sample</p>');
+  };
+
+  $('.loading.diff-editor').show();
+
+  var lhsData = null, rhsData = null, jsMode = null;
+
+  $.ajax({
+    type: 'GET',
+    url: 'https://microsoft.github.io/monaco-editor/index/samples/diff.lhs.txt',
+    dataType: 'text',
+    error: onError
+  }).done(function (data) {
+    lhsData = data;
+    onProgress();
+  });
+
+  $.ajax({
+    type: 'GET',
+    url: 'https://microsoft.github.io/monaco-editor/index/samples/diff.rhs.txt',
+    dataType: 'text',
+    error: onError
+  }).done(function (data) {
+    rhsData = data;
+    onProgress();
+  });
+
+  function onProgress() {
+    if (lhsData && rhsData) {
+      diffEditor = monaco.editor.createDiffEditor(document.getElementById('diff-editor'), {
+        enableSplitViewResizing: false
+      });
+
+      var lhsModel = monaco.editor.createModel(lhsData, 'text/javascript');
+      var rhsModel = monaco.editor.createModel(rhsData, 'text/javascript');
+
+      diffEditor.setModel({
+        original: lhsModel,
+        modified: rhsModel
+      });
+
+      $('.loading.diff-editor').fadeOut({ duration: 300 });
+    }
+  }
+}
+
+function changeTheme(theme) {
+	var newTheme = (theme === 1 ? 'vs-dark' : ( theme === 0 ? 'vs' : 'hc-black' ));
+	if (editor) {
+		editor.updateOptions({ 'theme' : newTheme });
+	}
+	if (diffEditor) {
+		diffEditor.updateOptions({ 'theme': newTheme });
+	}
+}
+
+function animateLoader() {
+	var count = 0;
+	function change() {
+		count += 1;
+		if (count !== 4) {
+			if (count === 1) {
+				document.getElementById("loader").innerHTML = ".";
+			} else if (count === 2) {
+				document.getElementById("loader").innerHTML = "..";
+			} else if (count === 3) {
+				document.getElementById("loader").innerHTML = "...";
+			} else {
+				document.getElementById("loader").innerHTML = "...";
+			}
+		} else {
+			count = 0;
+			change();
+		}
+	}
+	
+	setInterval(change, 200);
+}
+
+animateLoader();
+		</script>
+	</body>
+
+</html>
