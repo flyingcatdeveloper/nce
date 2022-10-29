@@ -34,7 +34,7 @@ window.onload = function () {
     }
 };
 
-var afs, resources = [];
+var afs = {}, resources = [], fls, tds, tdf;
   
   function loadcode() {
     var newResource;
@@ -43,7 +43,7 @@ var afs, resources = [];
         document.title = "NCE View";
     }
         var url, filename, styl, count=-1;
-        document.body.innerHTML=window.afs[decodeURIComponent(queryString["f"])];
+        document.body.innerHTML=decodeURIComponent(window.afs[queryString["f"]]);
         var scripts = document.getElementsByTagName('script');
         var styles = document.getElementsByTagName('link');
         Array.from({length: scripts.length}, () => {
@@ -51,7 +51,9 @@ var afs, resources = [];
             if (scripts[count].hasAttribute('src')) {
                 url = scripts[count].src;
                 filename = url.substring(url.lastIndexOf('/')+1);
-                window.eval(window.afs[filename]);
+                tds = filename.split(".");
+                tdf = tds[0] + "-" + tds[1];
+                window.eval(decodeURIComponent(window.afs[tdf]));
             }
         })
         count=-1;
@@ -61,8 +63,10 @@ var afs, resources = [];
                 if (styles[count].getAttribute('rel') === "stylesheet") {
                     url = styles[count].href;
                     filename = url.substring(url.lastIndexOf('/')+1);
+                    tds = filename.split(".");
+                    tdf = tds[0] + "-" + tds[1];
                     styl = document.createElement('style');
-                    styl.innerHTML = window.afs[filename];
+                    styl.innerHTML = decodeURIComponent(window.afs[tdf]);
                     document.head.appendChild(styl);
                 }
             }
@@ -86,7 +90,12 @@ var afs, resources = [];
 }
   
   function validate(Data) {
-    window.afs = JSON.parse(Data.afs);
-    window.resources = Data.sources;
+    var c = -1;
+    window.fls = Data["afs"];
+    Array.from({length: window.fls.length}, () => {
+        c += 1;
+        window.afs[window.fls[c]] = Data[window.fls[c]];
+    })
+    window.resources = Data["sources"];
     loadcode();
   }
