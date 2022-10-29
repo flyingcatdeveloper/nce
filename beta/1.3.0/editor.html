@@ -66,7 +66,7 @@
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<i id="ver" style="font-size: 2rem;">v1.3.0-beta.1</i>
+				<i id="ver" style="font-size: 2rem;">v1.3.0-beta.2</i>
 				<iframe frameborder="0"  class="iframe" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -124,10 +124,10 @@ function loadEditor() {
 
 		loadSample(MODES[parseInt(document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].value)]);
 		window.cType = window.MODES[window.cType = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].value].modeId;
-		if (window.cType === "css") {
+		if (window.cType === "css" || window.ftype === "css") {
 			document.getElementById("addResource").style.display = "";
             document.getElementById("removeSources").style.display = "";
-		} else if (window.cType === "js") {
+		} else if (window.cType === "js" || window.ftype === "js") {
 			document.getElementById("addResource").style.display = "";
             document.getElementById("removeSources").style.display = "";
 		} else {
