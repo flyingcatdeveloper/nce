@@ -2,7 +2,11 @@ if (getCookie("li") === "") {
     window.location.replace("./index.html");
 }
 
-var html = {}, css = {}, js = {}, afs = {}, s, ftype = "html", cType, MODES;
+var s;
+var ftype = "html";
+var afs = {};
+var MODES;
+var fls;
 var cType;
 var rat;
 var resources;
@@ -151,20 +155,24 @@ shareBtn.onclick = function() {
     document.querySelector(".hover_bkgr_fricc").style.display = "inline-block";
     document.querySelector(".popupCloseButton").onclick = function() {
         document.querySelector(".hover_bkgr_fricc").style.display = "none";
+        
     };
 };
 
 document.getElementById("createFile").onclick = function() {
-    document.querySelector(".hover_bkgr_fricc2").style.display = "inline-block";
-    document.querySelector(".popupCloseButton2").onclick = function() {
-        document.querySelector(".hover_bkgr_fricc2").style.display = "none";
-    };
     var newInput = document.createElement("input");
     var newSelection = document.createElement("select");
     var newButton = document.createElement("button");
     var opt1 = document.createElement("option");
     var opt2 = document.createElement("option");
     var opt3 = document.createElement("option");
+    document.querySelector(".hover_bkgr_fricc2").style.display = "inline-block";
+    document.querySelector(".popupCloseButton2").onclick = function() {
+        document.querySelector(".hover_bkgr_fricc2").style.display = "none";
+        document.getElementById("content").removeChild(newInput);
+        document.getElementById("content").removeChild(newSelection);
+        document.getElementById("content").removeChild(newButton);
+    };
     
     newInput.placeholder = "Name";
     newInput.id = "name3";
@@ -181,6 +189,7 @@ document.getElementById("createFile").onclick = function() {
     newSelection.appendChild(opt3);
     document.getElementById("content").appendChild(newSelection);
     document.getElementById("content").appendChild(newButton);
+    window.ftype = "html";
     document.getElementById("selection").onchange = function () {
         if (this.options[this.selectedIndex].innerHTML === "HTML") {
             window.ftype = "html";
@@ -193,52 +202,57 @@ document.getElementById("createFile").onclick = function() {
         }
     }
     document.getElementById("saveFile").onclick = function () {
-        var f = document.getElementById("name3").value + "." + window.ftype;
+        var f = document.getElementById("name3").value + "-" + window.ftype;
+        if (window.afs[f] === undefined) {
+            window.afs[f] = "";
         
-        window.afs[f] = "";
+            var newOpt = document.createElement("option");
         
-        var newOpt = document.createElement("option");
+            newOpt.innerHTML = document.getElementById("name3").value + "." + window.ftype;
+            if (window.ftype === "html") {
+                newOpt.value = "32";
+            } else if (window.ftype === "css") {
+                newOpt.value = "13";
+            } else if (window.ftype === "js") {
+                newOpt.value = "35";
+            } else {
+                newOpt.value = "32";
+            }
         
-        newOpt.innerHTML = f;
-        if (window.ftype === "html") {
-            newOpt.value = "32";
-        } else if (window.ftype === "css") {
-            newOpt.value = "13";
-        } else if (window.ftype === "js") {
-            newOpt.value = "35";
+            newOpt.selected = true;
+        
+            document.querySelector(".language-picker").appendChild(newOpt);
+            document.querySelector(".language-picker").style.display = "";
+            if (window.ftype === "html") {
+                document.querySelector(".btn-dark-light").style.display = "";
+                document.querySelector("#addResource").style.display = "none";
+                document.querySelector("#removeSources").style.display = "none";
+                document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
+                document.getElementById("link").target = "_blank";
+                document.getElementById("link").innerHTML = document.getElementById("link").href;
+                document.getElementById("link").rel = "noopener noreferrer";
+            } else if (window.ftype === "css") {
+                document.querySelector(".btn-dark-light").style.display = "";
+                document.querySelector("#addResource").style.display = "";
+                document.querySelector("#removeSources").style.display = "";
+            } else if (window.ftype === "js") {
+                document.querySelector(".btn-dark-light").style.display = "";
+                document.querySelector("#addResource").style.display = "";
+                document.querySelector("#removeSources").style.display = "";
+            }
+            var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].text;
+            var tds = td.split(".");
+            window.loadEditor();
+            window.s = tds[0] + "-" + tds[1];
+        
+            document.getElementById("content").removeChild(newInput);
+            document.getElementById("content").removeChild(newSelection);
+            document.getElementById("content").removeChild(newButton);
+            document.querySelector(".popupCloseButton2").click();
         } else {
-            newOpt.value = "32";
+            alert("file already exists.");
+            document.querySelector(".popupCloseButton2").click();
         }
-        
-        newOpt.selected = true;
-        
-        document.querySelector(".language-picker").appendChild(newOpt);
-        document.querySelector(".language-picker").style.display = "";
-        if (window.ftype === "html") {
-            document.querySelector(".btn-dark-light").style.display = "";
-            document.querySelector("#addResource").style.display = "none";
-            document.querySelector("#removeSources").style.display = "none";
-            document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
-            document.getElementById("link").target = "_blank";
-            document.getElementById("link").innerHTML = document.getElementById("link").href;
-            document.getElementById("link").rel = "noopener noreferrer";
-        } else if (window.ftype === "css") {
-            document.querySelector(".btn-dark-light").style.display = "";
-            document.querySelector("#addResource").style.display = "";
-            document.querySelector("#removeSources").style.display = "";
-        } else if (window.ftype === "js") {
-            document.querySelector(".btn-dark-light").style.display = "";
-            document.querySelector("#addResource").style.display = "";
-            document.querySelector("#removeSources").style.display = "";
-        }
-        
-        window.loadEditor();
-        window.s = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].text;
-        
-        document.getElementById("content").removeChild(newInput);
-        document.getElementById("content").removeChild(newSelection);
-        document.getElementById("content").removeChild(newButton);
-        document.querySelector(".popupCloseButton2").click();
     }
 }
 
@@ -269,8 +283,8 @@ devlog.addEventListener('click', () => {
 function runcode() {
     var newResource;
     if (window.cType === "html") {
-        var url, filename, styl, count=-1;
-        iframe.contentDocument.body.innerHTML=window.afs[window.s];
+        var url, filename, styl, count=-1, tds, tdf;
+        iframe.contentDocument.body.innerHTML=decodeURIComponent(window.afs[window.s]);
         var scripts = iframe.contentDocument.getElementsByTagName('script');
         var styles = iframe.contentDocument.getElementsByTagName('link');
         Array.from({length: scripts.length}, () => {
@@ -278,7 +292,9 @@ function runcode() {
             if (scripts[count].hasAttribute('src')) {
                 url = scripts[count].src;
                 filename = url.substring(url.lastIndexOf('/')+1);
-                iframe.contentWindow.eval(window.afs[filename]);
+                tds = filename.split(".");
+                tdf = tds[0] + "-" + tds[1];
+                iframe.contentWindow.eval(decodeURIComponent(window.afs[tdf]));
             }
         })
         count=-1;
@@ -288,8 +304,10 @@ function runcode() {
                 if (styles[count].getAttribute('rel') === "stylesheet") {
                     url = styles[count].href;
                     filename = url.substring(url.lastIndexOf('/')+1);
+                    tds = filename.split(".");
+                    tdf = tds[0] + "-" + tds[1];
                     styl = document.createElement('style');
-                    styl.innerHTML = window.afs[filename];
+                    styl.innerHTML = decodeURIComponent(window.afs[tdf]);
                     iframe.contentDocument.body.appendChild(styl);
                 }
             }
@@ -458,43 +476,43 @@ function createTimestamp(Data2, uname) {
       splitData.forEach((data) => {
           var splitAccountData = data.split(":");
           if (splitAccountData[0] === getCookie("li")) {
-            if (Data.afs !== undefined) {
-                window.afs = JSON.parse(Data.afs);
-            } else {
-                // Nothing will happen
-            }
+            window.fls = Data["afs"];
             window.resources = Data.sources;
-            if (Object.keys(window.afs).length !== 0) { Object.keys(window.afs).forEach((file) => {
-                var newOption;
-                var splitType = file.split(".");
-                if (splitType[1] === "html") {
-                    newOption = document.createElement("option");
+            if (window.fls !== undefined && window.fls !== "") { 
+                window.fls.forEach((file) => {
+                    window.afs[file] = Data[file];
+                    var newOption;
+                    var splitType = file.split("-");
+                    if (splitType[1] === "html") {
+                        newOption = document.createElement("option");
                     
-                    newOption.innerHTML = file;
-                    newOption.value = "32";
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "32";
                     
-                    document.querySelector(".language-picker").appendChild(newOption);
-                } else if (splitType[1] === "css") {
-                    newOption = document.createElement("option");
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    } else if (splitType[1] === "css") {
+                        newOption = document.createElement("option");
                     
-                    newOption.innerHTML = file;
-                    newOption.value = "13";
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "13";
                     
-                    document.querySelector(".language-picker").appendChild(newOption);
-                } else if (splitType[1] === "js") {
-                    newOption = document.createElement("option");
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    } else if (splitType[1] === "js") {
+                        newOption = document.createElement("option");
                     
-                    newOption.innerHTML = file;
-                    newOption.value = "35";
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "35";
                     
-                    document.querySelector(".language-picker").appendChild(newOption);
-                }
-            }) 
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    }
+                })
+                var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+                var tds = td.split(".");
                 document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
                 document.getElementById("createFile").style.display = "";
                 document.querySelector(".language-picker").style.display = "";
                 document.querySelector(".btn-dark-light").style.display = "";
-                window.s = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+                window.s = tds[0] + "-" + tds[1];
                 window.loadEditor();
                 document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
                 document.getElementById("link").target = "_blank";
@@ -519,10 +537,17 @@ function createTimestamp(Data2, uname) {
   
   function saveCode() {
       saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2767/2767294.png";
-      var data = JSON.stringify({
-          "afs": JSON.stringify(window.afs),
-          "sources": window.resources
+      var safs = JSON.stringify(window.afs);
+      var count, keys = Object.keys(window.afs);
+      var fls = [];
+      var data = {};
+      keys.forEach((key) => {
+        fls.push(key);
+        data[key] = window.afs[key];
       })
+      data["sources"] = window.resources;
+      data["afs"] = fls;
+      var finishedData = JSON.stringify(data);
       
       var xhr2 = new XMLHttpRequest();
       xhr2.withCredentials = false;
@@ -541,7 +566,7 @@ function createTimestamp(Data2, uname) {
       xhr2.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
       xhr2.setRequestHeader("cache-control", "no-cache");
       
-      xhr2.send(data);
+      xhr2.send(finishedData);
   }
 
 var queryString = new Array();
@@ -585,7 +610,9 @@ window.onload = function () {
 };
 
 document.querySelector(".language-picker").onchange = function() {
-    window.s = this.options[this.selectedIndex].innerHTML;
+    var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+    var tds = td.split(".");
+    window.s = tds[0] + "-" + tds[1];
     window.cType = window.MODES[this.options[this.selectedIndex].value].modeId;
     window.loadSample(window.MODES[this.options[this.selectedIndex].value]);
     if (window.cType === "css") {
