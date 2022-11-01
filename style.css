@@ -142,6 +142,25 @@ img:hover {
     cursor: pointer;
 }
 
+.sidenav {
+    font-size: 15px;
+}
+
+div[data-title]:hover::after {
+    content: attr(data-title);
+    position: fixed;
+    background-color: rgb(0,0,0,0.8);
+    border-radius: 4px;
+    color: #eee;
+    font-size: 75%;
+    margin-top: 7px;
+    margin-left: 8px;
+    padding: 1px 5px 2px 5px;
+    white-space: nowrap;
+    border: 1px solid #111111;
+    z-index: 99999;
+}
+
 #container {
     position: absolute;
     bottom: 0;
@@ -393,30 +412,6 @@ textarea {
 }
 /* Popup box BEGIN */
 
-[data-title]:hover:after {
-    opacity: 0.9;
-    transition: all 0.1s ease 0.5s;
-    visibility: var(--show);
-}
-[data-title]:after {
-    content: attr(data-title);
-    background-color: #2B2D2F;
-    border-radius: 4px;
-    color: #eee;
-    font-size: 75%;
-    position: absolute;
-    padding: 1px 5px 2px 5px;
-    top: var(--mouse-y);
-    left: var(--mouse-x);
-    white-space: nowrap;
-    opacity: 0.5;
-    border: 1px solid #111111;
-    z-index: 99999;
-    visibility: hidden;
-}
-[data-title] {
-    position: relative;
-}
 
 .sidenav {
   height: 100%;
@@ -548,3 +543,23 @@ textarea {
             border-radius: 0px;
         }
     }
+    
+div.tooltip span{
+    display:none;
+}
+
+div.tooltip:hover span{
+    display: block;
+    position: fixed;
+    background-color: #2B2D2F;
+    border-radius: 4px;
+    color: #eee;
+    font-size: 75%;
+    padding: 1px 5px 2px 5px;
+    top: 0;
+    left: 50;
+    white-space: nowrap;
+    opacity: 0.5;
+    border: 1px solid #111111;
+    z-index: 99999;
+}
