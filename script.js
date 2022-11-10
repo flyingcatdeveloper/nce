@@ -2,7 +2,11 @@ if (getCookie("li") === "") {
     window.location.replace("./index.html");
 }
 
-var html = "", css = "", js = "";
+var s;
+var ftype = "html";
+var afs = {};
+var MODES;
+var fls;
 var cType;
 var rat;
 var resources;
@@ -151,6 +155,104 @@ shareBtn.onclick = function() {
     document.querySelector(".hover_bkgr_fricc").style.display = "inline-block";
     document.querySelector(".popupCloseButton").onclick = function() {
         document.querySelector(".hover_bkgr_fricc").style.display = "none";
+        
+    };
+};
+
+document.getElementById("createFile").onclick = function() {
+    var newInput = document.createElement("input");
+    var newSelection = document.createElement("select");
+    var newButton = document.createElement("button");
+    var opt1 = document.createElement("option");
+    var opt2 = document.createElement("option");
+    var opt3 = document.createElement("option");
+    document.querySelector(".hover_bkgr_fricc2").style.display = "inline-block";
+    document.querySelector(".popupCloseButton2").onclick = function() {
+        document.querySelector(".hover_bkgr_fricc2").style.display = "none";
+        document.getElementById("content").removeChild(newInput);
+        document.getElementById("content").removeChild(newSelection);
+        document.getElementById("content").removeChild(newButton);
+    };
+    
+    newInput.placeholder = "Name";
+    newInput.id = "name3";
+    newSelection.id = "selection";
+    newButton.innerHTML = "Create";
+    newButton.id = "saveFile";
+    opt1.innerHTML = "HTML";
+    opt2.innerHTML = "CSS";
+    opt3.innerHTML = "JS";
+    
+    document.getElementById("content").appendChild(newInput);
+    newSelection.appendChild(opt1);
+    newSelection.appendChild(opt2);
+    newSelection.appendChild(opt3);
+    document.getElementById("content").appendChild(newSelection);
+    document.getElementById("content").appendChild(newButton);
+    window.ftype = "html";
+    document.getElementById("selection").onchange = function () {
+        if (this.options[this.selectedIndex].innerHTML === "HTML") {
+            window.ftype = "html";
+        } else if (this.options[this.selectedIndex].innerHTML === "CSS") {
+            window.ftype = "css";
+        } else if (this.options[this.selectedIndex].innerHTML === "JS") {
+            window.ftype = "js";
+        } else {
+            alert("unexpected error");
+        }
+    }
+    document.getElementById("saveFile").onclick = function () {
+        var f = document.getElementById("name3").value + "-" + window.ftype;
+        if (window.afs[f] === undefined) {
+            window.afs[f] = "";
+        
+            var newOpt = document.createElement("option");
+        
+            newOpt.innerHTML = document.getElementById("name3").value + "." + window.ftype;
+            if (window.ftype === "html") {
+                newOpt.value = "32";
+            } else if (window.ftype === "css") {
+                newOpt.value = "13";
+            } else if (window.ftype === "js") {
+                newOpt.value = "35";
+            } else {
+                newOpt.value = "32";
+            }
+        
+            newOpt.selected = true;
+        
+            document.querySelector(".language-picker").appendChild(newOpt);
+            document.querySelector(".language-picker").style.display = "";
+            if (window.ftype === "html") {
+                document.querySelector(".btn-dark-light").style.display = "";
+                document.querySelector("#addResource").style.display = "none";
+                document.querySelector("#removeSources").style.display = "none";
+                document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
+                document.getElementById("link").target = "_blank";
+                document.getElementById("link").innerHTML = document.getElementById("link").href;
+                document.getElementById("link").rel = "noopener noreferrer";
+            } else if (window.ftype === "css") {
+                document.querySelector(".btn-dark-light").style.display = "";
+                document.querySelector("#addResource").style.display = "";
+                document.querySelector("#removeSources").style.display = "";
+            } else if (window.ftype === "js") {
+                document.querySelector(".btn-dark-light").style.display = "";
+                document.querySelector("#addResource").style.display = "";
+                document.querySelector("#removeSources").style.display = "";
+            }
+            var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].text;
+            var tds = td.split(".");
+            window.loadEditor();
+            window.s = tds[0] + "-" + tds[1];
+        
+            document.getElementById("content").removeChild(newInput);
+            document.getElementById("content").removeChild(newSelection);
+            document.getElementById("content").removeChild(newButton);
+            document.querySelector(".popupCloseButton2").click();
+        } else {
+            alert("file already exists.");
+            document.querySelector(".popupCloseButton2").click();
+        }
     }
 }
 
@@ -169,31 +271,7 @@ conbtn.addEventListener("click", () => {
 
 // Open your code in a new window
 ontb.addEventListener('click', () => {
-        var myWindow = window.open("", "View Code");
-        var newResource;
-        var style = document.createElement("style");
-        style.innerHTML = css;
-        myWindow.document.body.innerHTML=html;
-        myWindow.document.body.appendChild(style);
-        window.resources.forEach((resource) => {
-        if (resource[1] === "css") {
-            var newResource = document.createElement("link");
-            
-            newResource.rel = "stylesheet";
-            newResource.href = resource[0];
-            
-            myWindow.document.head.appendChild(newResource);
-        } else if (resource[1] === "javascript") {
-            var newResource = document.createElement("script");
-            
-            newResource.src = resource[0];
-            
-            myWindow.document.head.appendChild(newResource);
-        }
-    })
-    var newScript = document.createElement("script");
-    newScript.innerHTML = window.js;
-    myWindow.document.head.appendChild(newScript);
+    var myWindow = window.open("./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s), "View Code");
 });
 
 // Opens the devlog
@@ -204,27 +282,57 @@ devlog.addEventListener('click', () => {
 // Runs the code
 function runcode() {
     var newResource;
-    var style = document.createElement("style");
-    style.innerHTML = css;
-    iframe.contentDocument.body.innerHTML=html;
-    iframe.contentDocument.body.appendChild(style);
-    window.resources.forEach((resource) => {
-        if (resource[1] === "css") {
-            newResource = document.createElement("link");
+    if (window.cType === "html") {
+        var url, filename, styl, count=-1, tds, tdf;
+        iframe.contentDocument.body.innerHTML=decodeURIComponent(window.afs[window.s]);
+        var scripts = iframe.contentDocument.getElementsByTagName('script');
+        var styles = iframe.contentDocument.getElementsByTagName('link');
+        Array.from({length: scripts.length}, () => {
+            count += 1;
+            if (scripts[count].hasAttribute('src')) {
+                url = scripts[count].src;
+                filename = url.substring(url.lastIndexOf('/')+1);
+                tds = filename.split(".");
+                tdf = tds[0] + "-" + tds[1];
+                iframe.contentWindow.eval(decodeURIComponent(window.afs[tdf]));
+            } else {
+                iframe.contentWindow.eval(scripts[count].innerHTML);
+            }
+        })
+        count=-1;
+        Array.from({length: styles.length}, () => {
+            count += 1;
+            if (styles[count].hasAttribute('rel')) {
+                if (styles[count].getAttribute('rel') === "stylesheet") {
+                    url = styles[count].href;
+                    filename = url.substring(url.lastIndexOf('/')+1);
+                    tds = filename.split(".");
+                    tdf = tds[0] + "-" + tds[1];
+                    styl = document.createElement('style');
+                    styl.innerHTML = decodeURIComponent(window.afs[tdf]);
+                    iframe.contentDocument.body.appendChild(styl);
+                }
+            }
+        })
+        window.resources.forEach((resource) => {
+            if (resource[1] === "css") {
+                newResource = document.createElement("link");
             
-            newResource.rel = "stylesheet";
-            newResource.href = resource[0];
+                newResource.rel = "stylesheet";
+                newResource.href = resource[0];
             
-            iframe.contentDocument.head.appendChild(newResource);
-        } else if (resource[1] === "javascript") {
-            newResource = document.createElement("script");
+                iframe.contentDocument.head.appendChild(newResource);
+            } else if (resource[1] === "javascript") {
+                newResource = document.createElement("script");
             
-            newResource.src = resource[0];
+                newResource.src = resource[0];
             
-            iframe.contentDocument.head.appendChild(newResource);
-        }
-    })
-    iframe.contentWindow.eval(js);
+                iframe.contentDocument.head.appendChild(newResource);
+            }
+        });
+    } else {
+        alert('select an HTML file!');
+    }
 }
 
 function setCookie(cname, cvalue, exdays) {
@@ -257,13 +365,7 @@ function getCookie(cname) {
   }
 
 window.addEventListener("keyup", () => {
-    if (window.cType === "html") {
-        window.html = window.editor.getValue();
-    } else if (window.cType === "css") {
-        window.css = window.editor.getValue();
-    } else if (window.cType === "javascript") {
-        window.js = window.editor.getValue();
-    }
+    window.afs[window.s] = window.editor.getValue();
 })
 
 document.getElementById("addResource").onclick = function() {
@@ -376,13 +478,56 @@ function createTimestamp(Data2, uname) {
       splitData.forEach((data) => {
           var splitAccountData = data.split(":");
           if (splitAccountData[0] === getCookie("li")) {
-            document.getElementById("load").style.display = "none";
-            window.html = decodeURIComponent(Data.html);
-            window.css = decodeURIComponent(Data.css);
-            window.js = decodeURIComponent(Data.js);
+            window.fls = Data["afs"];
             window.resources = Data.sources;
-            window.loadEditor();
-            window.editor.getModel().setValue(window.html);
+            if (window.fls !== undefined && window.fls !== "") { 
+                window.fls.forEach((file) => {
+                    window.afs[file] = Data[file];
+                    var newOption;
+                    var splitType = file.split("-");
+                    if (splitType[1] === "html") {
+                        newOption = document.createElement("option");
+                    
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "32";
+                    
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    } else if (splitType[1] === "css") {
+                        newOption = document.createElement("option");
+                    
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "13";
+                    
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    } else if (splitType[1] === "js") {
+                        newOption = document.createElement("option");
+                    
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "35";
+                    
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    }
+                })
+                var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+                var tds = td.split(".");
+                document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+                document.getElementById("createFile").style.display = "";
+                document.querySelector(".language-picker").style.display = "";
+                document.querySelector(".btn-dark-light").style.display = "";
+                window.s = tds[0] + "-" + tds[1];
+                window.loadEditor();
+                document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
+                document.getElementById("link").target = "_blank";
+                document.getElementById("link").innerHTML = document.getElementById("link").href;
+                document.getElementById("link").rel = "noopener noreferrer";
+            } else {
+                document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+                document.getElementById("createFile").style.display = "";
+                document.getElementById("addResource").style.display = "none";
+                document.getElementById("removeSources").style.display = "none";
+                document.querySelector(".language-picker").style.display = "none";
+                document.querySelector(".btn-dark-light").style.display = "none";
+            }
           }
       })
       
@@ -394,12 +539,17 @@ function createTimestamp(Data2, uname) {
   
   function saveCode() {
       saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2767/2767294.png";
-      var data = JSON.stringify({
-          "html": encodeURIComponent(window.html),
-          "css": encodeURIComponent(window.css),
-          "js": encodeURIComponent(window.js),
-          "sources": window.resources
+      var safs = JSON.stringify(window.afs);
+      var count, keys = Object.keys(window.afs);
+      var fls = [];
+      var data = {};
+      keys.forEach((key) => {
+        fls.push(key);
+        data[key] = window.afs[key];
       })
+      data["sources"] = window.resources;
+      data["afs"] = fls;
+      var finishedData = JSON.stringify(data);
       
       var xhr2 = new XMLHttpRequest();
       xhr2.withCredentials = false;
@@ -418,7 +568,7 @@ function createTimestamp(Data2, uname) {
       xhr2.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
       xhr2.setRequestHeader("cache-control", "no-cache");
       
-      xhr2.send(data);
+      xhr2.send(finishedData);
   }
 
 var queryString = new Array();
@@ -442,10 +592,6 @@ window.onload = function () {
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                 getUsername(JSON.parse(xhr.responseText));
-                document.getElementById("link").href = "./view.html?id=" + queryString["id"];
-                document.getElementById("link").target = "_blank";
-                document.getElementById("link").innerHTML = document.getElementById("link").href;
-                document.getElementById("link").rel = "noopener noreferrer";
                 document.getElementById("editorLink").href = "./update.html?id=" + queryString["id"];
                 document.getElementById("editorLink").target = "_blank";
                 document.getElementById("editorLink").innerHTML = document.getElementById("editorLink").href;
@@ -464,3 +610,34 @@ window.onload = function () {
         xhr.send(data);
     }
 };
+
+document.querySelector(".language-picker").onchange = function() {
+    var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+    var tds = td.split(".");
+    window.s = tds[0] + "-" + tds[1];
+    window.cType = window.MODES[this.options[this.selectedIndex].value].modeId;
+    window.loadSample(window.MODES[this.options[this.selectedIndex].value]);
+    if (window.cType === "css") {
+        document.querySelector(".language-picker").style.display = "";
+        document.getElementById("createFile").style.display = "";
+        document.querySelector(".btn-dark-light").style.display = "";
+        document.getElementById("addResource").style.display = "";
+        document.getElementById("removeSources").style.display = "";
+    } else if (window.cType === "javascript") {
+        document.querySelector(".language-picker").style.display = "";
+        document.getElementById("createFile").style.display = "";
+        document.querySelector(".btn-dark-light").style.display = "";
+        document.getElementById("addResource").style.display = "";
+        document.getElementById("removeSources").style.display = "";
+    } else {
+        document.querySelector(".language-picker").style.display = "";
+        document.querySelector(".btn-dark-light").style.display = "";
+        document.getElementById("createFile").style.display = "";
+        document.getElementById("addResource").style.display = "none";
+        document.getElementById("removeSources").style.display = "none";
+        document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
+        document.getElementById("link").target = "_blank";
+        document.getElementById("link").innerHTML = document.getElementById("link").href;
+        document.getElementById("link").rel = "noopener noreferrer";
+    }
+}
