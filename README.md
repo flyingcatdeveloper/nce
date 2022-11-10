@@ -31,6 +31,12 @@ Share your projects with anyone so they can see your best work [Editor Access Sh
 ### Share Editor Access With Others (Beta)
 
 Share your editor access with others so they can edit your project with you.
+
+### Multiple File Functionality *
+
+You can have as many files as you want with multiple file functionality!
+
+  * This feature is in early access and you can only have HTML, CSS, and JS files. Other features like folders also coming soon
 NOTE: This is in early beta so some features like removing editors, seeing who has access, etc. may not be available yet.
 
 ### Dashboard:
