@@ -1,6 +1,15 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update/Bug Fix v1.3.0 11/10/2022:
+    - Added Multiple File Functionality
+    - Updated Open In New Tab Feature
+    - Added Same File Detection
+    - Updated Themes
+    - Changed Fonts
+    - Bug Fixes
+    - Text Fixes
+
 Update v1.2.9 11/01/2022:
     - Updated Styles
     - Added Tooltips
