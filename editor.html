@@ -49,21 +49,17 @@
 				<img src="https://cdn-icons-png.flaticon.com/512/569/569837.png" width="25px" height="25px" class="btn-dev" style="cursor: pointer;">
 			</div>
 		</div>
-        <p id="load">loading...</p>
-		<div id="container" style="">
+		<div id="container">
 			<div class="left">
-				<select style="background-color: #37474F; color: #fff;" class="btn language-picker">
-					<option value="32">HTML</option>
-					<option value="13">CSS</option>
-					<option value="35">JavaScript</option>
-				</select>
-				<select class="btn btn-dark-light">
+				<select style="color: #fff; display: none;" class="btn language-picker"></select>
+				<select style="display: none;" class="btn btn-dark-light">
 					<option>Theme | Visual Studio</option>
 					<option>Theme | Visual Studio Dark</option>
 					<option>Theme | High Contrast Dark</option>
 				</select>
 				<button class="btn" id="addResource" style="background-color: #37474F; color: #fff; display: none;">Add Resource</button>
 				<button class="btn" id="removeSources" style="background-color: #37474F; color: #fff; display: none;">Delete Resources</button>
+				<button class="btn" id="createFile" style="display: none;">+</button>
 				<div style="width: 100%; height: 100%;" id="editor">
 					<h1 align="center" id="loader"></h1>
 				</div>
@@ -81,7 +77,7 @@
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<i id="ver" style="font-size: 2rem;">v1.2.9</i>
+				<i id="ver" style="font-size: 2rem;">v1.3.0</i>
 				<iframe frameborder="0"  class="iframe" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -100,6 +96,14 @@
 			</div>
 		</div>
 		
+		<div class="hover_bkgr_fricc2">
+    		<span class="helper2"></span>
+    		<div id="content">
+        		<div class="popupCloseButton2">&times;</div>
+    		</div>
+			</div>
+		</div>
+		
 		<script src="./script.js"></script>
 		<script src="./console.js"></script>
 		<!--<script src="./auto.js"></script>-->
@@ -114,7 +118,7 @@ var editor = null, diffEditor = null;
 
 function loadEditor() {
 	require(['vs/editor/editor.main'], function () {
-		var MODES = (function() {
+		window.MODES = (function() {
 			var modesIds = monaco.languages.getLanguages().map(function(lang) { return lang.id; });
 			modesIds.sort();
 
@@ -125,25 +129,22 @@ function loadEditor() {
 				};
 			});
 		})();
-		$(".language-picker").change(function() {
-			loadSample(MODES[this.value]);
-			window.cType = MODES[this.value].modeId;
-			if (window.cType === "css") {
-				$("#addResource").css("display", "");
-				$("#removeSources").css("display", "");
-			} else if (window.cType === "javascript") {
-				$("#addResource").css("display", "");
-				$("#removeSources").css("display", "");
-			} else {
-				$("#addResource").css("display", "none");
-				$("#removeSources").css("display", "none");
-			}
-		});
 // 		$('.language-picker').selectpicker({
 // 			size: 10
 // 		});
-		loadSample(MODES[32]);
-		window.cType = MODES[32].modeId;
+
+		loadSample(MODES[parseInt(document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].value)]);
+		window.cType = window.MODES[window.cType = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].value].modeId;
+		if (window.cType === "css" || window.ftype === "css") {
+			document.getElementById("addResource").style.display = "";
+            document.getElementById("removeSources").style.display = "";
+		} else if (window.cType === "js" || window.ftype === "js") {
+			document.getElementById("addResource").style.display = "";
+            document.getElementById("removeSources").style.display = "";
+		} else {
+			document.getElementById("addResource").style.display = "none";
+            document.getElementById("removeSources").style.display = "none";
+		}
 
 		$(".btn-dark-light").change(function() {
 			changeTheme(this.selectedIndex);
@@ -206,13 +207,7 @@ function loadSample(mode) {
 			oldModel.dispose();
 		}
 		$('.loading.editor').fadeOut({ duration: 300 });
-		if (window.cType === "html") {
-			editor.getModel().setValue(window.html);
-		} else if (window.cType === "css") {
-			editor.getModel().setValue(window.css);
-		} else if (window.cType === "javascript") {
-			editor.getModel().setValue(window.js);
-		}
+		editor.getModel().setValue(window.afs[window.s]);
 	});
 }
 
@@ -270,6 +265,69 @@ function changeTheme(theme) {
 	var newTheme = (theme === 1 ? 'vs-dark' : ( theme === 0 ? 'vs' : 'hc-black' ));
 	if (editor) {
 		editor.updateOptions({ 'theme' : newTheme });
+		if (newTheme === 'vs-dark') {
+			document.querySelector(".sidenav").style.backgroundColor = "#555555";
+			document.getElementById("container").style.backgroundColor = "#111111";
+			document.body.style.backgroundColor = "#111111";
+			document.querySelector(".left").style.border = "1px solid #222222";
+			document.querySelector(".right").style.border = "1px solid #222222";
+			document.getElementById("container").style.color = "#eee";
+			document.getElementById("iframe").style.backgroundColor = "#1e1e1e";
+			document.getElementById("log").style.color = "#eee";
+			document.querySelector(".tocl").style.color = "#eee";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "#eee";
+			document.querySelector(".popupCloseButton").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "#222";
+			document.querySelector(".popupCloseButton2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "#222";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "rgba(0,0,0,0.8)";
+				btn.style.color = "#eee";
+			});
+		} else if (newTheme === 'vs') {
+			document.querySelector(".sidenav").style.backgroundColor = "#eee";
+			document.getElementById("container").style.backgroundColor = "#fff";
+			document.body.style.backgroundColor = "#fff";
+			document.querySelector(".left").style.border = "1px solid #d5d5d5";
+			document.querySelector(".right").style.border = "1px solid #d5d5d5";
+			document.getElementById("container").style.color = "#eee";
+			document.getElementById("iframe").style.backgroundColor = "#fff";
+			document.getElementById("log").style.color = "black";
+			document.querySelector(".tocl").style.color = "#eee";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc").style.color = "black";
+			document.querySelector(".popupCloseButton").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "#fff";
+			document.querySelector(".popupCloseButton2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "#fff";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "rgba(0,0,0,0.8)";
+				btn.style.color = "#eee";
+			});
+		} else if (newTheme === 'hc-black') {
+			document.querySelector(".sidenav").style.backgroundColor = "lime";
+			document.getElementById("container").style.backgroundColor = "#000000";
+			document.body.style.backgroundColor = "#000000";
+			document.querySelector(".left").style.border = "1px solid #222222";
+			document.querySelector(".right").style.border = "1px solid #222222";
+			document.getElementById("container").style.color = "yellow";
+			document.getElementById("iframe").style.backgroundColor = "#000000";
+			document.getElementById("log").style.color = "lime";
+			document.querySelector(".tocl").style.color = "yellow";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "yellow";
+			document.querySelector(".hover_bkgr_fricc").style.color = "yellow";
+			document.querySelector(".popupCloseButton").style.color = "lime";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "black";
+			document.querySelector(".popupCloseButton2").style.color = "lime";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "black";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "#000000";
+				btn.style.color = "yellow";
+			});
+		}
 	}
 	if (diffEditor) {
 		diffEditor.updateOptions({ 'theme': newTheme });
