@@ -1,41 +1,3 @@
-  var html, css, js, resources = [];
-  
-  function loadcode() {
-    window.document.body.innerHTML=window.html;
-    window.document.head.innerHTML = "<style>"+window.css+"</style>";
-    var titles = document.getElementsByTagName("title");
-    if (!titles.length) {
-        document.title = "NCE View";
-    }
-    window.resources.forEach((resource) => {
-        if (resource[1] === "css") {
-            var newResource = document.createElement("link");
-            
-            newResource.rel = "stylesheet";
-            newResource.href = resource[0];
-            
-            window.document.head.appendChild(newResource);
-        } else if (resource[1] === "javascript") {
-            var newResource = document.createElement("script");
-            
-            newResource.src = resource[0];
-            
-            window.document.head.appendChild(newResource);
-        }
-    })
-    var newScript = document.createElement("script");
-    newScript.innerHTML = window.js;
-    window.document.body.appendChild(newScript);
-}
-  
-  function validate(Data) {
-    window.html = decodeURIComponent(Data.html);
-    window.css = decodeURIComponent(Data.css);
-    window.js = decodeURIComponent(Data.js);
-    window.resources = Data.sources;
-    loadcode();
-  }
-
 var queryString = new Array();
 window.onload = function () {
     if (queryString.length == 0) {
@@ -48,7 +10,7 @@ window.onload = function () {
             }
         }
     }
-    if (queryString["id"] != null) {
+    if (queryString["id"] !== null && queryString["f"] !== null) {
         var data = null;
         
         var xhr = new XMLHttpRequest();
@@ -71,3 +33,73 @@ window.onload = function () {
         xhr.send(data);
     }
 };
+
+var afs = {}, resources = [], fls, tds, tdf;
+  
+  function loadcode() {
+    var newResource;
+        var url, filename, styl, count=-1;
+        document.body.innerHTML=decodeURIComponent(window.afs[queryString["f"]]);
+        var titles = document.getElementsByTagName("title");
+        if (!titles.length) {
+            document.title = "NCE View";
+        } else {
+            document.title = titles[0].innerHTML;
+        }
+        var scripts = document.getElementsByTagName('script');
+        var styles = document.getElementsByTagName('link');
+        Array.from({length: scripts.length}, () => {
+            count += 1;
+            if (scripts[count].hasAttribute('src')) {
+                url = scripts[count].src;
+                filename = url.substring(url.lastIndexOf('/')+1);
+                tds = filename.split(".");
+                tdf = tds[0] + "-" + tds[1];
+                window.eval(decodeURIComponent(window.afs[tdf]));
+            } else {
+                window.eval(scripts[count].innerHTML);
+            }
+        })
+        count=-1;
+        Array.from({length: styles.length}, () => {
+            count += 1;
+            if (styles[count].hasAttribute('rel')) {
+                if (styles[count].getAttribute('rel') === "stylesheet") {
+                    url = styles[count].href;
+                    filename = url.substring(url.lastIndexOf('/')+1);
+                    tds = filename.split(".");
+                    tdf = tds[0] + "-" + tds[1];
+                    styl = document.createElement('style');
+                    styl.innerHTML = decodeURIComponent(window.afs[tdf]);
+                    document.head.appendChild(styl);
+                }
+            }
+        })
+        window.resources.forEach((resource) => {
+            if (resource[1] === "css") {
+                newResource = document.createElement("link");
+            
+                newResource.rel = "stylesheet";
+                newResource.href = resource[0];
+            
+                document.head.appendChild(newResource);
+            } else if (resource[1] === "javascript") {
+                newResource = document.createElement("script");
+            
+                newResource.src = resource[0];
+            
+                document.head.appendChild(newResource);
+            }
+        });
+}
+  
+  function validate(Data) {
+    var c = -1;
+    window.fls = Data["afs"];
+    Array.from({length: window.fls.length}, () => {
+        c += 1;
+        window.afs[window.fls[c]] = Data[window.fls[c]];
+    })
+    window.resources = Data["sources"];
+    loadcode();
+  }
