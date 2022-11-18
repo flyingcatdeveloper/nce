@@ -4,23 +4,23 @@
 
 ### Features:
 
-### Monaco Editor Functionality:
+### Monaco Editor Functionality
 
 Your favorite editor, right here. Use an editor you already know, with many useful features, like code autocomplete, MDN referencing, etc.
 
-### Console:
+### Console
 
 View the console easily with just a click of a button, and turn it off just as easy. Good for you if you want to view the console for things like errors and other things.
 
-### Live Code Editing:
+### Live Code Editing
 
 Keeps your code always updating, so you can see a mistake as soon as it happens.
 
-### Save Your Code On the Cloud:
+### Save Your Code On the Cloud
 
 Your code, anywhere. Just create an account, make an editor, and BAM. You've got your code, anywhere. (To save your code to the cloud, click the "Save" button [Auto-Save coming soon] )
 
-### Open Your Code In A New Tab:
+### Open Your Code In A New Tab
 
 Open your code directly in a new tab, so you can see it exactly as it would look as a webpage.
 
@@ -32,21 +32,22 @@ Share your projects with anyone so they can see your best work [Editor Access Sh
 
 Share your editor access with others so they can edit your project with you.
 
-### Multiple File Functionality *
+NOTE: This is in early beta so some features like removing editors, seeing who has access, etc. may not be available yet.
+
+### Multiple File Functionality
 
 You can have as many files as you want with multiple file functionality!
 
   * This feature is in early access and you can only have HTML, CSS, and JS files. Other features like folders also coming soon
-NOTE: This is in early beta so some features like removing editors, seeing who has access, etc. may not be available yet.
 
-### Dashboard:
+### Dashboard
 
 See all your editors and when you last opened them in one place, anywhere.
 
-### It's completly Free:
+### It's completly Free
 
 Yes, that's right it's free. No paying for some subscription or other junk.
 
-### Keep Updated:
+### Keep Updated
 
 Keep updated on whats new with our DevLog, so you can see what is fixed and added.
