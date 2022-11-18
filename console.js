@@ -54,3 +54,7 @@ function rewireLoggingToElement(eleLocator, eleOverflowLocator, autoScroll) {
         }, '');
     }
 }
+
+frame.contentWindow.console.clear = function() {
+    document.getElementById("log").innerHTML = "";
+}
