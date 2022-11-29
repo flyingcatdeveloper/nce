@@ -1,6 +1,13 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.3.2 11/29/2022:
+    - Added Settings Menu
+    - Added "Preserve Editor" Setting
+    - Added "Editor Access" Setting (Choose If You Want Your Project To Be Private)
+    - Added "Preview Visibility" Setting (Choose If You Want Your Preview To Be Private)
+    - Added "Autosave" Setting
+
 Update/Bug Fix v1.3.1 11/18/2022:
     - Added More Console Functionality
     - Style Fixes
