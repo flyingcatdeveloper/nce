@@ -34,10 +34,39 @@ window.onload = function () {
     }
 };
 
-var afs = {}, resources = [], fls, tds, tdf;
+function getCookie(cname) {
+	let name = cname + "=";
+	let cokie = document.cookie;
+	let ca = cokie.split(';');
+	for(let i = 0; i < ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
+	}
+	return "";
+  }
+
+var afs = {}, resources = [], fls, tds, tdf, s, acc;
   
   function loadcode() {
-    var newResource;
+      var splitData = window.acc.split(";");
+      var sad = splitData[0].split(":");
+      var access;
+      if (s["Preview Visibility"] === "Only Me") {
+          if (sad[0] === getCookie("li")) {
+              access = true;
+          } else {
+              access = false;
+          }
+      } else if (s["Preview Visibility"] === "Shared With") {
+          access = true;
+      }
+      if (access === true) {
+        var newResource;
         var url, filename, styl, count=-1;
         document.body.innerHTML=decodeURIComponent(window.afs[queryString["f"]]);
         var titles = document.getElementsByTagName("title");
@@ -91,6 +120,11 @@ var afs = {}, resources = [], fls, tds, tdf;
                 document.head.appendChild(newResource);
             }
         });
+      } else if (access === false) {
+          document.body.innerHTML = "Access Denied";
+      } else {
+          document.body.innerHTML = "Undefined Error";
+      }
 }
   
   function validate(Data) {
@@ -101,5 +135,7 @@ var afs = {}, resources = [], fls, tds, tdf;
         window.afs[window.fls[c]] = Data[window.fls[c]];
     })
     window.resources = Data["sources"];
+    window.s = Data["settings"];
+    window.acc = Data["account"];
     loadcode();
   }
