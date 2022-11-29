@@ -10,6 +10,9 @@ var fls;
 var cType;
 var rat;
 var resources;
+var settings;
+var clearEditor;
+var auto;
 
 const left = document.querySelector(".left"),
 right = document.querySelector(".right"),
@@ -35,7 +38,8 @@ body = document.querySelector(".body"),
 saveBtn = document.querySelector(".btn-so"),
 dbBtn = document.querySelector(".btn-db2"),
 lpicker = document.querySelector(".language-picker"),
-shareBtn = document.querySelector(".btn-share");
+shareBtn = document.querySelector(".btn-share"),
+settingsBtn = document.querySelector(".btn-setting");
 
 // Variables used for ldm btn
 let ldm = 0;
@@ -474,10 +478,23 @@ function createTimestamp(Data2, uname) {
 }
   
   function validate(Data) {
-      var splitData = Data.account.split(";");
+    var splitData = Data.account.split(";");
+    if (Data.settings !== undefined && Data.settings !== null && Data.settings !== "") {
+        settings = Data.settings;
+    }
+    if (settings !== undefined) {
       splitData.forEach((data) => {
           var splitAccountData = data.split(":");
           if (splitAccountData[0] === getCookie("li")) {
+            if (settings["Editor Access"] === "Only Me") {
+                var sad = splitData[0].split(":");
+                if (sad[0] === getCookie("li")) {
+                    // Do Nothing
+                } else {
+                    alert("wrong user logged in.");
+                    window.location.replace("./index.html");
+                }
+            }
             window.fls = Data["afs"];
             window.resources = Data.sources;
             if (window.fls !== undefined && window.fls !== "") { 
@@ -520,6 +537,11 @@ function createTimestamp(Data2, uname) {
                 document.getElementById("link").target = "_blank";
                 document.getElementById("link").innerHTML = document.getElementById("link").href;
                 document.getElementById("link").rel = "noopener noreferrer";
+                if (settings["Autosave"] === "true") {
+                    clearInterval(window.auto);
+                    window.auto = setInterval(saveCode, 30000);
+                }
+                settingsBtn.style.display = "";
             } else {
                 document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
                 document.getElementById("createFile").style.display = "";
@@ -527,6 +549,11 @@ function createTimestamp(Data2, uname) {
                 document.getElementById("removeSources").style.display = "none";
                 document.querySelector(".language-picker").style.display = "none";
                 document.querySelector(".btn-dark-light").style.display = "none";
+                settings.style.display = "";
+                if (settings["Autosave"] === "true") {
+                    clearInterval(window.auto)
+                    window.auto = setInterval(saveCode, 30000);
+                }
             }
           }
       })
@@ -535,6 +562,15 @@ function createTimestamp(Data2, uname) {
           alert("wrong user logged in.");
           window.location.replace("./index.html");
       }
+    } else {
+        settings = {
+            "Preserve Editor": "false",
+            "Editor Access": "Shared With",
+            "Preview Visibility": "Shared With",
+            "Autosave": "false"
+        }
+        validate(Data);
+    }
   }
   
   function saveCode() {
@@ -549,6 +585,7 @@ function createTimestamp(Data2, uname) {
       })
       data["sources"] = window.resources;
       data["afs"] = fls;
+      data["settings"] = settings;
       var finishedData = JSON.stringify(data);
       
       var xhr2 = new XMLHttpRequest();
@@ -640,4 +677,63 @@ document.querySelector(".language-picker").onchange = function() {
         document.getElementById("link").innerHTML = document.getElementById("link").href;
         document.getElementById("link").rel = "noopener noreferrer";
     }
+}
+
+settingsBtn.onclick = function() {
+    var e = document.getElementById("editor");
+    
+    window.clearEditor = function() {
+        e.innerHTML = "";
+        window.loadEditor();
+    }
+    
+    e.innerHTML = "<button class='btn' onclick='window.clearEditor()'>X</button><br><br>";
+    
+    var sdiv = document.createElement("div"),
+    options = {
+        "Preserve Editor": ["true", "false"],
+        "Editor Access": ["Only Me", "Shared With"],
+        "Preview Visibility": ["Only Me", "Shared With"],
+        "Autosave": ["true", "false"]
+    },
+    okeys = Object.keys(options);
+    
+    sdiv.style.width="100%";
+    sdiv.style.height="100%";
+    
+    okeys.forEach((option) => {
+        var name = document.createElement("p");
+        var split = document.createElement("br");
+        var select = document.createElement("select");
+        var selections = options[option];
+        
+        selections.forEach((selection) => {
+            var s = document.createElement("option");
+            
+            s.innerHTML = selection;
+            s.value = option;
+            if (settings[option] === selection) {
+                s.selected = true;
+            }
+            
+            select.appendChild(s);
+        })
+        
+        select.onchange = function() {
+            settings[this.options[this.selectedIndex].value] = this.options[this.selectedIndex].innerHTML;
+            if (settings["Autosave"] === "true") {
+                clearInterval(window.auto);
+                window.auto = setInterval(saveCode, 30000);
+            } else {
+                clearInterval(window.auto);
+            }
+            saveCode();
+        }
+        
+        name.innerHTML = "<b>" + option + ": </b>";
+        
+        name.appendChild(select);
+        e.appendChild(name);
+        e.appendChild(split);
+    })
 }
