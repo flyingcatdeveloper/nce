@@ -601,7 +601,7 @@ function createTimestamp(Data2, uname) {
             } else {
                 window.resources = Data.sources;
             }
-            if (window.fls !== undefined && window.fls !== "" && Data["main"] !== undefined) { 
+            if (window.fls !== undefined && window.fls !== "" && window.fls["main"] !== undefined) { 
                 var keys = Object.keys(window.fls);
                 keys.forEach((folder) => {
                     if (settings["Compressed"] === "true" && Data["compressed"] === "true") {
@@ -766,14 +766,13 @@ function createTimestamp(Data2, uname) {
   }
   
   function saveCode() {
-      window.resources = [];
       var coded = window.Base64.encode(window.LZString.compress(JSON.stringify(window.afs)));
       saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2767/2767294.png";
       var safs = JSON.stringify(window.afs);
       var count, keys = Object.keys(window.afs);
       var fls = [];
       var data = {};
-      if (settings["Compressed"] === "true" && window.afs !== undefined && window.afs !== "" && window.afs !== null) {
+      if (settings["Compressed"] === "true" && window.afs !== undefined && window.afs !== "" && window.afs !== null && window.afs !== {}) {
           data["afs"] = window.Base64.encode(window.LZString.compress(JSON.stringify(window.afs)));
           var decoded = window.Base64.decode(coded);
           data["sources"] = window.Base64.encode(window.LZString.compress(JSON.stringify(window.resources)));
