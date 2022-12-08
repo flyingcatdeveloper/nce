@@ -21,6 +21,8 @@
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
    <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>
    <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/editor/editor.main.css" type="text/css" />
+   <script src="./lz-string.js"></script>
+   <script src="./base64.js"></script>
 	</head>
 
 	<body class="body">
@@ -55,6 +57,7 @@
 		</div>
 		<div id="container">
 			<div class="left">
+				<select style="color: #fff; display: none;" class="btn folder-picker"></select>
 				<select style="color: #fff; display: none;" class="btn language-picker"></select>
 				<select style="display: none;" class="btn btn-dark-light">
 					<option>Theme | Visual Studio</option>
@@ -81,7 +84,7 @@
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<i id="ver" style="font-size: 2rem;">v1.3.2</i>
+				<i id="ver" style="font-size: 2rem;">v1.3.3</i>
 				<iframe frameborder="0"  class="iframe" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -108,8 +111,8 @@
 			</div>
 		</div>
 		
-		<script src="./script.js"></script>
 		<script src="./console.js"></script>
+		<script src="./script.js"></script>
 		<!--<script src="./auto.js"></script>-->
 		<script>
        'use strict';
@@ -211,7 +214,7 @@ function loadSample(mode) {
 			oldModel.dispose();
 		}
 		$('.loading.editor').fadeOut({ duration: 300 });
-		editor.getModel().setValue(window.afs[window.s]);
+		editor.getModel().setValue(window.afs[window.sf][window.s]);
 	});
 }
 
