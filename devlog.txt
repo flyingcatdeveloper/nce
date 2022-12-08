@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.3.5 12/08/2022:
+    - Fixed Folder Feature
+    - Other Bug Fixes
+
 Bug Fix v1.3.4 12/08/2022:
     - Fixed "Compressed" Feature
 
