@@ -226,6 +226,7 @@ document.getElementById("createFile").onclick = function() {
                 document.querySelector(".folder-picker").appendChild(newOpt);
                 document.querySelector(".folder-picker").style.display = "";
                 
+                window.s = "";
                 window.sf = folder;
                 window.afs[folder] = {};
                 
@@ -240,7 +241,7 @@ document.getElementById("createFile").onclick = function() {
                 document.querySelector(".popupCloseButton2").click();
             }
         } else {
-            var f = document.getElementById("name3").value + "-" + window.ftype;
+            var f = window.Base64.encode(document.getElementById("name3").value) + "-" + window.ftype;
             if (window.afs[window.sf][f] === undefined) {
                 window.afs[window.sf][f] = "";
         
@@ -282,7 +283,7 @@ document.getElementById("createFile").onclick = function() {
                 var tds = td.split(".");
                 document.getElementById("editor").innerHTML = "";
                 window.loadEditor();
-                window.s = tds[0] + "-" + tds[1];
+                window.s = window.Base64.encode(tds[0]) + "-" + tds[1];
         
                 document.getElementById("content").removeChild(newInput);
                 document.getElementById("content").removeChild(newSelection);
@@ -327,25 +328,6 @@ function runcode() {
         iframe.contentDocument.body.innerHTML=window.afs[window.sf][window.s];
         var scripts = iframe.contentDocument.getElementsByTagName('script');
         var styles = iframe.contentDocument.getElementsByTagName('link');
-        Array.from({length: scripts.length}, () => {
-            count += 1;
-            if (scripts[count].hasAttribute('src')) {
-                url = scripts[count].src;
-                paths = url.split('/');
-                folder = paths[paths.length - 2];
-                filename = paths[paths.length - 1];
-                tds = filename.split(".");
-                tdf = tds[0] + "-" + tds[1];
-                if (window.afs[folder] !== undefined) {
-                    iframe.contentWindow.eval(window.afs[folder][tdf]);
-                } else {
-                    iframe.contentWindow.eval(window.afs["main"][tdf]);
-                }
-            } else {
-                iframe.contentWindow.eval(scripts[count].innerHTML);
-            }
-        })
-        count=-1;
         Array.from({length: styles.length}, () => {
             count += 1;
             if (styles[count].hasAttribute('rel')) {
@@ -366,22 +348,43 @@ function runcode() {
                 }
             }
         })
-        window.resources.forEach((resource) => {
-            if (resource[1] === "css") {
-                newResource = document.createElement("link");
-            
-                newResource.rel = "stylesheet";
-                newResource.href = resource[0];
-            
-                iframe.contentDocument.head.appendChild(newResource);
-            } else if (resource[1] === "javascript") {
-                newResource = document.createElement("script");
-            
-                newResource.src = resource[0];
-            
-                iframe.contentDocument.head.appendChild(newResource);
+        count=-1;
+        Array.from({length: scripts.length}, () => {
+            count += 1;
+            if (scripts[count].hasAttribute('src')) {
+                url = scripts[count].src;
+                paths = url.split('/');
+                folder = paths[paths.length - 2];
+                filename = paths[paths.length - 1];
+                tds = filename.split(".");
+                tdf = tds[0] + "-" + tds[1];
+                if (window.afs[folder] !== undefined) {
+                    iframe.contentWindow.eval(window.afs[folder][tdf]);
+                } else {
+                    iframe.contentWindow.eval(window.afs["main"][tdf]);
+                }
+            } else {
+                iframe.contentWindow.eval(scripts[count].innerHTML);
             }
-        });
+        })
+        if (window.resources.length !== 0) {
+            window.resources.forEach((resource) => {
+                if (resource[1] === "css") {
+                    newResource = document.createElement("link");
+            
+                    newResource.rel = "stylesheet";
+                    newResource.href = resource[0];
+            
+                    iframe.contentDocument.body.appendChild(newResource);
+                } else if (resource[1] === "javascript") {
+                    newResource = document.createElement("script");
+            
+                    newResource.src = resource[0];
+            
+                    iframe.contentDocument.body.appendChild(newResource);
+                }
+            })
+        }
     } else if (window.cType === "html" && window.afs[window.s] !== undefined) {
         var url, filename, styl, count=-1, tds, tdf;
         iframe.contentDocument.body.innerHTML=decodeURIComponent(window.afs[window.s]);
@@ -604,11 +607,7 @@ function createTimestamp(Data2, uname) {
             if (window.fls !== undefined && window.fls !== "" && window.fls["main"] !== undefined) { 
                 var keys = Object.keys(window.fls);
                 keys.forEach((folder) => {
-                    if (settings["Compressed"] === "true" && Data["compressed"] === "true") {
-                        window.afs[folder] = window.fls[folder];
-                    } else {
-                        window.afs[folder] = window.fls[folder];
-                    }
+                    window.afs[folder] = window.fls[folder];
                     
                     var newOpt = document.createElement("option");
                     
@@ -624,21 +623,21 @@ function createTimestamp(Data2, uname) {
                     if (splitType[1] === "html") {
                         newOption = document.createElement("option");
                     
-                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
                         newOption.value = "32";
                     
                         document.querySelector(".language-picker").appendChild(newOption);
                     } else if (splitType[1] === "css") {
                         newOption = document.createElement("option");
                     
-                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
                         newOption.value = "13";
                     
                         document.querySelector(".language-picker").appendChild(newOption);
                     } else if (splitType[1] === "js") {
                         newOption = document.createElement("option");
                     
-                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
                         newOption.value = "35";
                     
                         document.querySelector(".language-picker").appendChild(newOption);
@@ -664,8 +663,10 @@ function createTimestamp(Data2, uname) {
                 if (document.querySelector(".language-picker").options.length !== 0) {
                     var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
                     var tds = td.split(".");
-                    window.s = tds[0] + "-" + tds[1];
+                    window.s = window.Base64.encode(tds[0]) + "-" + tds[1];
                     window.loadEditor();
+                } else {
+                    window.s = "";
                 }
             } else if (window.fls !== undefined && window.fls !== "") {
                 var keys = Object.keys(window.fls);
@@ -682,21 +683,21 @@ function createTimestamp(Data2, uname) {
                     if (splitType[1] === "html") {
                         newOption = document.createElement("option");
                     
-                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
                         newOption.value = "32";
                     
                         document.querySelector(".language-picker").appendChild(newOption);
                     } else if (splitType[1] === "css") {
                         newOption = document.createElement("option");
                     
-                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
                         newOption.value = "13";
                     
                         document.querySelector(".language-picker").appendChild(newOption);
                     } else if (splitType[1] === "js") {
                         newOption = document.createElement("option");
                     
-                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
                         newOption.value = "35";
                     
                         document.querySelector(".language-picker").appendChild(newOption);
@@ -706,8 +707,10 @@ function createTimestamp(Data2, uname) {
                 if (document.querySelector(".language-picker").options.length !== 0) {
                     var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
                     var tds = td.split(".");
-                    window.s = tds[0] + "-" + tds[1];
+                    window.s = window.Base64.encode(tds[0]) + "-" + tds[1];
                     window.loadEditor();
+                } else {
+                    window.s = "";
                 }
                 document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
                 document.getElementById("createFile").style.display = "";
@@ -780,10 +783,6 @@ function createTimestamp(Data2, uname) {
           data["compressed"] = "true";
           var finishedData = JSON.stringify(data);
       } else if (window.afs !== undefined && window.afs !== "" && window.afs !== {} && window.afs !== null) {
-        keys.forEach((key) => {
-        fls.push(key);
-            data[key] = window.afs[key];
-        })
         data["sources"] = window.resources;
         data["afs"] = window.afs;
         data["settings"] = settings;
@@ -867,22 +866,22 @@ document.querySelector(".folder-picker").onchange = function() {
         var splitType = file.split("-");
         if (splitType[1] === "html") {
             newOption = document.createElement("option");
-                    
-            newOption.innerHTML = splitType[0] + "." + splitType[1];
+            
+            newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
             newOption.value = "32";
                     
             document.querySelector(".language-picker").appendChild(newOption);
         } else if (splitType[1] === "css") {
             newOption = document.createElement("option");
                     
-            newOption.innerHTML = splitType[0] + "." + splitType[1];
+            newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
             newOption.value = "13";
                     
             document.querySelector(".language-picker").appendChild(newOption);
         } else if (splitType[1] === "js") {
             newOption = document.createElement("option");
                     
-            newOption.innerHTML = splitType[0] + "." + splitType[1];
+            newOption.innerHTML = window.Base64.decode(splitType[0]) + "." + splitType[1];
             newOption.value = "35";
                     
             document.querySelector(".language-picker").appendChild(newOption);
@@ -892,11 +891,12 @@ document.querySelector(".folder-picker").onchange = function() {
     if (document.querySelector(".language-picker").options.length !== 0) {
         var slcted = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
         var sSplit = slcted.split(".");
-        window.s = sSplit[0] + "-" + sSplit[1];
+        window.s = window.Base64.encode(sSplit[0]) + "-" + sSplit[1];
         
         document.getElementById("editor").innerHTML = "";
         window.loadEditor();
     } else {
+        window.s = "";
         document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
     }
 }
@@ -904,7 +904,7 @@ document.querySelector(".folder-picker").onchange = function() {
 document.querySelector(".language-picker").onchange = function() {
     var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
     var tds = td.split(".");
-    window.s = tds[0] + "-" + tds[1];
+    window.s = window.Base64.encode(tds[0]) + "-" + tds[1];
     window.cType = window.MODES[this.options[this.selectedIndex].value].modeId;
     window.loadSample(window.MODES[this.options[this.selectedIndex].value]);
     if (window.cType === "css") {
