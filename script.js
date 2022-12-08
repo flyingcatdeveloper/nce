@@ -3,13 +3,14 @@ if (getCookie("li") === "") {
 }
 
 var s;
+var sf;
 var ftype = "html";
 var afs = {};
 var MODES;
 var fls;
 var cType;
 var rat;
-var resources;
+var resources = [];
 var settings;
 var clearEditor;
 var auto;
@@ -170,6 +171,7 @@ document.getElementById("createFile").onclick = function() {
     var opt1 = document.createElement("option");
     var opt2 = document.createElement("option");
     var opt3 = document.createElement("option");
+    var opt4 = document.createElement("option");
     document.querySelector(".hover_bkgr_fricc2").style.display = "inline-block";
     document.querySelector(".popupCloseButton2").onclick = function() {
         document.querySelector(".hover_bkgr_fricc2").style.display = "none";
@@ -186,11 +188,13 @@ document.getElementById("createFile").onclick = function() {
     opt1.innerHTML = "HTML";
     opt2.innerHTML = "CSS";
     opt3.innerHTML = "JS";
+    opt4.innerHTML = "Folder";
     
     document.getElementById("content").appendChild(newInput);
     newSelection.appendChild(opt1);
     newSelection.appendChild(opt2);
     newSelection.appendChild(opt3);
+    newSelection.appendChild(opt4);
     document.getElementById("content").appendChild(newSelection);
     document.getElementById("content").appendChild(newButton);
     window.ftype = "html";
@@ -201,61 +205,93 @@ document.getElementById("createFile").onclick = function() {
             window.ftype = "css";
         } else if (this.options[this.selectedIndex].innerHTML === "JS") {
             window.ftype = "js";
+        } else if (this.options[this.selectedIndex].innerHTML === "Folder") {
+            window.ftype = "folder";
         } else {
             alert("unexpected error");
         }
     }
     document.getElementById("saveFile").onclick = function () {
-        var f = document.getElementById("name3").value + "-" + window.ftype;
-        if (window.afs[f] === undefined) {
-            window.afs[f] = "";
-        
-            var newOpt = document.createElement("option");
-        
-            newOpt.innerHTML = document.getElementById("name3").value + "." + window.ftype;
-            if (window.ftype === "html") {
-                newOpt.value = "32";
-            } else if (window.ftype === "css") {
-                newOpt.value = "13";
-            } else if (window.ftype === "js") {
-                newOpt.value = "35";
+        if (window.ftype === "folder") {
+            var folder = document.getElementById("name3").value;
+            if (window.afs[folder] === undefined && folder !== "main") {
+                window.afs[folder] = {};
+                
+                var newOpt = document.createElement("option");
+                
+                newOpt.innerHTML = document.getElementById("name3").value;
+                
+                newOpt.selected = true;
+                
+                document.querySelector(".folder-picker").appendChild(newOpt);
+                document.querySelector(".folder-picker").style.display = "";
+                
+                window.sf = folder;
+                window.afs[folder] = {};
+                
+                document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+                document.querySelector(".language-picker").innerHTML = "";
+                document.getElementById("content").removeChild(newInput);
+                document.getElementById("content").removeChild(newSelection);
+                document.getElementById("content").removeChild(newButton);
+                document.querySelector(".popupCloseButton2").click();
             } else {
-                newOpt.value = "32";
+                alert("folder already exists.");
+                document.querySelector(".popupCloseButton2").click();
             }
-        
-            newOpt.selected = true;
-        
-            document.querySelector(".language-picker").appendChild(newOpt);
-            document.querySelector(".language-picker").style.display = "";
-            if (window.ftype === "html") {
-                document.querySelector(".btn-dark-light").style.display = "";
-                document.querySelector("#addResource").style.display = "none";
-                document.querySelector("#removeSources").style.display = "none";
-                document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
-                document.getElementById("link").target = "_blank";
-                document.getElementById("link").innerHTML = document.getElementById("link").href;
-                document.getElementById("link").rel = "noopener noreferrer";
-            } else if (window.ftype === "css") {
-                document.querySelector(".btn-dark-light").style.display = "";
-                document.querySelector("#addResource").style.display = "";
-                document.querySelector("#removeSources").style.display = "";
-            } else if (window.ftype === "js") {
-                document.querySelector(".btn-dark-light").style.display = "";
-                document.querySelector("#addResource").style.display = "";
-                document.querySelector("#removeSources").style.display = "";
-            }
-            var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].text;
-            var tds = td.split(".");
-            window.loadEditor();
-            window.s = tds[0] + "-" + tds[1];
-        
-            document.getElementById("content").removeChild(newInput);
-            document.getElementById("content").removeChild(newSelection);
-            document.getElementById("content").removeChild(newButton);
-            document.querySelector(".popupCloseButton2").click();
         } else {
-            alert("file already exists.");
-            document.querySelector(".popupCloseButton2").click();
+            var f = document.getElementById("name3").value + "-" + window.ftype;
+            if (window.afs[window.sf][f] === undefined) {
+                window.afs[window.sf][f] = "";
+        
+                var newOpt = document.createElement("option");
+        
+                newOpt.innerHTML = document.getElementById("name3").value + "." + window.ftype;
+                if (window.ftype === "html") {
+                    newOpt.value = "32";
+                } else if (window.ftype === "css") {
+                    newOpt.value = "13";
+                } else if (window.ftype === "js") {
+                    newOpt.value = "35";
+                } else {
+                    newOpt.value = "32";
+                }
+        
+                newOpt.selected = true;
+        
+                document.querySelector(".language-picker").appendChild(newOpt);
+                document.querySelector(".language-picker").style.display = "";
+                if (window.ftype === "html") {
+                    document.querySelector(".btn-dark-light").style.display = "";
+                    document.querySelector("#addResource").style.display = "none";
+                    document.querySelector("#removeSources").style.display = "none";
+                    document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.sf) + "." + encodeURIComponent(window.s);
+                    document.getElementById("link").target = "_blank";
+                    document.getElementById("link").innerHTML = document.getElementById("link").href;
+                    document.getElementById("link").rel = "noopener noreferrer";
+                } else if (window.ftype === "css") {
+                    document.querySelector(".btn-dark-light").style.display = "";
+                    document.querySelector("#addResource").style.display = "";
+                    document.querySelector("#removeSources").style.display = "";
+                } else if (window.ftype === "js") {
+                    document.querySelector(".btn-dark-light").style.display = "";
+                    document.querySelector("#addResource").style.display = "";
+                    document.querySelector("#removeSources").style.display = "";
+                }
+                var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].text;
+                var tds = td.split(".");
+                document.getElementById("editor").innerHTML = "";
+                window.loadEditor();
+                window.s = tds[0] + "-" + tds[1];
+        
+                document.getElementById("content").removeChild(newInput);
+                document.getElementById("content").removeChild(newSelection);
+                document.getElementById("content").removeChild(newButton);
+                document.querySelector(".popupCloseButton2").click();
+            } else {
+                alert("file already exists.");
+                document.querySelector(".popupCloseButton2").click();
+            }
         }
     }
 }
@@ -275,7 +311,7 @@ conbtn.addEventListener("click", () => {
 
 // Open your code in a new window
 ontb.addEventListener('click', () => {
-    var myWindow = window.open("./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s), "View Code");
+    var myWindow = window.open("./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.sf) + "." + encodeURIComponent(window.s), "View Code");
 });
 
 // Opens the devlog
@@ -286,7 +322,67 @@ devlog.addEventListener('click', () => {
 // Runs the code
 function runcode() {
     var newResource;
-    if (window.cType === "html") {
+    if (window.cType === "html" && window.afs[window.sf][window.s] !== undefined) {
+        var url, filename, styl, count=-1, tds, tdf, paths, folder;
+        iframe.contentDocument.body.innerHTML=window.afs[window.sf][window.s];
+        var scripts = iframe.contentDocument.getElementsByTagName('script');
+        var styles = iframe.contentDocument.getElementsByTagName('link');
+        Array.from({length: scripts.length}, () => {
+            count += 1;
+            if (scripts[count].hasAttribute('src')) {
+                url = scripts[count].src;
+                paths = url.split('/');
+                folder = paths[paths.length - 2];
+                filename = paths[paths.length - 1];
+                tds = filename.split(".");
+                tdf = tds[0] + "-" + tds[1];
+                if (window.afs[folder] !== undefined) {
+                    iframe.contentWindow.eval(window.afs[folder][tdf]);
+                } else {
+                    iframe.contentWindow.eval(window.afs["main"][tdf]);
+                }
+            } else {
+                iframe.contentWindow.eval(scripts[count].innerHTML);
+            }
+        })
+        count=-1;
+        Array.from({length: styles.length}, () => {
+            count += 1;
+            if (styles[count].hasAttribute('rel')) {
+                if (styles[count].getAttribute('rel') === "stylesheet") {
+                    url = styles[count].href;
+                    paths = url.split('/');
+                    folder = paths[paths.length - 2];
+                    filename = paths[paths.length - 1];
+                    tds = filename.split(".");
+                    tdf = tds[0] + "-" + tds[1];
+                    styl = document.createElement('style');
+                    if (window.afs[folder] !== undefined) {
+                        styl.innerHTML = window.afs[folder][tdf];
+                    } else {
+                        styl.innerHTML = window.afs["main"][tdf];
+                    }
+                    iframe.contentDocument.body.appendChild(styl);
+                }
+            }
+        })
+        window.resources.forEach((resource) => {
+            if (resource[1] === "css") {
+                newResource = document.createElement("link");
+            
+                newResource.rel = "stylesheet";
+                newResource.href = resource[0];
+            
+                iframe.contentDocument.head.appendChild(newResource);
+            } else if (resource[1] === "javascript") {
+                newResource = document.createElement("script");
+            
+                newResource.src = resource[0];
+            
+                iframe.contentDocument.head.appendChild(newResource);
+            }
+        });
+    } else if (window.cType === "html" && window.afs[window.s] !== undefined) {
         var url, filename, styl, count=-1, tds, tdf;
         iframe.contentDocument.body.innerHTML=decodeURIComponent(window.afs[window.s]);
         var scripts = iframe.contentDocument.getElementsByTagName('script');
@@ -298,7 +394,7 @@ function runcode() {
                 filename = url.substring(url.lastIndexOf('/')+1);
                 tds = filename.split(".");
                 tdf = tds[0] + "-" + tds[1];
-                iframe.contentWindow.eval(decodeURIComponent(window.afs[tdf]));
+                iframe.contentWindow.eval(decodeURIComponent(window.afs[tds]));
             } else {
                 iframe.contentWindow.eval(scripts[count].innerHTML);
             }
@@ -313,7 +409,7 @@ function runcode() {
                     tds = filename.split(".");
                     tdf = tds[0] + "-" + tds[1];
                     styl = document.createElement('style');
-                    styl.innerHTML = decodeURIComponent(window.afs[tdf]);
+                    styl.innerHTML = decodeURIComponent(window.afs[tds]);
                     iframe.contentDocument.body.appendChild(styl);
                 }
             }
@@ -369,7 +465,7 @@ function getCookie(cname) {
   }
 
 window.addEventListener("keyup", () => {
-    window.afs[window.s] = window.editor.getValue();
+    window.afs[window.sf][window.s] = window.editor.getValue();
 })
 
 document.getElementById("addResource").onclick = function() {
@@ -495,11 +591,34 @@ function createTimestamp(Data2, uname) {
                     window.location.replace("./index.html");
                 }
             }
-            window.fls = Data["afs"];
-            window.resources = Data.sources;
-            if (window.fls !== undefined && window.fls !== "") { 
-                window.fls.forEach((file) => {
-                    window.afs[file] = Data[file];
+            if (settings["Compressed"] === "true" && Data["compressed"] === "true") {
+                window.fls = JSON.parse(window.LZString.decompress(window.Base64.decode(Data["afs"])));
+            } else {
+                window.fls = Data["afs"];
+            }
+            if (settings["Compressed"] === "true" && Data["compressed"] === "true") {
+                window.resources = JSON.parse(window.LZString.decompress(window.Base64.decode(Data.sources)));
+            } else {
+                window.resources = Data.sources;
+            }
+            if (window.fls !== undefined && window.fls !== "" && Data["main"] !== undefined) { 
+                var keys = Object.keys(window.fls);
+                keys.forEach((folder) => {
+                    if (settings["Compressed"] === "true" && Data["compressed"] === "true") {
+                        window.afs[folder] = window.fls[folder];
+                    } else {
+                        window.afs[folder] = window.fls[folder];
+                    }
+                    
+                    var newOpt = document.createElement("option");
+                    
+                    newOpt.innerHTML = folder;
+                    document.querySelector(".folder-picker").appendChild(newOpt);
+                })
+                
+                var flz = Object.keys(window.afs[document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML]);
+                
+                flz.forEach((file) => {
                     var newOption;
                     var splitType = file.split("-");
                     if (splitType[1] === "html") {
@@ -525,15 +644,78 @@ function createTimestamp(Data2, uname) {
                         document.querySelector(".language-picker").appendChild(newOption);
                     }
                 })
-                var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
-                var tds = td.split(".");
                 document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
                 document.getElementById("createFile").style.display = "";
                 document.querySelector(".language-picker").style.display = "";
+                document.querySelector(".folder-picker").style.display = "";
+                document.querySelector(".language-picker").style.display = "";
                 document.querySelector(".btn-dark-light").style.display = "";
-                window.s = tds[0] + "-" + tds[1];
+                window.sf = document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML;
                 window.loadEditor();
-                document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
+                document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.sf) + "." + encodeURIComponent(window.s);
+                document.getElementById("link").target = "_blank";
+                document.getElementById("link").innerHTML = document.getElementById("link").href;
+                document.getElementById("link").rel = "noopener noreferrer";
+                if (settings["Autosave"] === "true") {
+                    clearInterval(window.auto);
+                    window.auto = setInterval(saveCode, 30000);
+                }
+                settingsBtn.style.display = "";
+                if (document.querySelector(".language-picker").options.length !== 0) {
+                    var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+                    var tds = td.split(".");
+                    window.s = tds[0] + "-" + tds[1];
+                    window.loadEditor();
+                }
+            } else if (window.fls !== undefined && window.fls !== "") {
+                var keys = Object.keys(window.fls);
+                var newOpt = document.createElement("option");
+                
+                newOpt.innerHTML = "main";
+                
+                document.querySelector(".folder-picker").appendChild(newOpt);
+                window.afs["main"] = {};
+                keys.forEach((file) => {
+                    window.afs["main"][file] = Data[file];
+                    var newOption;
+                    var splitType = file.split("-");
+                    if (splitType[1] === "html") {
+                        newOption = document.createElement("option");
+                    
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "32";
+                    
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    } else if (splitType[1] === "css") {
+                        newOption = document.createElement("option");
+                    
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "13";
+                    
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    } else if (splitType[1] === "js") {
+                        newOption = document.createElement("option");
+                    
+                        newOption.innerHTML = splitType[0] + "." + splitType[1];
+                        newOption.value = "35";
+                    
+                        document.querySelector(".language-picker").appendChild(newOption);
+                    }
+                })
+                window.sf = document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML;
+                if (document.querySelector(".language-picker").options.length !== 0) {
+                    var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+                    var tds = td.split(".");
+                    window.s = tds[0] + "-" + tds[1];
+                    window.loadEditor();
+                }
+                document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+                document.getElementById("createFile").style.display = "";
+                document.querySelector(".language-picker").style.display = "";
+                document.querySelector(".folder-picker").style.display = "";
+                document.querySelector(".language-picker").style.display = "";
+                document.querySelector(".btn-dark-light").style.display = "";
+                document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.sf) + "." + encodeURIComponent(window.s);
                 document.getElementById("link").target = "_blank";
                 document.getElementById("link").innerHTML = document.getElementById("link").href;
                 document.getElementById("link").rel = "noopener noreferrer";
@@ -543,6 +725,15 @@ function createTimestamp(Data2, uname) {
                 }
                 settingsBtn.style.display = "";
             } else {
+                var newOpt = document.createElement("option");
+                
+                newOpt.innerHTML = "main";
+                
+                document.querySelector(".folder-picker").appendChild(newOpt);
+                window.afs["main"] = {};
+                settingsBtn.style.display = "";
+                document.querySelector(".folder-picker").style.display = "";
+                window.sf = document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML;
                 document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
                 document.getElementById("createFile").style.display = "";
                 document.getElementById("addResource").style.display = "none";
@@ -567,26 +758,46 @@ function createTimestamp(Data2, uname) {
             "Preserve Editor": "false",
             "Editor Access": "Shared With",
             "Preview Visibility": "Shared With",
-            "Autosave": "false"
+            "Autosave": "false",
+            "Compressed": "false"
         }
         validate(Data);
     }
   }
   
   function saveCode() {
+      window.resources = [];
+      var coded = window.Base64.encode(window.LZString.compress(JSON.stringify(window.afs)));
       saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2767/2767294.png";
       var safs = JSON.stringify(window.afs);
       var count, keys = Object.keys(window.afs);
       var fls = [];
       var data = {};
-      keys.forEach((key) => {
+      if (settings["Compressed"] === "true" && window.afs !== undefined && window.afs !== "" && window.afs !== null) {
+          data["afs"] = window.Base64.encode(window.LZString.compress(JSON.stringify(window.afs)));
+          var decoded = window.Base64.decode(coded);
+          data["sources"] = window.Base64.encode(window.LZString.compress(JSON.stringify(window.resources)));
+          data["settings"] = window.settings;
+          data["compressed"] = "true";
+          var finishedData = JSON.stringify(data);
+      } else if (window.afs !== undefined && window.afs !== "" && window.afs !== {} && window.afs !== null) {
+        keys.forEach((key) => {
         fls.push(key);
-        data[key] = window.afs[key];
-      })
-      data["sources"] = window.resources;
-      data["afs"] = fls;
-      data["settings"] = settings;
-      var finishedData = JSON.stringify(data);
+            data[key] = window.afs[key];
+        })
+        data["sources"] = window.resources;
+        data["afs"] = window.afs;
+        data["settings"] = settings;
+        data["compressed"] = "false";
+        var finishedData = JSON.stringify(data);
+      } else {
+          data["sources"] = window.resources;
+          data["afs"] = "";
+          data["settings"] = settings;
+          data["compressed"] = "false";
+          
+          var finishedData = JSON.stringify(data);
+      }
       
       var xhr2 = new XMLHttpRequest();
       xhr2.withCredentials = false;
@@ -648,6 +859,49 @@ window.onload = function () {
     }
 };
 
+document.querySelector(".folder-picker").onchange = function() {
+    window.sf = document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML;
+    document.querySelector(".language-picker").innerHTML = "";
+    var files = Object.keys(window.afs[window.sf]);
+    files.forEach((file) => {
+        var newOption;
+        var splitType = file.split("-");
+        if (splitType[1] === "html") {
+            newOption = document.createElement("option");
+                    
+            newOption.innerHTML = splitType[0] + "." + splitType[1];
+            newOption.value = "32";
+                    
+            document.querySelector(".language-picker").appendChild(newOption);
+        } else if (splitType[1] === "css") {
+            newOption = document.createElement("option");
+                    
+            newOption.innerHTML = splitType[0] + "." + splitType[1];
+            newOption.value = "13";
+                    
+            document.querySelector(".language-picker").appendChild(newOption);
+        } else if (splitType[1] === "js") {
+            newOption = document.createElement("option");
+                    
+            newOption.innerHTML = splitType[0] + "." + splitType[1];
+            newOption.value = "35";
+                    
+            document.querySelector(".language-picker").appendChild(newOption);
+        }
+    })
+    
+    if (document.querySelector(".language-picker").options.length !== 0) {
+        var slcted = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+        var sSplit = slcted.split(".");
+        window.s = sSplit[0] + "-" + sSplit[1];
+        
+        document.getElementById("editor").innerHTML = "";
+        window.loadEditor();
+    } else {
+        document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+    }
+}
+
 document.querySelector(".language-picker").onchange = function() {
     var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
     var tds = td.split(".");
@@ -672,7 +926,7 @@ document.querySelector(".language-picker").onchange = function() {
         document.getElementById("createFile").style.display = "";
         document.getElementById("addResource").style.display = "none";
         document.getElementById("removeSources").style.display = "none";
-        document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.s);
+        document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.sf) + "." + encodeURIComponent(window.s);
         document.getElementById("link").target = "_blank";
         document.getElementById("link").innerHTML = document.getElementById("link").href;
         document.getElementById("link").rel = "noopener noreferrer";
@@ -694,7 +948,8 @@ settingsBtn.onclick = function() {
         "Preserve Editor": ["true", "false"],
         "Editor Access": ["Only Me", "Shared With"],
         "Preview Visibility": ["Only Me", "Shared With"],
-        "Autosave": ["true", "false"]
+        "Autosave": ["true", "false"],
+        "Compressed": ["true", "false"]
     },
     okeys = Object.keys(options);
     
