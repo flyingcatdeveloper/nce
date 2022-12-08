@@ -69,7 +69,7 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
         var newResource;
         var url, filename, paths, folder, styl, count=-1;
         var split = queryString["f"].split(".");
-        document.body.innerHTML=window.afs[split[0]][decodeURIComponent(split[1])];
+        document.body.innerHTML=window.afs[split[0][decodeURIComponent(split[1])];
         var titles = document.getElementsByTagName("title");
         if (!titles.length) {
             document.title = "NCE View";
