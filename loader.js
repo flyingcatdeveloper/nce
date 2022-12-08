@@ -67,8 +67,9 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
       }
       if (access === true) {
         var newResource;
-        var url, filename, styl, count=-1;
-        document.body.innerHTML=decodeURIComponent(window.afs[queryString["f"]]);
+        var url, filename, paths, folder, styl, count=-1;
+        var split = queryString["f"].split(".");
+        document.body.innerHTML=window.afs[split[0]][split[1]];
         var titles = document.getElementsByTagName("title");
         if (!titles.length) {
             document.title = "NCE View";
@@ -81,10 +82,16 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
             count += 1;
             if (scripts[count].hasAttribute('src')) {
                 url = scripts[count].src;
-                filename = url.substring(url.lastIndexOf('/')+1);
+                paths = url.split('/');
+                folder = paths[paths.length - 2];
+                filename = paths[paths.length - 1];
                 tds = filename.split(".");
                 tdf = tds[0] + "-" + tds[1];
-                window.eval(decodeURIComponent(window.afs[tdf]));
+                if (window.afs[folder] !== undefined) {
+                    window.eval(window.afs[folder][tdf]);
+                } else {
+                    window.eval(window.afs["main"][tdf]);
+                }
             } else {
                 window.eval(scripts[count].innerHTML);
             }
@@ -95,11 +102,17 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
             if (styles[count].hasAttribute('rel')) {
                 if (styles[count].getAttribute('rel') === "stylesheet") {
                     url = styles[count].href;
-                    filename = url.substring(url.lastIndexOf('/')+1);
+                    paths = url.split('/');
+                    folder = paths[paths.length - 2];
+                    filename = paths[paths.length - 1];
                     tds = filename.split(".");
                     tdf = tds[0] + "-" + tds[1];
                     styl = document.createElement('style');
-                    styl.innerHTML = decodeURIComponent(window.afs[tdf]);
+                    if (window.afs[folder] !== undefined) {
+                        styl.innerHTML = window.afs[folder][tdf];
+                    } else {
+                        styl.innerHTML = window.afs["main"][tdf];
+                    }
                     document.head.appendChild(styl);
                 }
             }
@@ -129,12 +142,8 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
   
   function validate(Data) {
     var c = -1;
-    window.fls = Data["afs"];
-    Array.from({length: window.fls.length}, () => {
-        c += 1;
-        window.afs[window.fls[c]] = Data[window.fls[c]];
-    })
-    window.resources = Data["sources"];
+    window.afs = JSON.parse(window.LZString.decompress(window.Base64.decode(Data["afs"])));
+    window.resources = JSON.parse(window.LZString.decompress(window.Base64.decode(Data["sources"])));
     window.s = Data["settings"];
     window.acc = Data["account"];
     loadcode();
