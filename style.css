@@ -559,6 +559,6 @@ textarea {
         }
     }
     
-    .language-picker, .btn-dark-light, #addResource, #removeSources, #createFile {
+    .language-picker, .btn-dark-light, #addResource, #removeSources, #createFile, .folder-picker {
         font-size: 10px;
     }
