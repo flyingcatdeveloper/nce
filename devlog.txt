@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.3.4 12/08/2022:
+    - Fixed "Compressed" Feature
+
 Update/Bug Fix v1.3.3 12/08/2022:
     - Added Folder System
     - Added "Compressed" Setting Which Compresses Your Project So You Can Have More Storage
