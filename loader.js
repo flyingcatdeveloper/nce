@@ -78,25 +78,6 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
         }
         var scripts = document.getElementsByTagName('script');
         var styles = document.getElementsByTagName('link');
-        Array.from({length: scripts.length}, () => {
-            count += 1;
-            if (scripts[count].hasAttribute('src')) {
-                url = scripts[count].src;
-                paths = url.split('/');
-                folder = paths[paths.length - 2];
-                filename = paths[paths.length - 1];
-                tds = filename.split(".");
-                tdf = tds[0] + "-" + tds[1];
-                if (window.afs[folder] !== undefined) {
-                    window.eval(window.afs[folder][tdf]);
-                } else {
-                    window.eval(window.afs["main"][tdf]);
-                }
-            } else {
-                window.eval(scripts[count].innerHTML);
-            }
-        })
-        count=-1;
         Array.from({length: styles.length}, () => {
             count += 1;
             if (styles[count].hasAttribute('rel')) {
@@ -115,6 +96,25 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
                     }
                     document.head.appendChild(styl);
                 }
+            }
+        })
+        count=-1;
+        Array.from({length: scripts.length}, () => {
+            count += 1;
+            if (scripts[count].hasAttribute('src')) {
+                url = scripts[count].src;
+                paths = url.split('/');
+                folder = paths[paths.length - 2];
+                filename = paths[paths.length - 1];
+                tds = filename.split(".");
+                tdf = tds[0] + "-" + tds[1];
+                if (window.afs[folder] !== undefined) {
+                    window.eval(window.afs[folder][tdf]);
+                } else {
+                    window.eval(window.afs["main"][tdf]);
+                }
+            } else {
+                window.eval(scripts[count].innerHTML);
             }
         })
         window.resources.forEach((resource) => {
