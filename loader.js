@@ -69,7 +69,7 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
         var newResource;
         var url, filename, paths, folder, styl, count=-1;
         var split = queryString["f"].split(".");
-        document.body.innerHTML=window.afs[split[0]][split[1]];
+        document.body.innerHTML=window.afs[split[0]][decodeURIComponent(split[1])];
         var titles = document.getElementsByTagName("title");
         if (!titles.length) {
             document.title = "NCE View";
@@ -87,7 +87,7 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
                     folder = paths[paths.length - 2];
                     filename = paths[paths.length - 1];
                     tds = filename.split(".");
-                    tdf = tds[0] + "-" + tds[1];
+                    tdf = window.Base64.encode(tds[0]) + "-" + tds[1];
                     styl = document.createElement('style');
                     if (window.afs[folder] !== undefined) {
                         styl.innerHTML = window.afs[folder][tdf];
@@ -107,7 +107,7 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
                 folder = paths[paths.length - 2];
                 filename = paths[paths.length - 1];
                 tds = filename.split(".");
-                tdf = tds[0] + "-" + tds[1];
+                tdf = window.Base64.encode(tds[0]) + "-" + tds[1];
                 if (window.afs[folder] !== undefined) {
                     window.eval(window.afs[folder][tdf]);
                 } else {
