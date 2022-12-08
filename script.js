@@ -337,7 +337,7 @@ function runcode() {
                     folder = paths[paths.length - 2];
                     filename = paths[paths.length - 1];
                     tds = filename.split(".");
-                    tdf = tds[0] + "-" + tds[1];
+                    tdf = window.Base64.encode(tds[0]) + "-" + tds[1];
                     styl = document.createElement('style');
                     if (window.afs[folder] !== undefined) {
                         styl.innerHTML = window.afs[folder][tdf];
@@ -357,7 +357,7 @@ function runcode() {
                 folder = paths[paths.length - 2];
                 filename = paths[paths.length - 1];
                 tds = filename.split(".");
-                tdf = tds[0] + "-" + tds[1];
+                tdf = window.Base64.encode(tds[0]) + "-" + tds[1];
                 if (window.afs[folder] !== undefined) {
                     iframe.contentWindow.eval(window.afs[folder][tdf]);
                 } else {
@@ -396,7 +396,7 @@ function runcode() {
                 url = scripts[count].src;
                 filename = url.substring(url.lastIndexOf('/')+1);
                 tds = filename.split(".");
-                tdf = tds[0] + "-" + tds[1];
+                tdf = window.Base64.encode(tds[0]) + "-" + tds[1];
                 iframe.contentWindow.eval(decodeURIComponent(window.afs[tds]));
             } else {
                 iframe.contentWindow.eval(scripts[count].innerHTML);
@@ -410,7 +410,7 @@ function runcode() {
                     url = styles[count].href;
                     filename = url.substring(url.lastIndexOf('/')+1);
                     tds = filename.split(".");
-                    tdf = tds[0] + "-" + tds[1];
+                    tdf = window.Base64.encode(tds[0]) + "-" + tds[1];
                     styl = document.createElement('style');
                     styl.innerHTML = decodeURIComponent(window.afs[tds]);
                     iframe.contentDocument.body.appendChild(styl);
