@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.3.6 12/09/2022:
+    - Fixed Open In New Tab Feature
+    - Fixed Share Feature
+ 
 Bug Fix v1.3.5 12/08/2022:
     - Fixed Folder Feature
     - Other Bug Fixes
