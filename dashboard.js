@@ -224,7 +224,6 @@ function showData(Data) {
                 newLink.setAttribute("class", "project-btn");
                 newLink.style = "color: blue; text-decoration: underline; font-weight: bold; cursor: pointer; font-family: Arial;";
                 newLink.innerHTML = splitName[1];
-                newProject.setAttribute("data-title", splitName[1]);
                 newDAP.setAttribute("id", splitName[0]);
                 newDAP.innerHTML = "loading...";
                 loadTimestamp(splitName[0]);
