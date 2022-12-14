@@ -263,6 +263,7 @@ document.getElementById("createFile").onclick = function() {
                 document.querySelector(".language-picker").appendChild(newOpt);
                 document.querySelector(".language-picker").style.display = "";
                 if (window.ftype === "html") {
+                    document.getElementById("deleteFile").style.display = "";
                     document.querySelector(".btn-dark-light").style.display = "";
                     document.querySelector("#addResource").style.display = "none";
                     document.querySelector("#removeSources").style.display = "none";
@@ -271,10 +272,12 @@ document.getElementById("createFile").onclick = function() {
                     document.getElementById("link").innerHTML = document.getElementById("link").href;
                     document.getElementById("link").rel = "noopener noreferrer";
                 } else if (window.ftype === "css") {
+                    document.getElementById("deleteFile").style.display = "";
                     document.querySelector(".btn-dark-light").style.display = "";
                     document.querySelector("#addResource").style.display = "";
                     document.querySelector("#removeSources").style.display = "";
                 } else if (window.ftype === "js") {
+                    document.getElementById("deleteFile").style.display = "";
                     document.querySelector(".btn-dark-light").style.display = "";
                     document.querySelector("#addResource").style.display = "";
                     document.querySelector("#removeSources").style.display = "";
@@ -665,8 +668,10 @@ function createTimestamp(Data2, uname) {
                     var tds = td.split(".");
                     window.s = window.Base64.encode(tds[0]) + "-" + tds[1];
                     window.loadEditor();
+                    document.getElementById("deleteFile").style.display = "";
                 } else {
                     window.s = "";
+                    document.getElementById("deleteFile").style.display = "none";
                 }
             } else if (window.fls !== undefined && window.fls !== "") {
                 var keys = Object.keys(window.fls);
@@ -708,9 +713,11 @@ function createTimestamp(Data2, uname) {
                     var td = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
                     var tds = td.split(".");
                     window.s = window.Base64.encode(tds[0]) + "-" + tds[1];
+                    document.getElementById("deleteFile").style.display = "";
                     window.loadEditor();
                 } else {
                     window.s = "";
+                    document.getElementById("deleteFile").style.display = "none";
                 }
                 document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
                 document.getElementById("createFile").style.display = "";
@@ -741,6 +748,7 @@ function createTimestamp(Data2, uname) {
                 document.getElementById("createFile").style.display = "";
                 document.getElementById("addResource").style.display = "none";
                 document.getElementById("removeSources").style.display = "none";
+                document.getElementById("deleteFile").style.display = "none";
                 document.querySelector(".language-picker").style.display = "none";
                 document.querySelector(".btn-dark-light").style.display = "none";
                 settings.style.display = "";
@@ -895,9 +903,12 @@ document.querySelector(".folder-picker").onchange = function() {
         
         document.getElementById("editor").innerHTML = "";
         window.loadEditor();
+        
+        document.getElementById("deleteFile").style.display = "";
     } else {
         window.s = "";
         document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+        document.getElementById("deleteFile").style.display = "none";
     }
 }
 
@@ -908,6 +919,7 @@ document.querySelector(".language-picker").onchange = function() {
     window.cType = window.MODES[this.options[this.selectedIndex].value].modeId;
     window.loadSample(window.MODES[this.options[this.selectedIndex].value]);
     if (window.cType === "css") {
+        document.getElementById("deleteFile").style.display = "";
         document.querySelector(".language-picker").style.display = "";
         document.getElementById("createFile").style.display = "";
         document.querySelector(".btn-dark-light").style.display = "";
@@ -915,12 +927,14 @@ document.querySelector(".language-picker").onchange = function() {
         document.getElementById("removeSources").style.display = "";
     } else if (window.cType === "javascript") {
         document.querySelector(".language-picker").style.display = "";
+        document.getElementById("deleteFile").style.display = "";
         document.getElementById("createFile").style.display = "";
         document.querySelector(".btn-dark-light").style.display = "";
         document.getElementById("addResource").style.display = "";
         document.getElementById("removeSources").style.display = "";
     } else {
         document.querySelector(".language-picker").style.display = "";
+        document.getElementById("deleteFile").style.display = "";
         document.querySelector(".btn-dark-light").style.display = "";
         document.getElementById("createFile").style.display = "";
         document.getElementById("addResource").style.display = "none";
@@ -990,4 +1004,20 @@ settingsBtn.onclick = function() {
         e.appendChild(name);
         e.appendChild(split);
     })
+}
+
+document.getElementById("deleteFile").onclick = function() {
+    var uinput = confirm("Do you want to delete this file?");
+    
+    if (uinput === true) {
+        delete window.afs[window.sf][window.s];
+    
+        var f = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex];
+    
+        document.querySelector(".language-picker").removeChild(f);
+    
+        document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+    } else {
+        // Do Nothing
+    }
 }
