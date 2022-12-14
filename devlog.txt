@@ -1,6 +1,12 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update/Bug Fix v1.3.7 12/14/2022:
+    - Added A Feature Where You Can Delete Files
+    - Updated Styles
+    - Fixed Styles
+    - Other Bug Fixes
+
 Bug Fix v1.3.6 12/09/2022:
     - Fixed Open In New Tab Feature
     - Fixed Share Feature
