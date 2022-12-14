@@ -1,5 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500&display=swap');
 
+@keyframes slide-in {
+    0% {
+        opacity: 0%;
+        margin-left: 0px;
+    }
+    
+    25% {
+        opacity: 25%;
+        margin-left: 2px;
+    }
+    
+    50% {
+        opacity: 50%;
+        margin-left: 4px;
+    }
+    
+    75% {
+        opacity: 75%;
+        margin-left: 6px;
+    }
+    
+    100% {
+        opacity: 100%;
+        margin-left: 8px;
+    }
+}
+
 .ui-autocomplete {
     overflow-y: auto;
 }
@@ -77,8 +104,8 @@ body {
 }
 
 img:hover {
-    width: 30px;
-    height: 30px;
+    width: 27px;
+    height: 27px;
 }
 
 #logo {
@@ -145,7 +172,7 @@ img:hover {
 #container {
     position: absolute;
     bottom: 0;
-    top: 1rem;
+    top: 0rem;
     width: 98%;
     display: flex;
     transition: all .3s;
@@ -414,7 +441,7 @@ textarea {
   font-size: 15px;
   height: 100%;
   width: 40px;
-  position: fixed;
+  position: absolute;
   z-index: 1;
   top: 0;
   left: 0;
@@ -515,12 +542,13 @@ textarea {
     white-space: nowrap;
     border: 1px solid #111111;
     z-index: 99999;
+    animation-name: slide-in;
+    animation-duration: 0.2s;
 }
     
    
     #username:focus, #password:focus, #username2:focus, #password2:focus, #ci:focus, #ei:focus, #re:focus, #rp:focus {
         border: 2px solid rgba(0, 0, 0, 0.18) !important;
-        
     }
     
     
@@ -559,6 +587,6 @@ textarea {
         }
     }
     
-    .language-picker, .btn-dark-light, #addResource, #removeSources, #createFile, .folder-picker {
-        font-size: 10px;
+    .language-picker, .btn-dark-light, #addResource, #removeSources, #createFile, .folder-picker, #deleteFile {
+        font-size: 8px;
     }
