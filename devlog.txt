@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.3.9 01/05/2023:
+    - Updated View Page's Code Processing
+
 Update/Bug Fix v1.3.8 01/05/2023:
     - Fixed Bug That Occurs When You Delete A File
     - Huge Update To Code Processing
