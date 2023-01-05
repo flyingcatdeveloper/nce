@@ -348,7 +348,7 @@ textarea {
     transform: rotate(45deg);
   }
 
-  #log-container { overflow: auto; height: 18%; }
+  #log-container { overflow: auto; height: 18%; padding: 8px;}
 
   .log-warn { color: orange; font-size: 1rem; margin-left: 4px;}
   .log-error { color: red; font-size: 1rem; margin-left: 4px;}
