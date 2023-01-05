@@ -328,9 +328,32 @@ function runcode() {
     var newResource;
     if (window.cType === "html" && window.afs[window.sf][window.s] !== undefined) {
         var url, filename, styl, count=-1, tds, tdf, paths, folder;
+        iframe.contentDocument.head.innerHTML = "";
         iframe.contentDocument.body.innerHTML=window.afs[window.sf][window.s];
         var scripts = iframe.contentDocument.getElementsByTagName('script');
         var styles = iframe.contentDocument.getElementsByTagName('link');
+        var links = iframe.contentDocument.getElementsByTagName('a');
+        Array.from({length: links.length}, () => {
+            count += 1;
+            if (links[count].hasAttribute('href')) {
+                url = links[count].href;
+                var urls1 = url.split("https://")[1];
+                var urls2 = urls1.split("/")[0];
+                if (urls2 === window.location.host) {
+                    paths = url.split('/');
+                    folder = paths[paths.length - 2];
+                    filename = paths[paths.length - 1];
+                    tds = filename.split(".");
+                    tdf = encodeURIComponent(window.Base64.encode(tds[0])) + "-" + tds[1];
+                    if (window.afs[folder] !== undefined) {
+                        links[count].href = "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + tdf;
+                    } else {
+                        links[count].href = "./view.html?id=" + queryString["id"] + "&f=" + "main." + tdf;
+                    }  
+                }
+            }
+        })
+        count=-1;
         Array.from({length: styles.length}, () => {
             count += 1;
             if (styles[count].hasAttribute('rel')) {
@@ -362,12 +385,483 @@ function runcode() {
                 tds = filename.split(".");
                 tdf = window.Base64.encode(tds[0]) + "-" + tds[1];
                 if (window.afs[folder] !== undefined) {
-                    iframe.contentWindow.eval(window.afs[folder][tdf]);
+                    var code = window.afs[folder][tdf];
+                    var a = code.split(";");
+                    a.forEach((item) => {
+                        if (item.includes("alert") === true || item.includes("window.alert") === true) {
+                            var toBracket = item.split("(")[1];
+                            if (toBracket.includes("'") === true) {
+                                var toQuotation1 = toBracket.split("'")[1];
+                                var toQuotation2 = toQuotation1.split("'")[0];
+                                alert(toQuotation2);
+                                code = code.replace((item + ";"), "");
+                            } else if (toBracket.includes('"') === true) {
+                                var toQuotation1 = toBracket.split('"')[1];
+                                var toQuotation2 = toQuotation1.split('"')[0];
+                                alert(toQuotation2);
+                                code = code.replace((item + ";"), "");
+                            }
+                        } else if (item.includes("window.location.replace") === true || item.includes("location.replace") === true) {
+                            var toBracket = item.split("(")[1];
+                            if (toBracket.includes("'") === true) {
+                                var toQuotation1 = toBracket.split("'")[1];
+                                var toQuotation2 = toQuotation1.split("'")[0];
+                                if (toQuotation2.includes("./") === true) {
+                                    var splitDotSlash = toQuotation2.split("./")[1];
+                                    if (splitDotSlash.includes("/") === true) {
+                                        var splitFolder = splitDotSlash.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    } else {
+                                        var file = splitDotSlash;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    }
+                                } else {
+                                    if (toQuotation2.includes("/") === true) {
+                                        var splitFolder = toQuotation2.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    } else {
+                                        var file = toQuotation2;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    }
+                                }
+                            } else if (toBracket.includes('"') === true) {
+                                var toQuotation1 = toBracket.split('"')[1];
+                                var toQuotation2 = toQuotation1.split('"')[0];
+                                if (toQuotation2.includes("./") === true) {
+                                    var splitDotSlash = toQuotation2.split("./")[1];
+                                    if (splitDotSlash.includes("/") === true) {
+                                        var splitFolder = splitDotSlash.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    } else {
+                                        var file = splitDotSlash;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    }
+                                } else {
+                                    if (toQuotation2.includes("/") === true) {
+                                        var splitFolder = toQuotation2.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    } else {
+                                        var file = toQuotation2;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    }
+                                }
+                            }
+                        } else if (item.includes("location.href") === true || item.includes("window.location.href") === true) {
+                            var toEqual = item.split("=")[1];
+                            if (toEqual.includes("'") === true) {
+                                var toQuotation = toEqual.split("'")[1];
+                                alert(toQuotation);
+                                if (toQuotation.includes("./") === true) {
+                                    var splitDotSlash = toQuotation.split("./")[1];
+                                    if (splitDotSlash.includes("/") === true) {
+                                        var splitFolder = splitDotSlash.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    } else {
+                                        var file = splitDotSlash;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    }
+                                } else {
+                                    if (toQuotation.includes("/") === true) {
+                                        var splitFolder = toQuotation.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    } else {
+                                        var file = toQuotation;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    }
+                                }
+                            } else if (toEqual.includes('"') === true) {
+                                var toQuotation = toEqual.split('"')[1];
+                                if (toQuotation.includes("./") === true) {
+                                    var splitDotSlash = toQuotation.split("./")[1];
+                                    if (splitDotSlash.includes("/") === true) {
+                                        var splitFolder = splitDotSlash.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    } else {
+                                        var file = splitDotSlash;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    }
+                                } else {
+                                    if (toQuotation.includes("/") === true) {
+                                        var splitFolder = toQuotation.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id="+ queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    } else {
+                                        var file = toQuotation;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] +"&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    }
+                                }
+                            }
+                        } else {
+                            return;
+                        }
+                    })
+                    iframe.contentWindow.eval(code);
                 } else {
-                    iframe.contentWindow.eval(window.afs["main"][tdf]);
+                    var code = window.afs["main"][tdf];
+                    var a = code.split(";");
+                    a.forEach((item) => {
+                        if (item.includes("alert") === true || item.includes("window.alert") === true) {
+                            var toBracket = item.split("(")[1];
+                            if (toBracket.includes("'") === true) {
+                                var toQuotation1 = toBracket.split("'")[1];
+                                var toQuotation2 = toQuotation1.split("'")[0];
+                                alert(toQuotation2);
+                                code = code.replace((item + ";"), "");
+                            } else if (toBracket.includes('"') === true) {
+                                var toQuotation1 = toBracket.split('"')[1];
+                                var toQuotation2 = toQuotation1.split('"')[0];
+                                alert(toQuotation2);
+                                code = code.replace((item + ";"), "");
+                            }
+                        } else if (item.includes("window.location.replace") === true || item.includes("location.replace") === true) {
+                            var toBracket = item.split("(")[1];
+                            if (toBracket.includes("'") === true) {
+                                var toQuotation1 = toBracket.split("'")[1];
+                                var toQuotation2 = toQuotation1.split("'")[0];
+                                if (toQuotation2.includes("./") === true) {
+                                    var splitDotSlash = toQuotation2.split("./")[1];
+                                    if (splitDotSlash.includes("/") === true) {
+                                        var splitFolder = splitDotSlash.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    } else {
+                                        var file = splitDotSlash;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    }
+                                } else {
+                                    if (toQuotation2.includes("/") === true) {
+                                        var splitFolder = toQuotation2.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    } else {
+                                        var file = toQuotation2;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    }
+                                }
+                            } else if (toBracket.includes('"') === true) {
+                                var toQuotation1 = toBracket.split('"')[1];
+                                var toQuotation2 = toQuotation1.split('"')[0];
+                                if (toQuotation2.includes("./") === true) {
+                                    var splitDotSlash = toQuotation2.split("./")[1];
+                                    if (splitDotSlash.includes("/") === true) {
+                                        var splitFolder = splitDotSlash.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    } else {
+                                        var file = splitDotSlash;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    }
+                                } else {
+                                    if (toQuotation2.includes("/") === true) {
+                                        var splitFolder = toQuotation2.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    } else {
+                                        var file = toQuotation2;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                    }
+                                }
+                            }
+                        } else if (item.includes("location.href") === true || item.includes("window.location.href") === true) {
+                            var toEqual = item.split("=")[1];
+                            if (toEqual.includes("'") === true) {
+                                var toQuotation = toEqual.split("'")[1];
+                                alert(toQuotation);
+                                if (toQuotation.includes("./") === true) {
+                                    var splitDotSlash = toQuotation.split("./")[1];
+                                    if (splitDotSlash.includes("/") === true) {
+                                        var splitFolder = splitDotSlash.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    } else {
+                                        var file = splitDotSlash;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    }
+                                } else {
+                                    if (toQuotation.includes("/") === true) {
+                                        var splitFolder = toQuotation.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    } else {
+                                        var file = toQuotation;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    }
+                                }
+                            } else if (toEqual.includes('"') === true) {
+                                var toQuotation = toEqual.split('"')[1];
+                                if (toQuotation.includes("./") === true) {
+                                    var splitDotSlash = toQuotation.split("./")[1];
+                                    if (splitDotSlash.includes("/") === true) {
+                                        var splitFolder = splitDotSlash.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    } else {
+                                        var file = splitDotSlash;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    }
+                                } else {
+                                    if (toQuotation.includes("/") === true) {
+                                        var splitFolder = toQuotation.split("/");
+                                        var folder = splitFolder[0];
+                                        var file = splitFolder[1];
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id="+ queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    } else {
+                                        var file = toQuotation;
+                                        var splitFile = file.split(".");
+                                        var piece = item + ";";
+                                        code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] +"&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    }
+                                }
+                            }
+                        } else {
+                            return;
+                        }
+                    })
+                    iframe.contentWindow.eval(code);
                 }
             } else {
-                iframe.contentWindow.eval(scripts[count].innerHTML);
+                var code = scripts[count].innerHTML;
+                var a = code.split(";");
+                a.forEach((item) => {
+                    if (item.includes("alert") === true || item.includes("window.alert") === true) {
+                        var toBracket = item.split("(")[1];
+                        if (toBracket.includes("'") === true) {
+                            var toQuotation1 = toBracket.split("'")[1];
+                            var toQuotation2 = toQuotation1.split("'")[0];
+                            alert(toQuotation2);
+                            code = code.replace((item + ";"), "");
+                        } else if (toBracket.includes('"') === true) {
+                            var toQuotation1 = toBracket.split('"')[1];
+                            var toQuotation2 = toQuotation1.split('"')[0];
+                            alert(toQuotation2);
+                            code = code.replace((item + ";"), "");
+                        }
+                    } else if (item.includes("window.location.replace") === true || item.includes("location.replace") === true) {
+                        var toBracket = item.split("(")[1];
+                        if (toBracket.includes("'") === true) {
+                            var toQuotation1 = toBracket.split("'")[1];
+                            var toQuotation2 = toQuotation1.split("'")[0];
+                            if (toQuotation2.includes("./") === true) {
+                                var splitDotSlash = toQuotation2.split("./")[1];
+                                if (splitDotSlash.includes("/") === true) {
+                                    var splitFolder = splitDotSlash.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                } else {
+                                    var file = splitDotSlash;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                }
+                            } else {
+                                if (toQuotation2.includes("/") === true) {
+                                    var splitFolder = toQuotation2.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                } else {
+                                    var file = toQuotation2;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                }
+                            }
+                        } else if (toBracket.includes('"') === true) {
+                            var toQuotation1 = toBracket.split('"')[1];
+                            var toQuotation2 = toQuotation1.split('"')[0];
+                            if (toQuotation2.includes("./") === true) {
+                                var splitDotSlash = toQuotation2.split("./")[1];
+                                if (splitDotSlash.includes("/") === true) {
+                                    var splitFolder = splitDotSlash.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                } else {
+                                    var file = splitDotSlash;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                }
+                            } else {
+                                if (toQuotation2.includes("/") === true) {
+                                    var splitFolder = toQuotation2.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                } else {
+                                    var file = toQuotation2;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                }
+                            }
+                        }
+                    } else if (item.includes("location.href") === true || item.includes("window.location.href") === true) {
+                        var toEqual = item.split("=")[1];
+                        if (toEqual.includes("'") === true) {
+                            var toQuotation = toEqual.split("'")[1];
+                            alert(toQuotation);
+                            if (toQuotation.includes("./") === true) {
+                                var splitDotSlash = toQuotation.split("./")[1];
+                                if (splitDotSlash.includes("/") === true) {
+                                    var splitFolder = splitDotSlash.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                } else {
+                                    var file = splitDotSlash;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                }
+                            } else {
+                                if (toQuotation.includes("/") === true) {
+                                    var splitFolder = toQuotation.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                } else {
+                                    var file = toQuotation;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                }
+                            }
+                        } else if (toEqual.includes('"') === true) {
+                            var toQuotation = toEqual.split('"')[1];
+                            if (toQuotation.includes("./") === true) {
+                                var splitDotSlash = toQuotation.split("./")[1];
+                                if (splitDotSlash.includes("/") === true) {
+                                    var splitFolder = splitDotSlash.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                } else {
+                                    var file = splitDotSlash;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                }
+                            } else {
+                                if (toQuotation.includes("/") === true) {
+                                    var splitFolder = toQuotation.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id="+ queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                } else {
+                                    var file = toQuotation;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] +"&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                }
+                            }
+                        }
+                    } else {
+                        return;
+                    }
+                })
+                iframe.contentWindow.eval(code);
             }
         })
         if (window.resources.length !== 0) {
@@ -400,7 +894,164 @@ function runcode() {
                 filename = url.substring(url.lastIndexOf('/')+1);
                 tds = filename.split(".");
                 tdf = window.Base64.encode(tds[0]) + "-" + tds[1];
-                iframe.contentWindow.eval(decodeURIComponent(window.afs[tds]));
+                var code = window.afs[tdf];
+                var a = code.split(";");
+                a.forEach((item) => {
+                    if (item.includes("alert") === true || item.includes("window.alert") === true) {
+                        var toBracket = item.split("(")[1];
+                        if (toBracket.includes("'") === true) {
+                            var toQuotation1 = toBracket.split("'")[1];
+                            var toQuotation2 = toQuotation1.split("'")[0];
+                            alert(toQuotation2);
+                            code = code.replace((item + ";"), "");
+                        } else if (toBracket.includes('"') === true) {
+                            var toQuotation1 = toBracket.split('"')[1];
+                            var toQuotation2 = toQuotation1.split('"')[0];
+                            alert(toQuotation2);
+                            code = code.replace((item + ";"), "");
+                        }
+                    } else if (item.includes("window.location.replace") === true || item.includes("location.replace") === true) {
+                        var toBracket = item.split("(")[1];
+                        if (toBracket.includes("'") === true) {
+                            var toQuotation1 = toBracket.split("'")[1];
+                            var toQuotation2 = toQuotation1.split("'")[0];
+                            if (toQuotation2.includes("./") === true) {
+                                var splitDotSlash = toQuotation2.split("./")[1];
+                                if (splitDotSlash.includes("/") === true) {
+                                    var splitFolder = splitDotSlash.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                } else {
+                                    var file = splitDotSlash;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                }
+                            } else {
+                                if (toQuotation2.includes("/") === true) {
+                                    var splitFolder = toQuotation2.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                } else {
+                                    var file = toQuotation2;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                }
+                            }
+                        } else if (toBracket.includes('"') === true) {
+                            var toQuotation1 = toBracket.split('"')[1];
+                            var toQuotation2 = toQuotation1.split('"')[0];
+                            if (toQuotation2.includes("./") === true) {
+                                var splitDotSlash = toQuotation2.split("./")[1];
+                                if (splitDotSlash.includes("/") === true) {
+                                    var splitFolder = splitDotSlash.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                } else {
+                                    var file = splitDotSlash;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                }
+                            } else {
+                                if (toQuotation2.includes("/") === true) {
+                                    var splitFolder = toQuotation2.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                } else {
+                                    var file = toQuotation2;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.replace('" + "./view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "');");
+                                }
+                            }
+                        }
+                    } else if (item.includes("location.href") === true || item.includes("window.location.href") === true) {
+                        var toEqual = item.split("=")[1];
+                        if (toEqual.includes("'") === true) {
+                            var toQuotation = toEqual.split("'")[1];
+                            alert(toQuotation);
+                            if (toQuotation.includes("./") === true) {
+                                var splitDotSlash = toQuotation.split("./")[1];
+                                if (splitDotSlash.includes("/") === true) {
+                                    var splitFolder = splitDotSlash.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                } else {
+                                    var file = splitDotSlash;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                }
+                            } else {
+                                if (toQuotation.includes("/") === true) {
+                                    var splitFolder = toQuotation.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                } else {
+                                    var file = toQuotation;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                }
+                            }
+                        } else if (toEqual.includes('"') === true) {
+                            var toQuotation = toEqual.split('"')[1];
+                            if (toQuotation.includes("./") === true) {
+                                var splitDotSlash = toQuotation.split("./")[1];
+                                if (splitDotSlash.includes("/") === true) {
+                                    var splitFolder = splitDotSlash.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                } else {
+                                    var file = splitDotSlash;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] + "&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                }
+                            } else {
+                                if (toQuotation.includes("/") === true) {
+                                    var splitFolder = toQuotation.split("/");
+                                    var folder = splitFolder[0];
+                                    var file = splitFolder[1];
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id="+ queryString["id"] + "&f=" + folder + "." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                } else {
+                                    var file = toQuotation;
+                                    var splitFile = file.split(".");
+                                    var piece = item + ";";
+                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] +"&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                }
+                            }
+                        }
+                    } else {
+                        return;
+                    }
+                })
+                iframe.contentWindow.eval(code);
             } else {
                 iframe.contentWindow.eval(scripts[count].innerHTML);
             }
@@ -1016,7 +1667,20 @@ document.getElementById("deleteFile").onclick = function() {
     
         document.querySelector(".language-picker").removeChild(f);
     
-        document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+        if (document.querySelector(".language-picker").options.length !== 0) {
+            var slcted = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].innerHTML;
+            var sSplit = slcted.split(".");
+            window.s = window.Base64.encode(sSplit[0]) + "-" + sSplit[1];
+        
+            document.getElementById("editor").innerHTML = "";
+            window.loadEditor();
+        
+            document.getElementById("deleteFile").style.display = "";
+        } else {
+            window.s = "";
+            document.getElementById("editor").innerHTML = "<h1 style='text-align: center;'>No file selected.</h1>";
+            document.getElementById("deleteFile").style.display = "none";
+        }
     } else {
         // Do Nothing
     }
