@@ -50,7 +50,7 @@ function getCookie(cname) {
 	return "";
   }
 
-var afs = {}, resources = [], fls, tds, tdf, s, acc;
+var afs, resources = [], fls, tds, tdf, s, acc;
   
   function loadcode() {
       var splitData = window.acc.split(";");
@@ -76,9 +76,9 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
         } else {
             document.title = titles[0].innerHTML;
         }
-        var scripts = document.getElementsByTagName('script');
-        var styles = document.getElementsByTagName('link');
-        var links = document.getElementsByTagName('a');
+        var scripts = document.body.getElementsByTagName('script');
+        var styles = document.body.getElementsByTagName('link');
+        var links = document.body.getElementsByTagName('a');
         Array.from({length: links.length}, () => {
             count += 1;
             if (links[count].hasAttribute('href')) {
@@ -220,7 +220,6 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
                             var toEqual = item.split("=")[1];
                             if (toEqual.includes("'") === true) {
                                 var toQuotation = toEqual.split("'")[1];
-                                alert(toQuotation);
                                 if (toQuotation.includes("./") === true) {
                                     var splitDotSlash = toQuotation.split("./")[1];
                                     if (splitDotSlash.includes("/") === true) {
@@ -379,7 +378,6 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
                             var toEqual = item.split("=")[1];
                             if (toEqual.includes("'") === true) {
                                 var toQuotation = toEqual.split("'")[1];
-                                alert(toQuotation);
                                 if (toQuotation.includes("./") === true) {
                                     var splitDotSlash = toQuotation.split("./")[1];
                                     if (splitDotSlash.includes("/") === true) {
@@ -539,7 +537,6 @@ var afs = {}, resources = [], fls, tds, tdf, s, acc;
                         var toEqual = item.split("=")[1];
                         if (toEqual.includes("'") === true) {
                             var toQuotation = toEqual.split("'")[1];
-                            alert(toQuotation);
                             if (toQuotation.includes("./") === true) {
                                 var splitDotSlash = toQuotation.split("./")[1];
                                 if (splitDotSlash.includes("/") === true) {
