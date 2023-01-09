@@ -49,21 +49,21 @@ function myData(Data, success, error) {
       if (document.getElementById("username").value === Data[count].username && document.getElementById("password").value === Data[count].password && Data[count].twostep != true) {
 	      if (queryString["re"] != null) {
 	         li = true;
-	         setCookie("li", Data[count]._id);
+	         setCookie("li", Data[count]._id, 1);
 		      window.location.replace(decodeURIComponent(queryString["re"]));
 	      } else {
 	         li = true;
-		      setCookie("li", Data[count]._id);
+		      setCookie("li", Data[count]._id, 1);
             window.location.replace("./dashboard.html");
 	      }
       } else if (document.getElementById("username").value === Data[count].email && document.getElementById("password").value === Data[count].password && Data[count].twostep != true) {
 	      if (queryString["re"] != null) {
 	         li = true;
-            setCookie("li", Data[count]._id);
+            setCookie("li", Data[count]._id, 1);
 		      window.location.replace(decodeURIComponent(queryString["re"]));
 	      } else {
 	         li = true;
-	         setCookie("li", Data[count]._id);
+	         setCookie("li", Data[count]._id, 1);
             window.location.replace("./dashboard.html");
 	      }
       } else if (Data[count].twostep === true) {
@@ -98,7 +98,7 @@ function myData(Data, success, error) {
                if (parseInt(document.getElementById("ci").value) === window.code) {
                   if (queryString["re"] != null) {
                      li = true;
-                     setCookie("li", aid);
+                     setCookie("li", aid, 1);
                      window.location.replace(decodeURIComponent(queryString["re"]));
                   } else {
                      li = true;
@@ -106,7 +106,7 @@ function myData(Data, success, error) {
                      window.location.replace("./dashboard.html");
                   }
                } else {
-                  document.getElementById("code-error").innerHTML = "Invalid Code!";
+                  error("Invalid Code!");
                }
             }
          }
@@ -122,7 +122,7 @@ function setError(type) {
    document.getElementById("login").style.display = "none";
    document.getElementById("signup").style.display = "none";
    document.getElementById("email").style.display = "none";
-   document.getElementById("response").innerHTML = type;
+   document.getElementById("su-error").innerHTML = type;
    document.getElementById("back").style.display = "block";
 }
 
@@ -344,3 +344,104 @@ function getCookie(cname) {
 	let expires = "expires=" + d.toUTCString();
 	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+
+document.getElementById("username").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("submit").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+document.getElementById("password").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("submit").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+document.getElementById("password2").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("submit2").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+document.getElementById("username2").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("submit2").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+document.getElementById("name2").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("submit2").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+document.getElementById("ci").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("cs").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+document.getElementById("ei").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("es").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+document.getElementById("re").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("rs").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+document.getElementById("rp").addEventListener("focus", () => {
+   var inputListener = (e) => {
+      if (e.keyCode === 13) {
+         window.removeEventListener("keyup", inputListener);
+         document.getElementById("rs2").click();
+      }
+   };
+   
+   window.addEventListener("keyup", inputListener);
+})
+
+
