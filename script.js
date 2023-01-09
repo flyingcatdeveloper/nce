@@ -633,7 +633,6 @@ function runcode() {
                             var toEqual = item.split("=")[1];
                             if (toEqual.includes("'") === true) {
                                 var toQuotation = toEqual.split("'")[1];
-                                alert(toQuotation);
                                 if (toQuotation.includes("./") === true) {
                                     var splitDotSlash = toQuotation.split("./")[1];
                                     if (splitDotSlash.includes("/") === true) {
@@ -1043,7 +1042,7 @@ function runcode() {
                                     var file = toQuotation;
                                     var splitFile = file.split(".");
                                     var piece = item + ";";
-                                    code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] +"&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
+                                    code = code.replace(piece, "window.location.href = './nce/view.html?id=" + queryString["id"] +"&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
                                 }
                             }
                         }
