@@ -1,6 +1,11 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update/Bug Fix v1.4.0 01/09/2023:
+    - Fixed Code Processing (Out of Maintenance)
+    - Updated Login Page
+    - Fixed Login Page
+
 Update v1.3.9 01/05/2023:
     - Updated View Page's Code Processing
 
