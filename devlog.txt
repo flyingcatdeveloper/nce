@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.4.1 01/12/2023:
+    - Added Changing Editor Name Setting
+    - Added Editor Preview On Dashboard
+
 Update/Bug Fix v1.4.0 01/09/2023:
     - Fixed Code Processing (Out of Maintenance)
     - Updated Login Page
