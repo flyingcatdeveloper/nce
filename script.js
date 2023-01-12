@@ -1,3 +1,12 @@
+var DEV = false;
+   			
+window.onerror = function(msg, url, linenumber) {
+   	if (DEV === true) {
+   		alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+   	}
+    return true;
+}
+
 if (getCookie("li") === "") {
     window.location.replace("./index.html");
 }
@@ -46,7 +55,9 @@ settingsBtn = document.querySelector(".btn-setting");
 let ldm = 0;
 
 // Run btn event listner
-run.addEventListener("click", runcode);
+run.addEventListener("click", () => {
+    iframe.src = "./view.html?id=" + queryString["id"] + "&f=" + encodeURI(window.sf) + "." + encodeURIComponent(window.s);
+});
 
 // Downloads your code
 // save.addEventListener("click", () => {
@@ -148,13 +159,13 @@ run.addEventListener("click", runcode);
 // });
 
 // Live Code
-livebtn.addEventListener("click", () => {
-    if (livebtn.checked) {
-        addEventListener("keyup", runcode);
-    } else {
-        removeEventListener("keyup", runcode);
-    }
-});
+// livebtn.addEventListener("click", () => {
+//     if (livebtn.checked) {
+//         addEventListener("keyup";
+//     } else {
+//         removeEventListener("keyup", runcode);
+//     }
+// });
 
 shareBtn.onclick = function() {
     document.querySelector(".hover_bkgr_fricc").style.display = "inline-block";
@@ -1430,7 +1441,7 @@ function createTimestamp(Data2, uname) {
       var coded = window.Base64.encode(window.LZString.compress(JSON.stringify(window.afs)));
       saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2767/2767294.png";
       var safs = JSON.stringify(window.afs);
-      var count, keys = Object.keys(window.afs);
+      var count, keys = Object.keys(window.afs), finishedData;
       var fls = [];
       var data = {};
       if (settings["Compressed"] === "true" && window.afs !== undefined && window.afs !== "" && window.afs !== null && window.afs !== {}) {
@@ -1439,40 +1450,62 @@ function createTimestamp(Data2, uname) {
           data["sources"] = window.Base64.encode(window.LZString.compress(JSON.stringify(window.resources)));
           data["settings"] = window.settings;
           data["compressed"] = "true";
-          var finishedData = JSON.stringify(data);
+          
+          window.html2canvas(document.querySelector(".left"), {
+            onrendered: function(canvas) {
+                data["epic"] = canvas.toDataURL();
+                finishedData = JSON.stringify(data);
+                startSave();
+            }
+          });
       } else if (window.afs !== undefined && window.afs !== "" && window.afs !== {} && window.afs !== null) {
         data["sources"] = window.resources;
         data["afs"] = window.afs;
         data["settings"] = settings;
         data["compressed"] = "false";
-        var finishedData = JSON.stringify(data);
+        
+          window.html2canvas(document.querySelector(".left"), {
+            onrendered: function(canvas) {
+                data["epic"] = canvas.toDataURL();
+                finishedData = JSON.stringify(data);
+                startSave();
+            }
+          });
       } else {
           data["sources"] = window.resources;
           data["afs"] = "";
           data["settings"] = settings;
           data["compressed"] = "false";
           
-          var finishedData = JSON.stringify(data);
+          window.html2canvas(document.querySelector(".left"), {
+            onrendered: function(canvas) {
+                data["epic"] = canvas.toDataURL();
+                finishedData = JSON.stringify(data);
+                startSave();
+            }
+          });
       }
       
-      var xhr2 = new XMLHttpRequest();
-      xhr2.withCredentials = false;
+    function startSave() {
+        var xhr2 = new XMLHttpRequest();
+        xhr2.withCredentials = false;
       
-      xhr2.addEventListener("readystatechange", function () {
-          if (xhr2.readyState === 4 && xhr2.status === 200) {
-              saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2874/2874091.png";
-              console.log("saved code.");
-          } else if (xhr2.readyState === XMLHttpRequest.DONE) {
-              alert("there was some error saving.");
-          }
-      })
+        xhr2.addEventListener("readystatechange", function () {
+            if (xhr2.readyState === 4 && xhr2.status === 200) {
+                saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2874/2874091.png";
+                console.log("saved code.");
+            } else if (xhr2.readyState === XMLHttpRequest.DONE) {
+                alert("there was some error saving.");
+            }
+        })
       
-      xhr2.open("PUT", "https://zball-ec41.restdb.io/rest/editor/" + queryString["id"]);
-      xhr2.setRequestHeader("content-type", "application/json");
-      xhr2.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
-      xhr2.setRequestHeader("cache-control", "no-cache");
+        xhr2.open("PUT", "https://zball-ec41.restdb.io/rest/editor/" + queryString["id"]);
+        xhr2.setRequestHeader("content-type", "application/json");
+        xhr2.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+        xhr2.setRequestHeader("cache-control", "no-cache");
       
-      xhr2.send(finishedData);
+        xhr2.send(finishedData);
+    }
   }
 
 var queryString = new Array();
@@ -1614,10 +1647,136 @@ settingsBtn.onclick = function() {
         "Autosave": ["true", "false"],
         "Compressed": ["true", "false"]
     },
+    iOptions = [
+        "Editor Name"
+    ],
     okeys = Object.keys(options);
     
     sdiv.style.width="100%";
     sdiv.style.height="100%";
+    
+    iOptions.forEach((option) => {
+        var name = document.createElement("p");
+        var input = document.createElement("input");
+        var split = document.createElement("br");
+        var submit = document.createElement("button");
+        
+        submit.innerHTML = "Save";
+        
+        if (option === "Editor Name") {
+            name.innerHTML = "<b>Editor Name: </b>";
+            input.setAttribute("placeholder", "Name");
+            
+            submit.onclick = function() {
+                submit.innerHTML = "...";
+                var txt = input.value;
+                
+                if (txt !== "") {
+                    var data = JSON.stringify({
+                        "name": txt
+                    })
+                    
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = false;
+                    
+                    xhr.addEventListener("readystatechange", () => {
+                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                            console.log("Project Name Updated.")
+                            
+                            var data2 = null;
+                            
+                            var xhr2 = new XMLHttpRequest();
+                            xhr2.withCredentials = false;
+                            
+                            xhr2.addEventListener("readystatechange", () => {
+                                if (xhr2.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                                    var res = JSON.parse(xhr2.responseText);
+                                    
+                                    var editors = res.editor;
+                                    
+                                    var newVar = "";
+                                    
+                                    var eSplit = editors.split(";");
+                                    
+                                    eSplit.forEach((editor) => {
+                                        var eSplit2 = editor.split(":");
+                                        if (eSplit2[0] === queryString["id"]) {
+                                            var newEditor = eSplit2[0] + ":" + txt;
+                                            if (newVar === "") {
+                                                newVar = newEditor;
+                                            } else {
+                                                newVar = newVar + ";" + newEditor;
+                                            }
+                                        } else {
+                                            if (newVar === "") {
+                                                newVar = editor;
+                                            } else {
+                                                newVar = newVar + ";" + editor;
+                                            }
+                                        }
+                                    })
+                                    
+                                    var data3 = JSON.stringify({
+                                        "editor": newVar
+                                    })
+                                    
+                                    var xhr3 = new XMLHttpRequest();
+                                    xhr3.withCredentials = false;
+                                    
+                                    xhr3.addEventListener("readystatechange", () => {
+                                        if (xhr3.readyState === XMLHttpRequest.DONE && xhr3.status === 200) {
+                                            submit.innerHTML = "Save";
+                                            console.log("Updated Account Settings.");
+                                        } else if (xhr3.readyState === XMLHttpRequest.DONE) {
+                                            submit.innerHTML = "Save";
+                                            alert("There was an error changing name.")
+                                        }
+                                    })
+                                    
+                                    xhr3.open("PUT", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
+                                    xhr3.setRequestHeader("content-type", "application/json");
+                                    xhr3.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+                                    xhr3.setRequestHeader("cache-control", "no-cache");
+                                    
+                                    xhr3.send(data3);
+                                } else if (xhr2.readyState === XMLHttpRequest.DONE) {
+                                    submit.innerHTML = "Save";
+                                    alert("There was an error changing name.");
+                                }
+                            })
+                            
+                            xhr2.open("GET", "https://zball-ec41.restdb.io/rest/username/" + getCookie("li"));
+                            xhr2.setRequestHeader("content-type", "application/json");
+                            xhr2.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+                            xhr2.setRequestHeader("cache-control", "no-cache");
+                            
+                            xhr2.send(data2);
+                        } else if (xhr.readyState === XMLHttpRequest.DONE) {
+                            submit.innerHTML = "Save";
+                            alert("There was an error changing name.");
+                        }
+                    })
+                    
+                    xhr.open("PUT", "https://zball-ec41.restdb.io/rest/editor/" + queryString["id"]);
+                    xhr.setRequestHeader("content-type", "application/json");
+                    xhr.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+                    xhr.setRequestHeader("cache-control", "no-cache");
+                    
+                    xhr.send(data);
+                } else {
+                    submit.innerHTML = "Save";
+                    alert("Name can't be empty.");
+                }
+            }
+            
+            name.appendChild(input);
+            name.appendChild(submit);
+            e.appendChild(name);
+            e.appendChild(split);
+        } else {
+            return;
+        }
+    })
     
     okeys.forEach((option) => {
         var name = document.createElement("p");
