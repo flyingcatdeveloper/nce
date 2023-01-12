@@ -7,6 +7,35 @@ var newID;
 var newLink;
 var np;
 var e;
+var newImg;
+
+function getImg(id) {
+    var data = null;
+    
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+    
+    xhr.addEventListener("readystatechange", function () {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            var res = JSON.parse(xhr.responseText);
+            
+            if (res.epic !== null && res.epic !== undefined && res.epic !== "") {
+                document.getElementById((id + ".img")).innerHTML = "<img src='" + res.epic + "' style='width: 390px; height: 410px;'>";
+            } else {
+                document.getElementById((id + ".img")).innerHTML = "Image Unavailable.<br><br>";
+            }
+        } else if (xhr.readyState === XMLHttpRequest.DONE) {
+            document.getElementById((id + ".img")).innerHTML = "Image Unavailable.<br><br>";
+        }
+    })
+    
+    xhr.open("GET", "https://zball-ec41.restdb.io/rest/editor/" + id);
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("x-apikey", "6228c7c7dced170e8c83a0b8");
+    xhr.setRequestHeader("cache-control", "no-cache");
+    
+    xhr.send(data);
+}
 
 if (getCookie("li") === "" || getCookie("li") === undefined) {
     window.location.replace("./index.html");
@@ -220,8 +249,12 @@ function showData(Data) {
                 newDAP = document.createElement("p");
                 newID = document.createElement("p");
                 newLink = document.createElement("a");
+                newImg = document.createElement("div");
                 
                 newLink.setAttribute("class", "project-btn");
+                newImg.innerHTML = "...";
+                newImg.setAttribute("id", splitName[0] + ".img");
+                getImg(splitName[0]);
                 newLink.style = "color: blue; text-decoration: underline; font-weight: bold; cursor: pointer; font-family: Arial;";
                 newLink.innerHTML = splitName[1];
                 newDAP.setAttribute("id", splitName[0]);
@@ -235,6 +268,7 @@ function showData(Data) {
            
                 document.querySelector(".projects-container").appendChild(newLine);
                 document.querySelector(".projects-container").appendChild(newProject);
+                newProject.appendChild(newImg);
                 newProject.appendChild(newLink);
                 newProject.appendChild(newDAP);
                 newProject.appendChild(newID);
@@ -251,9 +285,13 @@ function showData(Data) {
         newDAP = document.createElement("p");
         newID = document.createElement("p");
         newLink = document.createElement("a");
+        newImg = document.createElement("div");
         
         newLink.innerHTML = splitName[1];
         newLine.setAttribute("class", "project-btn");
+        newImg.innerHTML = "...";
+        getImg(splitName[0]);
+        newImg.setAttribute("id", splitName[0] + ".img");
         newDAP.setAttribute("id", splitName[0]);
         newDAP.innerHTML = "loading...";
         loadTimestamp(splitName[0]);
