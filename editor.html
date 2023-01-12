@@ -13,16 +13,17 @@
 		<!--<script src="./textarea-helper.js"></script>-->
 		<!--<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-cosmo.css" type="text/css" />-->
 		   <!--<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-cosmo.css" type="text/css" />-->
-   <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-responsive.min.css" type="text/css" />
-   <!--<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/all.css" type="text/css" />-->
-   <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/index/index.css" type="text/css" />
-   <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/jquery-1.9.1.min.js"></script>
-   <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/bootstrap.min.js"></script>
-   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
-   <script type="text/javascript" src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>
-   <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/editor/editor.main.css" type="text/css" />
-   <script src="./lz-string.js"></script>
-   <script src="./base64.js"></script>
+   		<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-responsive.min.css" type="text/css" />
+   		<!--<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/all.css" type="text/css" />-->
+   		<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/index/index.css" type="text/css" />
+   		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/jquery-1.9.1.min.js"></script>
+   		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/bootstrap.min.js"></script>
+   		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+   		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>
+   		<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/editor/editor.main.css" type="text/css" />
+   		<script src="./lz-string.js"></script>
+   		<script src="./base64.js"></script>
+   		<script type="text/javascript" src="./html2canvas.js"></script>
 	</head>
 
 	<body class="body">
@@ -73,20 +74,20 @@
 				</div>
 			</div>
 			<div class="right">
-				<div class="btn">
-					<label class="check">Live Mode
-						<input type="checkbox" id="live">
-						<span class="checkmark"></span>
-					  </label>
-				</div>
+				<!--<div class="btn">-->
+				<!--	<label class="check">Live Mode-->
+				<!--		<input type="checkbox" id="live">-->
+				<!--		<span class="checkmark"></span>-->
+				<!--	  </label>-->
+				<!--</div>-->
 				<div class="btn">
 					<label class="check">Console
 						<input type="checkbox" id="test">
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<i id="ver" style="font-size: 2rem;">v1.4.0</i>
-				<iframe frameborder="0"  class="iframe" id="iframe"></iframe>
+				<i id="ver" style="font-size: 2rem;">v1.4.1</i>
+				<iframe frameborder="0"  class="iframe" id="iframe" src="./view.html"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
 					</div>
@@ -111,11 +112,11 @@
     		</div>
 			</div>
 		</div>
-		
 		<script src="./console.js"></script>
 		<script src="./script.js"></script>
 		<!--<script src="./auto.js"></script>-->
 		<script>
+		
        'use strict';
 require.config({
     baseUrl: 'https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/'
@@ -346,7 +347,7 @@ function animateLoader() {
 	var count = 0;
 	function change() {
 		count += 1;
-		if (count !== 4) {
+		if (count !== 4 && document.getElementById("loader") !== null) {
 			if (count === 1) {
 				document.getElementById("loader").innerHTML = ".";
 			} else if (count === 2) {
@@ -356,9 +357,11 @@ function animateLoader() {
 			} else {
 				document.getElementById("loader").innerHTML = "...";
 			}
-		} else {
+		} else if (document.getElementById("loader") !== null) {
 			count = 0;
 			change();
+		} else {
+			clearInterval(change, 200);
 		}
 	}
 	
