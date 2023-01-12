@@ -1,3 +1,12 @@
+var DEV = false;
+   			
+window.onerror = function(msg, url, linenumber) {
+   	if (DEV === true) {
+   		alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+   	}
+    return true;
+}
+
 var queryString = new Array();
 window.onload = function () {
     if (queryString.length == 0) {
