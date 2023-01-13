@@ -56,7 +56,7 @@ let ldm = 0;
 
 // Run btn event listner
 run.addEventListener("click", () => {
-    iframe.src = "./view.html?id=" + queryString["id"] + "&f=" + encodeURI(window.sf) + "." + encodeURIComponent(window.s);
+    saveCode();
 });
 
 // Downloads your code
@@ -169,9 +169,10 @@ run.addEventListener("click", () => {
 
 shareBtn.onclick = function() {
     document.querySelector(".hover_bkgr_fricc").style.display = "inline-block";
+    document.getElementById("link").href = "./view.html?id=" + queryString["id"] + "&f=" + encodeURIComponent(window.sf) + "." + encodeURIComponent(window.s);
+    document.getElementById("link").innerHTML = document.getElementById("link").href;
     document.querySelector(".popupCloseButton").onclick = function() {
         document.querySelector(".hover_bkgr_fricc").style.display = "none";
-        
     };
 };
 
@@ -1227,7 +1228,6 @@ function createTimestamp(Data2, uname) {
     
     xhr5.addEventListener("readystatechange", () => {
         if (xhr5.readyState === XMLHttpRequest.DONE && xhr5.status === 200) {
-            console.log(xhr5.responseText);
             validate(Data2);
         }
     });
@@ -1493,7 +1493,8 @@ function createTimestamp(Data2, uname) {
         xhr2.addEventListener("readystatechange", function () {
             if (xhr2.readyState === 4 && xhr2.status === 200) {
                 saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2874/2874091.png";
-                console.log("saved code.");
+                console.info("saved code.");
+                iframe.src = "./view.html?id=" + queryString["id"] + "&f=" + encodeURI(window.sf) + "." + encodeURIComponent(window.s);
             } else if (xhr2.readyState === XMLHttpRequest.DONE) {
                 alert("there was some error saving.");
             }
@@ -1681,7 +1682,7 @@ settingsBtn.onclick = function() {
                     
                     xhr.addEventListener("readystatechange", () => {
                         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                            console.log("Project Name Updated.")
+                            console.info("Project Name Updated.")
                             
                             var data2 = null;
                             
@@ -1726,7 +1727,7 @@ settingsBtn.onclick = function() {
                                     xhr3.addEventListener("readystatechange", () => {
                                         if (xhr3.readyState === XMLHttpRequest.DONE && xhr3.status === 200) {
                                             submit.innerHTML = "Save";
-                                            console.log("Updated Account Settings.");
+                                            console.info("Updated Account Settings.");
                                         } else if (xhr3.readyState === XMLHttpRequest.DONE) {
                                             submit.innerHTML = "Save";
                                             alert("There was an error changing name.")
