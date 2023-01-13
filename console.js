@@ -25,8 +25,8 @@ function rewireLoggingToElement(eleLocator, eleOverflowLocator, autoScroll) {
     fixLoggingFunc('info');
 
     function fixLoggingFunc(name) {
-        frame.contentWindow.console['old' + name] = frame.contentWindow.console[name];
-        frame.contentWindow.console[name] = function(...arguments) {
+        console['old' + name] = frame.contentWindow.console[name];
+        console[name] = function(...arguments) {
             const output = produceOutput(name, arguments);
             const eleLog = eleLocator();
 
@@ -41,7 +41,7 @@ function rewireLoggingToElement(eleLocator, eleOverflowLocator, autoScroll) {
                 eleLog.innerHTML += Date.now() + ": " + output + "<br>";
             }
 
-            frame.contentWindow.console['old' + name].apply(undefined, arguments);
+            console['old' + name].apply(undefined, arguments);
         };
     }
 
@@ -55,6 +55,6 @@ function rewireLoggingToElement(eleLocator, eleOverflowLocator, autoScroll) {
     }
 }
 
-frame.contentWindow.console.clear = function() {
+console.clear = function() {
     document.getElementById("log").innerHTML = "";
 }
