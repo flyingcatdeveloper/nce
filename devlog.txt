@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.4.3 01/13/2023:
+    - Fixed/Updated Console
+    - A Few Other Small Bug Fixes
+
 Update/Bug Fix 1.4.2 01/13/2023:
     - Fixed Console
     - Fixed Share Page
