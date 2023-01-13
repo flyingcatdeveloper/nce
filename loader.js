@@ -292,8 +292,72 @@ var afs, resources = [], fls, tds, tdf, s, acc;
                                     }
                                 }
                             }
-                        } else {
-                            return;
+                        } else if (item.includes("console") === true) {
+                            var splitFunction = item.split(".");
+                            var splitMF = splitFunction[1].split("(");
+                            
+                            if (splitMF[0] === "log") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    console.log(msg);
+                                    window.MSG("console['log']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    console.log(msg);
+                                    window.MSG("console['log']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "error") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    console.error(msg);
+                                    window.MSG("console['error']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    console.error(msg);
+                                    window.MSG("console['error']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "warn") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    console.warn(msg);
+                                    window.MSG("console['warn']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    console.warn(msg);
+                                    window.MSG("console['warn']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "info") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    console.info(msg);
+                                    window.MSG("console['info']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    console.info(msg);
+                                    window.MSG("console['info']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "debug") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    window.MSG("console['debug']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    window.MSG("console['debug']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "clear") {
+                                console.clear();
+                                window.MSG("console.clear();")
+                            }
                         }
                     })
                     window.eval(code);
@@ -449,6 +513,72 @@ var afs, resources = [], fls, tds, tdf, s, acc;
                                         code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] +"&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
                                     }
                                 }
+                            }
+                        } else if (item.includes("console") === true) {
+                            var splitFunction = item.split(".");
+                            var splitMF = splitFunction[1].split("(");
+                            
+                            if (splitMF[0] === "log") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    console.log(msg);
+                                    window.MSG("console['log']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    console.log(msg);
+                                    window.MSG("console['log']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "error") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    console.error(msg);
+                                    window.MSG("console['error']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    console.error(msg);
+                                    window.MSG("console['error']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "warn") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    console.warn(msg);
+                                    window.MSG("console['warn']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    console.warn(msg);
+                                    window.MSG("console['warn']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "info") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    console.info(msg);
+                                    window.MSG("console['info']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    console.info(msg);
+                                    window.MSG("console['info']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "debug") {
+                                if (splitMF[1].includes("'") === true) {
+                                    var toQuo = splitMF[1].split("'");
+                                    var msg = toQuo[1];
+                                    window.MSG("console['debug']('" + msg + "');")
+                                } else if (splitMF[1].includes('"') === true) {
+                                    var toQuo = splitMF[1].split('"');
+                                    var msg = toQuo[1];
+                                    window.MSG("console['debug']('" + msg + "');")
+                                }
+                            } else if (splitMF[0] === "clear") {
+                                console.clear();
+                                window.MSG("console.clear();")
                             }
                         } else {
                             return;
@@ -608,6 +738,72 @@ var afs, resources = [], fls, tds, tdf, s, acc;
                                     code = code.replace(piece, "window.location.href = './view.html?id=" + queryString["id"] +"&f=" + "main." + encodeURIComponent(window.Base64.encode(splitFile[0])) + "-" + splitFile[1] + "';");
                                 }
                             }
+                        }
+                    } else if (item.includes("console") === true) {
+                        var splitFunction = item.split(".");
+                        var splitMF = splitFunction[1].split("(");
+                        
+                        if (splitMF[0] === "log") {
+                            if (splitMF[1].includes("'") === true) {
+                                var toQuo = splitMF[1].split("'");
+                                var msg = toQuo[1];
+                                console.log(msg);
+                                window.MSG("console['log']('" + msg + "');")
+                            } else if (splitMF[1].includes('"') === true) {
+                                var toQuo = splitMF[1].split('"');
+                                var msg = toQuo[1];
+                                console.log(msg);
+                                window.MSG("console['log']('" + msg + "');")
+                            }
+                        } else if (splitMF[0] === "error") {
+                            if (splitMF[1].includes("'") === true) {
+                                var toQuo = splitMF[1].split("'");
+                                var msg = toQuo[1];
+                                console.error(msg);
+                                window.MSG("console['error']('" + msg + "');")
+                            } else if (splitMF[1].includes('"') === true) {
+                                var toQuo = splitMF[1].split('"');
+                                var msg = toQuo[1];
+                                console.error(msg);
+                                window.MSG("console['error']('" + msg + "');")
+                            }
+                        } else if (splitMF[0] === "warn") {
+                            if (splitMF[1].includes("'") === true) {
+                                var toQuo = splitMF[1].split("'");
+                                var msg = toQuo[1];
+                                console.warn(msg);
+                                window.MSG("console['warn']('" + msg + "');")
+                            } else if (splitMF[1].includes('"') === true) {
+                                var toQuo = splitMF[1].split('"');
+                                var msg = toQuo[1];
+                                console.warn(msg);
+                                window.MSG("console['warn']('" + msg + "');")
+                            }
+                        } else if (splitMF[0] === "info") {
+                            if (splitMF[1].includes("'") === true) {
+                                var toQuo = splitMF[1].split("'");
+                                var msg = toQuo[1];
+                                console.info(msg);
+                                window.MSG("console['info']('" + msg + "');")
+                            } else if (splitMF[1].includes('"') === true) {
+                                var toQuo = splitMF[1].split('"');
+                                var msg = toQuo[1];
+                                console.info(msg);
+                                window.MSG("console['info']('" + msg + "');")
+                            }
+                        } else if (splitMF[0] === "debug") {
+                            if (splitMF[1].includes("'") === true) {
+                                var toQuo = splitMF[1].split("'");
+                                var msg = toQuo[1];
+                                window.MSG("console['debug']('" + msg + "');")
+                            } else if (splitMF[1].includes('"') === true) {
+                                var toQuo = splitMF[1].split('"');
+                                var msg = toQuo[1];
+                                window.MSG("console['debug']('" + msg + "');")
+                            }
+                        } else if (splitMF[0] === "clear") {
+                            console.clear();
+                            window.MSG("console.clear();")
                         }
                     } else {
                         return;
