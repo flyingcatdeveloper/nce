@@ -25,23 +25,23 @@ function rewireLoggingToElement(eleLocator, eleOverflowLocator, autoScroll) {
     fixLoggingFunc('info');
 
     function fixLoggingFunc(name) {
-        console['old' + name] = frame.contentWindow.console[name];
+        console['old' + name] = console[name];
         console[name] = function(...arguments) {
             const output = produceOutput(name, arguments);
             const eleLog = eleLocator();
 
-            if (autoScroll) {
+            if (autoScroll && document.URL.includes("editor.html")) {
                 const eleContainerLog = eleOverflowLocator();
                 const isScrolledToBottom = eleContainerLog.scrollHeight - eleContainerLog.clientHeight <= eleContainerLog.scrollTop + 1;
                 eleLog.innerHTML += formatTime(new Date) + ": " + output + "<br>";
                 if (isScrolledToBottom) {
                     eleContainerLog.scrollTop = eleContainerLog.scrollHeight - eleContainerLog.clientHeight;
                 }
-            } else {
-                eleLog.innerHTML += Date.now() + ": " + output + "<br>";
+            } else if (document.URL.includes("editor.html")) {
+                eleLog.innerHTML += formatTime(new Date) + ": " + output + "<br>";
+            } else if (document.URL.includes("view.html")) {
+                window.MSG(formatTime(new Date) + ": " + output + "<br>" + ".///...//sncon");
             }
-
-            console['old' + name].apply(undefined, arguments);
         };
     }
 
@@ -56,5 +56,8 @@ function rewireLoggingToElement(eleLocator, eleOverflowLocator, autoScroll) {
 }
 
 console.clear = function() {
+    if (document.URL.includes("view.html")) {
+        window.MSG("console.clear()");
+    }
     document.getElementById("log").innerHTML = "";
 }
