@@ -56,7 +56,12 @@ let ldm = 0;
 
 // Run btn event listner
 run.addEventListener("click", () => {
-    saveCode();
+    var type = window.s.split("-");
+    if (type[1] === "html") {
+      saveCode(true);  
+    } else {
+        alert("Please select an HTML file.");
+    }
 });
 
 // Downloads your code
@@ -1437,7 +1442,7 @@ function createTimestamp(Data2, uname) {
     }
   }
   
-  function saveCode() {
+  function saveCode(run) {
       var coded = window.Base64.encode(window.LZString.compress(JSON.stringify(window.afs)));
       saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2767/2767294.png";
       var safs = JSON.stringify(window.afs);
@@ -1494,7 +1499,9 @@ function createTimestamp(Data2, uname) {
             if (xhr2.readyState === 4 && xhr2.status === 200) {
                 saveBtn.src = "https://cdn-icons-png.flaticon.com/512/2874/2874091.png";
                 console.info("saved code.");
-                iframe.src = "./view.html?id=" + queryString["id"] + "&f=" + encodeURI(window.sf) + "." + encodeURIComponent(window.s);
+                if (run === true) {
+                    iframe.src = "./view.html?id=" + queryString["id"] + "&f=" + encodeURI(window.sf) + "." + encodeURIComponent(window.s);
+                }
             } else if (xhr2.readyState === XMLHttpRequest.DONE) {
                 alert("there was some error saving.");
             }
