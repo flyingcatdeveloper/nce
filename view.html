@@ -4,6 +4,11 @@
         <script src="loader.js"></script>
         <script src="lz-string.js"></script>
         <script src="base64.js"></script>
+        <script>
+            var MSG = function(m) {
+                parent.postMessage(m, "*");
+            }
+        </script>
     </head>
     
     <body></body>
