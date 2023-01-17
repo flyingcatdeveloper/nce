@@ -24,17 +24,6 @@
    		<script src="./lz-string.js"></script>
    		<script src="./base64.js"></script>
    		<script type="text/javascript" src="./html2canvas.js"></script>
-   		<script>
-   			let portrait = window.matchMedia("(orientation: portrait)");
-
-			portrait.addEventListener("change", function(e) {
-    			if(e.matches) {
-        			document.getElementById("portrait-error").style.display = "";
-    			}	else {
-    				document.getElementById("portrait-error").style.display = "none";
-    			}
-			})
-   		</script>
 	</head>
 
 	<body class="body">
@@ -53,31 +42,31 @@
    		</script>
 		<div class="sidenav">
 			<div data-title="Dashboard">
-				<img src="https://cdn-icons-png.flaticon.com/512/1828/1828765.png" width="65%" height="65%" class="btn-db2" style="cursor: pointer;">
+				<img src="https://cdn-icons-png.flaticon.com/512/1828/1828765.png" width="25px" height="25px" class="btn-db2" style="cursor: pointer;">
 			</div>
 			<br><br><br>
 			<div data-title="Run">
-				<img src="https://cdn-icons-png.flaticon.com/512/27/27223.png" width="65%" height="65%" class="btn-run" style="cursor: pointer;">
+				<img src="https://cdn-icons-png.flaticon.com/512/27/27223.png" width="25px" height="25px" class="btn-run" style="cursor: pointer;">
 			</div>
 			<br><br><br>
 			<div data-title="Open In New Tab">
-				<img src="https://cdn-icons-png.flaticon.com/512/7824/7824725.png" width="65%" height="65%" class="btn-ont" style="cursor: pointer;">
+				<img src="https://cdn-icons-png.flaticon.com/512/7824/7824725.png" width="25px" height="25px" class="btn-ont" style="cursor: pointer;">
 			</div>
 			<br><br><br>
 			<div data-title="Save">
-				<img src="https://cdn-icons-png.flaticon.com/512/2874/2874091.png" width="65%" height="65%" class="btn-so" style="cursor: pointer;">
+				<img src="https://cdn-icons-png.flaticon.com/512/2874/2874091.png" width="25px" height="25px" class="btn-so" style="cursor: pointer;">
 			</div>
 			<br><br><br>
 			<div data-title="Share">
-				<img src="https://cdn-icons-png.flaticon.com/512/2958/2958791.png" width="65%" height="65%" class="btn-share" style="cursor: pointer;">
+				<img src="https://cdn-icons-png.flaticon.com/512/2958/2958791.png" width="25px" height="25px" class="btn-share" style="cursor: pointer;">
 			</div>
 			<br><br><br>
 			<div data-title="Devlog">
-				<img src="https://cdn-icons-png.flaticon.com/512/569/569837.png" width="65%" height="65%" class="btn-dev" style="cursor: pointer;">
+				<img src="https://cdn-icons-png.flaticon.com/512/569/569837.png" width="25px" height="25px" class="btn-dev" style="cursor: pointer;">
 			</div>
 			<br><br><br>
 			<div data-title="Settings">
-				<img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="65%" height="65%" class="btn-setting" style="cursor: pointer; display: none;">
+				<img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="25px" height="25px" class="btn-setting" style="cursor: pointer; display: none;">
 			</div>
 		</div>
 		<div id="container">
@@ -110,7 +99,7 @@
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<i id="ver" style="font-size: 2rem;">v1.4.4</i>
+				<i id="ver" style="font-size: 2rem;">v1.4.3</i>
 				<iframe frameborder="0"  class="iframe" id="iframe" src="./view.html"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -127,10 +116,6 @@
         			<p>Add Editor: <br><a id="editorLink">loading...</a></p>
     			</div>
 			</div>
-		</div>
-		
-		<div id="portrait-error">
-			Please put your screen into landscape mode.
 		</div>
 		
 		<div class="hover_bkgr_fricc2">
