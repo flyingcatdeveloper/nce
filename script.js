@@ -1,4 +1,4 @@
-var DEV = false;
+var DEV = true;
    			
 window.onerror = function(msg, url, linenumber) {
    	if (DEV === true) {
