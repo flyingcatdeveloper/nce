@@ -42,6 +42,16 @@
 				
 				
 			}
+			
+			window.addEventListener("resize", () => {
+				if(window.innerHeight > window.innerWidth){
+					document.getElementById("portrait-error").style.display = "block";
+					document.querySelector(".sidenav").style.display = "none";
+				} else {
+					document.getElementById("portrait-error").style.display = "none";
+					document.querySelector(".sidenav").style.display = "";
+				}
+			})
 		</script>
 	</head>
 
@@ -143,6 +153,9 @@
         		<div class="popupCloseButton2">&times;</div>
     		</div>
 			</div>
+		</div>
+		<div id="portrait-error">
+			<p>Please rotate your device.</p>
 		</div>
 		<script src="./console.js"></script>
 		<script src="./script.js"></script>
