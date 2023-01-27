@@ -43,6 +43,14 @@
 				
 			}
 			
+			if(window.innerHeight > window.innerWidth){
+				document.getElementById("portrait-error").style.display = "block";
+				document.querySelector(".sidenav").style.display = "none";
+			} else {
+				document.getElementById("portrait-error").style.display = "none";
+				document.querySelector(".sidenav").style.display = "";
+			}
+			
 			window.addEventListener("resize", () => {
 				if(window.innerHeight > window.innerWidth){
 					document.getElementById("portrait-error").style.display = "block";
