@@ -1,4 +1,4 @@
-var DEV = true;
+var DEV = false;
    			
 window.onerror = function(msg, url, linenumber) {
    	if (DEV === true) {
@@ -1458,8 +1458,11 @@ function createTimestamp(Data2, uname) {
           
           window.html2canvas(document.querySelector(".left"), {
             onrendered: function(canvas) {
-                canvas.crossOrigin = "anonymous";
-                data["epic"] = canvas.toDataURL();
+                try {
+                    data["epic"] = canvas.toDataURL();
+                } catch {
+                    console.log("Image Failed To Save.");
+                }
                 finishedData = JSON.stringify(data);
                 startSave();
             }
