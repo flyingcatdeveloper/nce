@@ -529,7 +529,9 @@ function loadcode() {
               });
               window.eval(code);
             } else {
-              var code = window.afs['main'][tdf];
+              var splitFolder = queryString['f'].split(".");
+              var folder = splitFolder[0];
+              var code = window.afs[folder][tdf];
               var a = code.split(';');
               a.forEach((item) => {
                 if (
