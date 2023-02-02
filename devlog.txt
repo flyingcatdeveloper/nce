@@ -1,6 +1,11 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update/Bug Fix v1.4.9 02/02/2023:
+    - Added 'clear data' option on dashboard
+    - Added 'delete editor' setting in editor
+    - Small bug fix
+
 Update v1.4.8 02/02/2023:
     - Updated code processing
 
