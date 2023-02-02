@@ -24,22 +24,22 @@
     </div>
 
     <script>
-      if (window.localStorage.getItem('offline') === 'true') {
-        document.querySelector('.btn-soo').innerHTML = 'Online';
-      }
+//       if (window.localStorage.getItem('offline') === 'true') {
+//         document.querySelector('.btn-soo').innerHTML = 'Online';
+//       }
 
-      document.querySelector('.btn-soo').onclick = function () {
-        if (window.localStorage.getItem('offline') !== 'true') {
-          window.localStorage.setItem('offline', 'true');
-          setCookie('li', '');
-          document.querySelector('.btn-soo').innerHTML = 'Online';
-          window.location.reload();
-        } else {
-          window.localStorage.setItem('offline', 'false');
-          document.querySelector('.btn-soo').innerHTML = 'Offline';
-          window.location.reload();
-        }
-      };
+//       document.querySelector('.btn-soo').onclick = function () {
+//         if (window.localStorage.getItem('offline') !== 'true') {
+//           window.localStorage.setItem('offline', 'true');
+//           setCookie('li', '');
+//           document.querySelector('.btn-soo').innerHTML = 'Online';
+//           window.location.reload();
+//         } else {
+//           window.localStorage.setItem('offline', 'false');
+//           document.querySelector('.btn-soo').innerHTML = 'Offline';
+//           window.location.reload();
+//         }
+//       };
 
       document.querySelector('.btn-ls').onclick = function () {
         window.location.href = './login.html';
