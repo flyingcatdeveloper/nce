@@ -70,7 +70,7 @@ if (
   (getCookie('li') === '' || getCookie('li') === undefined) &&
   window.localStorage.getItem('offline') !== 'true'
 ) {
-  window.location.replace('./index.html');
+  window.location = './index.html';
 } else if (
   window.localStorage.getItem('li') !== null &&
   window.localStorage.getItem('offline') === 'true'
@@ -209,9 +209,7 @@ document.getElementById('new').onclick = function () {
       window.localStorage.getItem('li'),
       JSON.stringify(accountData)
     );
-    window.location.replace(
-      './editor.html?id=' + document.getElementById('name').value
-    );
+    window.location = './editor.html?id=' + document.getElementById('name').value
   } else {
     alert('please enter a name!');
   }
@@ -220,11 +218,11 @@ document.getElementById('new').onclick = function () {
 document.querySelector('.btn-lo').onclick = function () {
   setCookie('li', '', 1);
   window.localStorage.setItem('li', '');
-  window.location.replace('./index.html');
+  window.location = './index.html';
 };
 
 document.getElementById('account').onclick = function () {
-  window.location.replace('./account.html');
+  window.location = './account.html';
 };
 
 function createNewProjectData(path, api, success, name) {
@@ -319,7 +317,7 @@ function saveEditor(id, edit, editors) {
   xhr4.addEventListener('readystatechange', function () {
     if (xhr4.readyState === XMLHttpRequest.DONE && xhr4.status === 200) {
       console.log('saved to account.');
-      window.location.replace('./editor.html?id=' + id);
+      window.location = './editor.html?id=' + id;
     }
   });
 
