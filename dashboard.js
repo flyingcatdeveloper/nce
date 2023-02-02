@@ -405,15 +405,15 @@ function loadTimestamp(aid) {
 }
 
 function showData(Data) {
-  window.projects = Data.editor;
+  projects = Data.editor;
   //     document.getElementById("account").src = Data.pfp;
   //     document.getElementById("account").style.width = "40px";
   //     document.getElementById("account").style.height = "40px";
-  window.np = Data.editors;
-  if (projects != '' && projects.indexOf(';') != -1) {
+  np = Data.editors;
+  if (projects !== '' && projects.indexOf(';') !== -1) {
     var splitData = projects.split(';');
     splitData.forEach((project) => {
-      if (project != '') {
+      if (project !== '') {
         splitName = project.split(':');
         newProject = document.createElement('div');
         newProject.setAttribute('class', 'project');
@@ -449,7 +449,7 @@ function showData(Data) {
       }
     });
     document.getElementById('project').innerHTML = '';
-  } else if (projects != '') {
+  } else if (projects !== '') {
     splitName = projects.split(':');
     newProject = document.createElement('div');
     newProject.setAttribute('class', 'project');
