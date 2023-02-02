@@ -69,6 +69,10 @@
 			<div data-title="Settings">
 				<img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="25px" height="25px" class="btn-setting" style="cursor: pointer; display: none;">
 			</div>
+			<br><br><br>
+			<div data-title="Download Project">
+				<img src="https://cdn-icons-png.flaticon.com/512/3580/3580085.png" width="25px" height="25px" class="btn-download" style="cursor: pointer;">
+			</div>
 		</div>
 		<div id="container">
 			<div class="left">
@@ -100,7 +104,7 @@
 						<span class="checkmark"></span>
 					  </label>
 				</div>
-				<i id="ver" style="font-size: 2rem;">v1.4.6</i>
+				<i id="ver" style="font-size: 2rem;">v1.4.7</i>
 				<iframe frameborder="0"  class="iframe" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -161,6 +165,54 @@
 		</script>
 		<script src="./console.js"></script>
 		<script type="module" src="./script.js"></script>
+		<script>
+		  var queryString = new Array();
+		  if (queryString.length == 0) {
+			if (window.location.search.split('?').length > 1) {
+			  var params = window.location.search.split('?')[1].split('&');
+			  for (var i = 0; i < params.length; i++) {
+			    var key = params[i].split('=')[0];
+			    var value = decodeURIComponent(params[i].split('=')[1]);
+			    queryString[key] = value;
+			  }
+			}
+		  }
+					
+			document.querySelector('.btn-download').onclick = function(){
+				require(['https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.0/jszip.min.js'], function(JSZip) {
+				  let zip = new JSZip();
+				  var afsKeys = Object.keys(window.afs);
+				  afsKeys.forEach((folder) => {
+				  	if (folder === "main") {
+				  		var folderKeys = Object.keys(window.afs[folder]);
+				  		folderKeys.forEach((file) => {
+				  			if (file !== '') {
+				  				var splitFile = file.split("-");
+				  				zip.file(window.Base64.decode(splitFile[0]) + "." + splitFile[1], window.afs[folder][file]);
+				  			}
+				  		})
+				  	} else {
+				  		var newFolder = zip.folder(folder);
+				  		var folderKeys = Object.keys(window.afs[folder]);
+				  		folderKeys.forEach((file) => {
+				  			if (file !== '') {
+				  				var splitFile = file.split("-");
+				  				newFolder.file(window.Base64.decode(splitFile[0]) + "." + splitFile[1], window.afs[folder][file]);
+				  			}
+				  		})
+				  	}
+				  })
+				  
+				 zip.generateAsync({type:"blob"})
+				  .then(function (blob) {
+				    const link = document.createElement('a');
+				    link.href = window.URL.createObjectURL(blob);
+				    link.download = queryString["id"] + '.zip';
+				    link.click();
+				  });
+				})
+			}
+		</script>
 		<!--<script src="./auto.js"></script>-->
 		<script>
 		
