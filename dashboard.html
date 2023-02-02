@@ -1,41 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1d">
-		<title>NEKO Code Editor | Dashboard</title>
-		<meta name="description" content="Online JavaScript Compiler">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.">
-		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/jquery-1.9.1.min.js"></script>
-        <link rel="stylesheet" href="./style.css">
-        <link rel="icon" type="image/x-icon" href="./favicon.png">
-        <script src="./base64.js"></script>
-        <script src="./lz-string.js"></script>
-	    <link rel="manifest" href="./manifest.json">
-        <style>
-            html {
-                font-size: 100%;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <div class="editor-menu">
-            <img id="logo" src="./favicon.png">
-            <button class="btn btn-lo">Log Out</button>
-            <button class="btn" data-title="Account Settings" id="account">Account Settings</button>
-            <p id="ver">v1.4.4</p>
-        </div>
-        
-        <div class="projects-container">
-            <br>
-            <form style="display: none;" id="newProjectForm">
-               <input type="text" id="name">
-               <input class="btn" type="button" id="new" value="Create">
-            </form>
-            <br>
-            <p id="load">loading...</p>
-        </div>
-    </body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js" integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ==" crossorigin="anonymous"></script>
-    <script src="dashboard.js"></script>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1d" />
+    <title>NEKO Code Editor | Dashboard</title>
+    <meta name="description" content="Online JavaScript Compiler" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min."
+    />
+    <script
+      type="text/javascript"
+      src="https://microsoft.github.io/monaco-editor/lib/jquery-1.9.1.min.js"
+    ></script>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" type="image/x-icon" href="./favicon.png" />
+    <script src="./base64.js"></script>
+    <script src="./lz-string.js"></script>
+    <link rel="manifest" href="./manifest.json" />
+    <style>
+      html {
+        font-size: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="editor-menu">
+      <img id="logo" src="./favicon.png" />
+      <button class="btn btn-lo">Log Out</button>
+      <button class="btn" data-title="Account Settings" id="account">
+        Account Settings
+      </button>
+      <p id="ver">v1.4.4</p>
+    </div>
+
+    <div class="projects-container">
+      <br />
+      <form style="display: none" id="newProjectForm">
+        <input type="text" id="name" />
+        <input class="btn" type="button" id="new" value="Create" />
+      </form>
+      <br />
+      <p id="load">loading...</p>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/idb@3.0.2/build/idb.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"
+    integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ=="
+    crossorigin="anonymous"
+  ></script>
+  <script type="module" src="dashboard.js"></script>
 </html>
