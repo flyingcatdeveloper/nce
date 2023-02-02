@@ -509,3 +509,18 @@ function setCookie(cname, cvalue, exdays) {
   let expires = 'expires=' + d.toUTCString();
   document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
 }
+
+document.querySelector(".btn-clear").onclick = function() {
+  var uinput = confirm("Do you want to clear all data? This action can't be undone.");
+  
+  if (uinput === true) {
+    var accountdata = JSON.parse(window.localStorage.getItem(window.localStorage.getItem('li')));
+    accountdata.editor = "";
+    window.localStorage.setItem(window.localStorage.getItem('li'), JSON.stringify(accountdata));
+    clear();
+    window.location.reload();
+  } else {
+    return;
+  }
+  
+}
