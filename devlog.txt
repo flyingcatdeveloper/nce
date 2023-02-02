@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.4.8 02/02/2023:
+    - Updated code processing
+
 Update v1.4.7 02/02/2023:
     - Re-added download project feature
 
