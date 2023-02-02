@@ -2677,6 +2677,7 @@ settingsBtn.onclick = function () {
       Compressed: ['true', 'false'],
     },
     iOptions = ['Editor Name'],
+    bOptions = ['Delete Editor'],
     okeys = Object.keys(options);
 
   sdiv.style.width = '100%';
@@ -2908,6 +2909,52 @@ settingsBtn.onclick = function () {
       e.appendChild(split);
     }
   });
+  
+  bOptions.forEach((option) => {
+    var newBtn = document.createElement('button');
+    var split = document.createElement('br');
+    
+    newBtn.innerHTML = option;
+    
+    if (option === 'Delete Editor') {
+      newBtn.onclick = function() {
+        var uinput = confirm("Are you sure you want to delete this editor? This action can't be undone.");
+        
+        if (uinput === true) {
+          var accountdata = JSON.parse(window.localStorage.getItem(window.localStorage.getItem('li')));
+          
+          var editors = accountdata.editor;
+          
+          var eSplit = editors.split(":");
+          var newVar = '';
+          
+          eSplit.forEach((editor) => {
+            if (editor === queryString["id"]) {
+              // Do nothing
+            } else {
+              if (newVar === '') {
+                newVar = newVar + editor;
+              } else {
+                newVar = newVar + ":" + editor;
+              }
+            }
+          })
+          
+          accountdata.editor = newVar;
+          
+          window.localStorage.setItem(window.localStorage.getItem('li'), JSON.stringify(accountdata));
+          
+          del(queryString["id"]);
+          
+          window.location = "./dashboard.html";
+          
+        }
+      }
+    }
+    
+    e.appendChild(newBtn);
+    e.appendChild(split);
+  })
 };
 
 document.getElementById('deleteFile').onclick = function () {
