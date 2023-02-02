@@ -1,53 +1,80 @@
 <html lang="en">
-    <head>
-		<meta name="viewport" content="width=device-width, initial-scale=1d">
-		<title>NEKO Code Editor</title>
-		<meta name="description" content="Online JavaScript Compiler">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.">
-        <link rel="stylesheet" href="./style.css">
-        <link rel="icon" type="image/x-icon" href="./favicon.png">
-	<link rel="manifest" href="./manifest.json">
-    </head>
-    
-    <body>
-        <div class="editor-menu">
-            <img id="logo" src="./favicon.png">
-            <button class="btn btn-ls">Login/Signup</button>
-            <button style="display: none;" class="btn btn-db">Dashboard</button>
-        </div>
-        <div class="container">
-            <h1 id="slogan">The free code editor for you.</h1>
-        </div>
-        
-        <script>
-            document.querySelector(".btn-ls").onclick = function() {
-                window.location.href = "./login.html";
-            }
-            
-            document.querySelector(".btn-db").onclick = function() {
-                window.location.href = "./dashboard.html";
-            }
-            
-            if (getCookie("li") != "") {
-                document.querySelector(".btn-ls").style.display = "none";
-                document.querySelector(".btn-db").style.display = "block";
-            }
-            
-            function getCookie(cname) {
-	let name = cname + "=";
-	let decodedCookie = decodeURIComponent(document.cookie);
-	let ca = decodedCookie.split(';');
-	for(let i = 0; i < ca.length; i++) {
-	  let c = ca[i];
-	  while (c.charAt(0) == ' ') {
-		c = c.substring(1);
-	  }
-	  if (c.indexOf(name) == 0) {
-		return c.substring(name.length, c.length);
-	  }
-	}
-	return "";
-  }
-        </script>
-    </body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1d" />
+    <title>NEKO Code Editor</title>
+    <meta name="description" content="Online JavaScript Compiler" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min."
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" type="image/x-icon" href="./favicon.png" />
+    <link rel="manifest" href="./manifest.json" />
+  </head>
+
+  <body>
+    <div class="editor-menu">
+      <img id="logo" src="./favicon.png" />
+      <button class="btn btn-ls">Login/Signup</button>
+      <button style="display: none" class="btn btn-db">Dashboard</button>
+      <button class="btn btn-soo">Offline</button>
+    </div>
+    <div class="container">
+      <h1 id="slogan">The free code editor for you.</h1>
+    </div>
+
+    <script>
+      if (window.localStorage.getItem('offline') === 'true') {
+        document.querySelector('.btn-soo').innerHTML = 'Online';
+      }
+
+      document.querySelector('.btn-soo').onclick = function () {
+        if (window.localStorage.getItem('offline') !== 'true') {
+          window.localStorage.setItem('offline', 'true');
+          document.querySelector('.btn-soo').innerHTML = 'Online';
+        } else {
+          window.localStorage.setItem('offline', 'false');
+          document.querySelector('.btn-soo').innerHTML = 'Offline';
+        }
+      };
+
+      document.querySelector('.btn-ls').onclick = function () {
+        window.location.href = './login.html';
+      };
+
+      document.querySelector('.btn-db').onclick = function () {
+        window.location.href = './dashboard.html';
+      };
+
+      if (
+        getCookie('li') !== '' ||
+        (window.localStorage.getItem('li') !== null &&
+          window.localStorage.getItem('li') !== '')
+      ) {
+        document.querySelector('.btn-ls').style.display = 'none';
+        document.querySelector('.btn-db').style.display = 'block';
+      }
+
+      function getCookie(cname) {
+        let name = cname + '=';
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return '';
+      }
+
+      if (window.location.hostname !== 'flyingcatdeveloper.github.io') {
+        window.localStorage.setItem('offline', true);
+        document.querySelector('.btn-soo').style.display = 'none';
+      }
+    </script>
+  </body>
 </html>
