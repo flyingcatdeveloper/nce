@@ -33,10 +33,10 @@
     			const key = e.message ? 'message' : 'data';
     			const data = e[key];
     			
-    			if (data.includes("sncon")) {
+    			if (data.includes("sncon") === true) {
     				var splitData = data.split(".///...//");
     				document.getElementById("log").innerHTML += splitData[0];
-    			} else if (data.includes("console.clear()")) {
+    			} else if (data.includes("console.clear()") === true) {
     				window.eval(data);
     			}
 			},false);
@@ -160,7 +160,7 @@
 			})
 		</script>
 		<script src="./console.js"></script>
-		<script src="./script.js"></script>
+		<script type="module" src="./script.js"></script>
 		<!--<script src="./auto.js"></script>-->
 		<script>
 		
