@@ -1,8 +1,12 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.4.6 02/02/2023:
+    - Small bug fixes
+
 Update v1.4.5 02/01/2023:
     - Added offline mode (no db connection)
+    - Removed online mode (for now)
 
 Update v1.4.4 01/27/2023:
     - Made better mobile support
