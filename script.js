@@ -2367,7 +2367,11 @@ function saveCode(run) {
         if (window.localStorage.getItem('offline') !== 'true') {
           startSave();
         } else {
-          set(queryString['id'], data);
+          get(queryString["id"]).then((val) => {
+            var o = val.opened;
+            data['opened'] = o;
+            set(queryString['id'], data);
+          });
           saveBtn.src =
             'https://cdn-icons-png.flaticon.com/512/2874/2874091.png';
           console.info('saved code.');
@@ -2405,7 +2409,11 @@ function saveCode(run) {
         if (window.localStorage.getItem('offline') !== 'true') {
           startSave();
         } else {
-          set(queryString['id'], data);
+          get(queryString["id"]).then((val) => {
+            var o = val.opened;
+            data['opened'] = o;
+            set(queryString['id'], data);
+          });
           saveBtn.src =
             'https://cdn-icons-png.flaticon.com/512/2874/2874091.png';
           console.info('saved code.');
@@ -2438,7 +2446,11 @@ function saveCode(run) {
         if (window.localStorage.getItem('offline') !== 'true') {
           startSave();
         } else {
-          set(queryString['id'], data);
+          get(queryString["id"]).then((val) => {
+            var o = val.opened;
+            data['opened'] = o;
+            set(queryString['id'], data);
+          });
           saveBtn.src =
             'https://cdn-icons-png.flaticon.com/512/2874/2874091.png';
           console.info('saved code.');
