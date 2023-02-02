@@ -2504,7 +2504,7 @@ window.onload = function () {
   }
   if (
     queryString['id'] !== null &&
-    window.localStorage.getItem('offline') !== true
+    window.localStorage.getItem('offline') !== 'true'
   ) {
     if (window.localStorage.getItem('offline') !== 'true') {
       var data = null;
@@ -2536,11 +2536,11 @@ window.onload = function () {
       xhr.setRequestHeader('cache-control', 'no-cache');
 
       xhr.send(data);
-    } else {
-      document.querySelector('.btn-share').style.display = 'none';
-
-      createTimestamp(window.localStorage.getItem('li'));
     }
+  } else {
+    document.querySelector('.btn-share').style.display = 'none';
+
+    createTimestamp(window.localStorage.getItem('li'));
   }
 };
 
