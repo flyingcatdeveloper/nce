@@ -41,6 +41,8 @@
 //         }
 //       };
 
+      window.localStorage.setItem('offline', 'true');
+      
       document.querySelector('.btn-ls').onclick = function () {
         window.location.href = './login.html';
       };
@@ -80,8 +82,6 @@
         let expires = 'expires=' + d.toUTCString();
         document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
       }
-      window.localStorage.setItem('offline', true);
-      document.querySelector('.btn-soo').style.display = 'none';
     </script>
   </body>
 </html>
