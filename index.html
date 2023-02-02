@@ -33,9 +33,11 @@
           window.localStorage.setItem('offline', 'true');
           setCookie('li', '');
           document.querySelector('.btn-soo').innerHTML = 'Online';
+          window.location.reload();
         } else {
           window.localStorage.setItem('offline', 'false');
           document.querySelector('.btn-soo').innerHTML = 'Offline';
+          window.location.reload();
         }
       };
 
