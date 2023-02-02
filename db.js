@@ -26,7 +26,6 @@ export async function get(key) {
     },
   });
   let data = (await dbPromise).get(store_name, key);
-  successMsg('successfully retrieved data.');
   return data;
 }
 export async function set(key, val) {
@@ -44,7 +43,6 @@ export async function set(key, val) {
     },
   });
   let data = (await dbPromise).put(store_name, val, key);
-  successMsg('successfully set data.');
   return data;
 }
 export async function del(key) {
@@ -62,7 +60,6 @@ export async function del(key) {
     },
   });
   let data = (await dbPromise).delete(store_name, key);
-  successMsg('successfully deleted data.');
   return data;
 }
 export async function clear() {
@@ -80,7 +77,6 @@ export async function clear() {
     },
   });
   let data = (await dbPromise).clear(store_name);
-  successMsg('successfully deleted data.');
   return data;
 }
 export async function keys() {
@@ -98,6 +94,5 @@ export async function keys() {
     },
   });
   let data = (await dbPromise).getAllKeys(store_name);
-  successMsg('successfully deleted data.');
   return data;
 }
