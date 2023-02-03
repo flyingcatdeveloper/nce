@@ -55,7 +55,7 @@ const left = document.querySelector('.left'),
   pre = document.querySelector('#log'),
   run = document.querySelector('.btn-run'),
   ontb = document.querySelector('.btn-ont'),
-  iframe = document.querySelector('.iframe'),
+  iframe = document.querySelector('#iframe'),
   con = document.querySelector('.test'),
   darkLightMode = document.querySelector('.btn-dark-light'),
   menu = document.querySelector('.editor-menu'),
@@ -2702,14 +2702,24 @@ document.querySelector('.language-picker').onchange = function () {
 };
 
 settingsBtn.onclick = function () {
-  iframe.style.display = 'none';
+  iframe.style.height = "1%";
+  iframe.style.display = "none";
+  if (conbtn.checked) {
+    conbtn.click();
+  }
+  document.getElementById("conbtn").style.display = "none";
+  document.getElementById("ver").style.display = "none";
   var e = document.getElementById('settingsMenu');
-  e.style.display = '';
+  e.style.display = 'inherit';
 
   window.closeSettings = function () {
     e.innerHTML = '';
+    e.style.height = "1%";
     e.style.display = 'none';
-    iframe.style.display = '';
+    iframe.style.display = 'block';
+    iframe.style.height = "97%";
+    document.getElementById("conbtn").style.display = "";
+    document.getElementById("ver").style.display = "";
   };
 
   e.innerHTML =
