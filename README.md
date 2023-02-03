@@ -12,10 +12,6 @@ Your favorite editor, right here. Use an editor you already know, with many usef
 
 View the console easily with just a click of a button, and turn it off just as easy. Good for you if you want to view the console for things like errors.
 
-### Save Your Code On the Cloud
-
-Your code, anywhere. Just create an account, make an editor, and BAM. You've got your code, anywhere. (To save your code to the cloud, click the "Save" button [Auto-Save coming soon] )
-
 ### Open Your Code In A New Tab
 
 Open your code directly in a new tab, so you can see it exactly as it would look as a webpage.
@@ -44,6 +40,10 @@ See all your editors and when you last opened them in one place, anywhere.
 
 Yes, that's right it's free. No paying for some subscription or other junk.
 
+### Download your project
+
+Ever worried that you might accidentally delete all your data? Well you can download your entire project easily so you don't have to worry about that!
+
 ### Keep Updated
 
 Keep updated on whats new with our DevLog, so you can see what is fixed and added.
@@ -52,7 +52,6 @@ Keep updated on whats new with our DevLog, so you can see what is fixed and adde
 
 Change your settings to your preferences. Settings Include:
   * Change editor name
-  * Preview sharing
-  * Editor sharing
   * Autosave
   * Compress editor (Compresses files to save space)
+  * Delete Editor
