@@ -2383,7 +2383,7 @@ function saveCode(run) {
     data['settings'] = window.settings;
     data['compressed'] = 'true';
 
-    window.html2canvas(document.querySelector('.left'), {
+    window.html2canvas(eframe.contentDocument.body, {
       onrendered: function (canvas) {
         try {
           data['epic'] = canvas.toDataURL();
@@ -2425,7 +2425,7 @@ function saveCode(run) {
     data['settings'] = window.settings;
     data['compressed'] = 'false';
 
-    window.html2canvas(document.querySelector('.left'), {
+    window.html2canvas(eframe.contentDocument.body, {
       onrendered: function (canvas) {
         try {
           data['epic'] = canvas.toDataURL();
@@ -2462,7 +2462,7 @@ function saveCode(run) {
     data['settings'] = window.settings;
     data['compressed'] = 'false';
 
-    window.html2canvas(document.querySelector('.left'), {
+    window.html2canvas(eframe.contentDocument.body, {
       onrendered: function (canvas) {
         try {
           data['epic'] = canvas.toDataURL();
