@@ -1,0 +1,362 @@
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/editor/editor.main.css" data-name="vs/editor/editor.main" />
+        <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/index/index.css" type="text/css" />
+        <link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-cosmo.css" type="text/css" />
+		<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-cosmo.css" type="text/css" />
+   		<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/lib/bootstrap-responsive.min.css" type="text/css" />
+   		<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/all.css" type="text/css" />
+   		<link rel="stylesheet" href="https://microsoft.github.io/monaco-editor/index/index.css" type="text/css" />
+        <style>
+            * {
+                margin: 0;
+				padding: 0;
+				border: 0;
+            }
+            
+            #editor {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    
+    <body>
+       	<div id="editor">
+			<h1 align="center" id="loader"></h1>
+		</div>
+		
+		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/jquery-1.9.1.min.js"></script>
+   		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/bootstrap.min.js"></script>
+   		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+   		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>
+   		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/jquery-1.9.1.min.js"></script>
+   		<script type="text/javascript" src="https://microsoft.github.io/monaco-editor/lib/bootstrap.min.js"></script>
+   		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+        
+        <script src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/loader.js"></script>
+		<script src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+		<script src="https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+		<script>
+		
+       'use strict';
+require.config({
+    baseUrl: 'https://microsoft.github.io/monaco-editor/node_modules/monaco-editor/min/'
+});
+
+
+var editor = null, diffEditor = null;
+
+var data = {};
+
+function loadEditor(sf, s, afs) {
+	document.getElementById('editor').innerHTML = '';
+	
+	document.getElementById('editor').style.opacity = 1;
+	
+	require(['vs/editor/editor.main'], function() {
+		var folderKeys = Object.keys(afs);
+		folderKeys.forEach((folder) => {
+			var fileKeys = Object.keys(afs[folder]);
+			fileKeys.forEach((file) => {
+				var splitType = file.split('-');
+				var fileType = splitType[1];
+				var type;
+				if (fileType === 'html') {
+					type = 'html';
+				} else if (fileType === 'css') {
+					type = 'css';
+				} else if (fileType === 'js') {
+					type = 'javascript';
+				}
+				window.data[folder + "." + file] = {
+					model: monaco.editor.createModel(afs[folder][file], type),
+					state: null
+				}
+			})
+		})
+		
+		window.editor = monaco.editor.create(document.getElementById('editor'), {
+			model: window.data[sf + "." + s].model,
+			minimap: {
+				enabled: false
+			}
+			
+		})
+		
+		
+	})
+}
+
+
+
+function createNewModel(sf, s, afs) {
+    require(['vs/editor/editor.main'], function() {
+		var splitType = s.split('-');
+		var fileType = splitType[1];
+		var type;
+		if (fileType === 'html') {
+			type = 'html';
+		} else if (fileType === 'css') {
+			type = 'css';
+		} else if (fileType === 'js') {
+			type = 'javascript';
+		}
+        window.data[sf + "." + s] =  {
+            model: monaco.editor.createModel(afs[sf][s], type),
+            state: null
+        }
+    })
+}
+
+function loadOldEditor() {
+	document.getElementById('editor').innerHTML = '';
+	
+	document.getElementById('editor').style.opacity = 1;
+	
+	require(['vs/editor/editor.main'], function () {
+		window.MODES = (function() {
+			var modesIds = monaco.languages.getLanguages().map(function(lang) { return lang.id; });
+			modesIds.sort();
+
+			return modesIds.map(function(modeId) {
+				return {
+					modeId: modeId,
+					sampleURL: 'https://microsoft.github.io/monaco-editor/index/samples/sample.' + modeId + '.txt'
+				};
+			});
+		})();
+// 		$('.language-picker').selectpicker({
+// 			size: 10
+// 		});
+
+		loadSample(MODES[parseInt(document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].value)]);
+		window.cType = window.MODES[window.cType = document.querySelector(".language-picker").options[document.querySelector(".language-picker").selectedIndex].value].modeId;
+		if (window.cType === "css" || window.ftype === "css") {
+			document.getElementById("addResource").style.display = "";
+            document.getElementById("removeSources").style.display = "";
+		} else if (window.cType === "js" || window.ftype === "js") {
+			document.getElementById("addResource").style.display = "";
+            document.getElementById("removeSources").style.display = "";
+		} else {
+			document.getElementById("addResource").style.display = "none";
+            document.getElementById("removeSources").style.display = "none";
+		}
+
+		$(".btn-dark-light").change(function() {
+			changeTheme(this.selectedIndex);
+		});
+//  		$('.theme-picker').selectpicker({
+// 		  size: 3
+// 		});
+
+		loadDiffSample();
+
+		$('#inline-diff-checkbox').change(function () {
+			diffEditor.updateOptions({
+				renderSideBySide: !$(this).is(':checked')
+			});
+		});
+	});
+
+	window.onresize = function () {
+		if (editor) {
+			editor.layout();
+		}
+		if (diffEditor) {
+			diffEditor.layout();
+		}
+	};
+};
+
+function loadSample(mode) {
+	$.ajax({
+		type: 'GET',
+		url: mode.sampleURL,
+		dataType: 'text',
+		beforeSend: function() {
+			$('.loading.editor').show();
+		},
+		error: function () {
+			if (editor) {
+				if (editor.getModel()) {
+					editor.getModel().dispose();
+				}
+				editor.dispose();
+				editor = null;
+			}
+			$('.loading.editor').fadeOut({ duration: 200 });
+			$('#editor').empty();
+			$('#editor').append('<p class="alert alert-error">Failed to load ' + mode.modeId + ' sample</p>');
+		}
+	}).done(function (data) {
+		if (!editor) {
+			$('#editor').empty();
+			editor = monaco.editor.create(document.getElementById('editor'), {
+				model: null,
+			});
+		}
+
+    var oldModel = editor.getModel();
+    var newModel = monaco.editor.createModel(data, mode.modeId);
+    editor.setModel(newModel);
+		if (oldModel) {
+			oldModel.dispose();
+		}
+		$('.loading.editor').fadeOut({ duration: 300 });
+		editor.getModel().setValue(window.afs[window.sf][window.s]);
+	});
+}
+
+function loadDiffSample() {
+
+  var onError = function() {
+    $('.loading.diff-editor').fadeOut({ duration: 200 });
+    $('#diff-editor').append('<p class="alert alert-error">Failed to load diff editor sample</p>');
+  };
+
+  $('.loading.diff-editor').show();
+
+  var lhsData = null, rhsData = null, jsMode = null;
+
+  $.ajax({
+    type: 'GET',
+    url: 'https://microsoft.github.io/monaco-editor/index/samples/diff.lhs.txt',
+    dataType: 'text',
+    error: onError
+  }).done(function (data) {
+    lhsData = data;
+    onProgress();
+  });
+
+  $.ajax({
+    type: 'GET',
+    url: 'https://microsoft.github.io/monaco-editor/index/samples/diff.rhs.txt',
+    dataType: 'text',
+    error: onError
+  }).done(function (data) {
+    rhsData = data;
+    onProgress();
+  });
+
+  function onProgress() {
+    if (lhsData && rhsData) {
+      diffEditor = monaco.editor.createDiffEditor(document.getElementById('diff-editor'), {
+        enableSplitViewResizing: false
+      });
+
+      var lhsModel = monaco.editor.createModel(lhsData, 'text/javascript');
+      var rhsModel = monaco.editor.createModel(rhsData, 'text/javascript');
+
+      diffEditor.setModel({
+        original: lhsModel,
+        modified: rhsModel
+      });
+
+      $('.loading.diff-editor').fadeOut({ duration: 300 });
+    }
+  }
+}
+
+function changeTheme(theme) {
+	var newTheme = (theme === 1 ? 'vs-dark' : ( theme === 0 ? 'vs' : 'hc-black' ));
+	if (editor) {
+		editor.updateOptions({ 'theme' : newTheme });
+		if (newTheme === 'vs-dark') {
+			document.querySelector(".sidenav").style.backgroundColor = "#555555";
+			document.getElementById("container").style.backgroundColor = "#111111";
+			document.body.style.backgroundColor = "#111111";
+			document.querySelector(".left").style.border = "1px solid #222222";
+			document.querySelector(".right").style.border = "1px solid #222222";
+			document.getElementById("container").style.color = "#eee";
+			document.getElementById("iframe").style.backgroundColor = "#1e1e1e";
+			document.getElementById("log").style.color = "#eee";
+			document.querySelector(".tocl").style.color = "#eee";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "#eee";
+			document.querySelector(".popupCloseButton").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "#222";
+			document.querySelector(".popupCloseButton2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "#222";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "rgba(0,0,0,0.8)";
+				btn.style.color = "#eee";
+			});
+		} else if (newTheme === 'vs') {
+			document.querySelector(".sidenav").style.backgroundColor = "#eee";
+			document.getElementById("container").style.backgroundColor = "#fff";
+			document.body.style.backgroundColor = "#fff";
+			document.querySelector(".left").style.border = "1px solid #d5d5d5";
+			document.querySelector(".right").style.border = "1px solid #d5d5d5";
+			document.getElementById("container").style.color = "#eee";
+			document.getElementById("iframe").style.backgroundColor = "#fff";
+			document.getElementById("log").style.color = "black";
+			document.querySelector(".tocl").style.color = "#eee";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc").style.color = "black";
+			document.querySelector(".popupCloseButton").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "#fff";
+			document.querySelector(".popupCloseButton2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "#fff";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "rgba(0,0,0,0.8)";
+				btn.style.color = "#eee";
+			});
+		} else if (newTheme === 'hc-black') {
+			document.querySelector(".sidenav").style.backgroundColor = "lime";
+			document.getElementById("container").style.backgroundColor = "#000000";
+			document.body.style.backgroundColor = "#000000";
+			document.querySelector(".left").style.border = "1px solid #222222";
+			document.querySelector(".right").style.border = "1px solid #222222";
+			document.getElementById("container").style.color = "yellow";
+			document.getElementById("iframe").style.backgroundColor = "#000000";
+			document.getElementById("log").style.color = "lime";
+			document.querySelector(".tocl").style.color = "yellow";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "yellow";
+			document.querySelector(".hover_bkgr_fricc").style.color = "yellow";
+			document.querySelector(".popupCloseButton").style.color = "lime";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "black";
+			document.querySelector(".popupCloseButton2").style.color = "lime";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "black";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "#000000";
+				btn.style.color = "yellow";
+			});
+		}
+	}
+	if (diffEditor) {
+		diffEditor.updateOptions({ 'theme': newTheme });
+	}
+}
+
+function animateLoader() {
+	var count = 0;
+	function change() {
+		count += 1;
+		if (count !== 4 && document.getElementById("loader") !== null) {
+			if (count === 1) {
+				document.getElementById("loader").innerHTML = ".";
+			} else if (count === 2) {
+				document.getElementById("loader").innerHTML = "..";
+			} else if (count === 3) {
+				document.getElementById("loader").innerHTML = "...";
+			} else {
+				document.getElementById("loader").innerHTML = "...";
+			}
+		} else if (document.getElementById("loader") !== null) {
+			count = 0;
+			change();
+		} else {
+			clearInterval(change, 200);
+		}
+	}
+	
+	setInterval(change, 200);
+}
+
+animateLoader();
+		</script>
+    </body>
+</html>
