@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.5.0 02/03/2023:
+    - Added better monaco editor support
+
 Update/Bug Fix v1.4.9 02/02/2023:
     - Added 'clear data' option on dashboard
     - Added 'delete editor' setting in editor
