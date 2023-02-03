@@ -7,6 +7,17 @@ if (
   window.location.replace('./index.html');
 }
 
+var DEV = false;
+
+window.onerror = function (msg, url, linenumber) {
+  if (DEV === true) {
+    alert(
+      'Error message: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber
+    );
+  }
+  return true;
+};
+
 var s;
 var sf;
 var ftype = 'html';
@@ -58,7 +69,8 @@ const left = document.querySelector('.left'),
   dbBtn = document.querySelector('.btn-db2'),
   lpicker = document.querySelector('.language-picker'),
   shareBtn = document.querySelector('.btn-share'),
-  settingsBtn = document.querySelector('.btn-setting');
+  settingsBtn = document.querySelector('.btn-setting'),
+  eframe = document.getElementById("eframe");
 
 // Variables used for ldm btn
 let ldm = 0;
@@ -206,12 +218,6 @@ document.getElementById('createFile').onclick = function () {
   var opt3 = document.createElement('option');
   var opt4 = document.createElement('option');
   document.querySelector('.hover_bkgr_fricc2').style.display = 'inline-block';
-  document.querySelector('.popupCloseButton2').onclick = function () {
-    document.querySelector('.hover_bkgr_fricc2').style.display = 'none';
-    document.getElementById('content').removeChild(newInput);
-    document.getElementById('content').removeChild(newSelection);
-    document.getElementById('content').removeChild(newButton);
-  };
 
   newInput.placeholder = 'Name';
   newInput.id = 'name3';
@@ -244,6 +250,12 @@ document.getElementById('createFile').onclick = function () {
       alert('unexpected error');
     }
   };
+  document.querySelector('.popupCloseButton2').onclick = function () {
+    document.querySelector('.hover_bkgr_fricc2').style.display = 'none';
+    document.getElementById('content').removeChild(newInput);
+    document.getElementById('content').removeChild(newSelection);
+    document.getElementById('content').removeChild(newButton);
+  };
   document.getElementById('saveFile').onclick = function () {
     if (window.ftype === 'folder') {
       var folder = document.getElementById('name3').value;
@@ -263,8 +275,7 @@ document.getElementById('createFile').onclick = function () {
         window.sf = folder;
         window.afs[folder] = {};
 
-        document.getElementById('editor').innerHTML =
-          "<h1 style='text-align: center;'>No file selected.</h1>";
+        eframe.contentDocument.getElementById('editor').style.opacity = 0;
         document.querySelector('.language-picker').innerHTML = '';
         document.getElementById('content').removeChild(newInput);
         document.getElementById('content').removeChild(newSelection);
@@ -332,9 +343,29 @@ document.getElementById('createFile').onclick = function () {
             document.querySelector('.language-picker').selectedIndex
           ].text;
         var tds = td.split('.');
-        document.getElementById('editor').innerHTML = '';
-        window.loadEditor();
+        
+        var oldData = [window.sf, window.s];
+        
         window.s = window.Base64.encode(tds[0]) + '-' + tds[1];
+        
+        if (eframe.contentWindow.editor) {
+          
+          var currentState = eframe.contentWindow.editor.saveViewState();
+  
+          var currentModel = eframe.contentWindow.editor.getModel();
+          
+          eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+          
+          eframe.contentWindow.createNewModel(window.sf, window.s, window.afs);
+          
+          
+          eframe.contentWindow.editor.setModel(eframe.contentWindow.data[window.sf + "." + window.s].model);
+          eframe.contentWindow.editor.restoreViewState(eframe.contentWindow.data[window.sf + "." + window.s].state);
+          eframe.contentDocument.getElementById("editor").style.opacity = 1;
+          eframe.contentWindow.editor.focus();
+        } else {
+          eframe.contentWindow.loadEditor(window.sf, window.s, window.afs);
+        }
 
         document.getElementById('content').removeChild(newInput);
         document.getElementById('content').removeChild(newSelection);
@@ -1940,11 +1971,11 @@ dbBtn.onclick = function () {
   window.location.replace('./dashboard.html');
 };
 
-window.addEventListener('keyup', () => {
+eframe.contentWindow.addEventListener('keyup', () => {
   try {
-    window.afs[window.sf][window.s] = window.editor.getValue();
-  } catch (e) {
-    throw e;
+    window.afs[window.sf][window.s] = eframe.contentWindow.editor.getValue();
+  } catch {
+    
   }
 });
 
@@ -2146,8 +2177,7 @@ function validate(Data) {
             document.querySelector('.language-picker').appendChild(newOption);
           }
         });
-        document.getElementById('editor').innerHTML =
-          "<h1 style='text-align: center;'>No file selected.</h1>";
+        eframe.contentDocument.getElementById('editor').style.opacity = 0;
         document.getElementById('createFile').style.display = '';
         document.querySelector('.language-picker').style.display = '';
         document.querySelector('.folder-picker').style.display = '';
@@ -2157,7 +2187,6 @@ function validate(Data) {
           document.querySelector('.folder-picker').options[
             document.querySelector('.folder-picker').selectedIndex
           ].innerHTML;
-        window.loadEditor();
         document.getElementById('link').href =
           './view.html?id=' +
           queryString['id'] +
@@ -2181,7 +2210,7 @@ function validate(Data) {
             ].innerHTML;
           var tds = td.split('.');
           window.s = window.Base64.encode(tds[0]) + '-' + tds[1];
-          window.loadEditor();
+          eframe.contentWindow.loadEditor(window.sf, window.s, window.afs);
           document.getElementById('deleteFile').style.display = '';
         } else {
           window.s = '';
@@ -2237,13 +2266,12 @@ function validate(Data) {
           var tds = td.split('.');
           window.s = window.Base64.encode(tds[0]) + '-' + tds[1];
           document.getElementById('deleteFile').style.display = '';
-          window.loadEditor();
+          eframe.contentWindow.loadEditor(window.sf, window.s, window.afs);
         } else {
           window.s = '';
           document.getElementById('deleteFile').style.display = 'none';
         }
-        document.getElementById('editor').innerHTML =
-          "<h1 style='text-align: center;'>No file selected.</h1>";
+        eframe.contentDocument.getElementById('editor').style.opacity = 0;
         document.getElementById('createFile').style.display = '';
         document.querySelector('.language-picker').style.display = '';
         document.querySelector('.folder-picker').style.display = '';
@@ -2278,8 +2306,7 @@ function validate(Data) {
           document.querySelector('.folder-picker').options[
             document.querySelector('.folder-picker').selectedIndex
           ].innerHTML;
-        document.getElementById('editor').innerHTML =
-          "<h1 style='text-align: center;'>No file selected.</h1>";
+        eframe.contentDocument.getElementById('editor').style.opacity = 0;
         document.getElementById('createFile').style.display = '';
         document.getElementById('addResource').style.display = 'none';
         document.getElementById('removeSources').style.display = 'none';
@@ -2557,6 +2584,7 @@ window.onload = function () {
 };
 
 document.querySelector('.folder-picker').onchange = function () {
+  var oldData = [window.sf, window.s];
   window.sf =
     document.querySelector('.folder-picker').options[
       document.querySelector('.folder-picker').selectedIndex
@@ -2600,28 +2628,44 @@ document.querySelector('.folder-picker').onchange = function () {
       ].innerHTML;
     var sSplit = slcted.split('.');
     window.s = window.Base64.encode(sSplit[0]) + '-' + sSplit[1];
-
-    document.getElementById('editor').innerHTML = '';
-    window.loadEditor();
+    
+    var currentState = eframe.contentWindow.editor.saveViewState();
+    
+    var currentModel = eframe.contentWindow.editor.getModel();
+    
+    eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+    
+    eframe.contentWindow.editor.setModel(eframe.contentWindow.data[window.sf + "." + window.s].model);
+    eframe.contentWindow.editor.restoreViewState(eframe.contentWindow.data[window.sf + "." + window.s].state);
+    eframe.contentDocument.getElementById("editor").style.opacity = 1;
+    eframe.contentWindow.editor.focus();
 
     document.getElementById('deleteFile').style.display = '';
   } else {
     window.s = '';
-    document.getElementById('editor').innerHTML =
-      "<h1 style='text-align: center;'>No file selected.</h1>";
+    eframe.contentDocument.getElementById('editor').style.opacity = 0;
     document.getElementById('deleteFile').style.display = 'none';
   }
 };
 
 document.querySelector('.language-picker').onchange = function () {
+  var oldData = [window.sf, window.s];
   var td =
     document.querySelector('.language-picker').options[
       document.querySelector('.language-picker').selectedIndex
     ].innerHTML;
   var tds = td.split('.');
   window.s = window.Base64.encode(tds[0]) + '-' + tds[1];
-  window.cType = window.MODES[this.options[this.selectedIndex].value].modeId;
-  window.loadSample(window.MODES[this.options[this.selectedIndex].value]);
+  var currentState = eframe.contentWindow.editor.saveViewState();
+    
+  var currentModel = eframe.contentWindow.editor.getModel();
+  
+  eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+  
+  eframe.contentWindow.editor.setModel(eframe.contentWindow.data[window.sf + "." + window.s].model);
+  eframe.contentWindow.editor.restoreViewState(eframe.contentWindow.data[window.sf + "." + window.s].state);
+  eframe.contentDocument.getElementById("editor").style.opacity = 1;
+  eframe.contentWindow.editor.focus();
   if (window.cType === 'css') {
     document.getElementById('deleteFile').style.display = '';
     document.querySelector('.language-picker').style.display = '';
@@ -2658,15 +2702,18 @@ document.querySelector('.language-picker').onchange = function () {
 };
 
 settingsBtn.onclick = function () {
-  var e = document.getElementById('editor');
+  iframe.style.display = 'none';
+  var e = document.getElementById('settingsMenu');
+  e.style.display = '';
 
-  window.clearEditor = function () {
+  window.closeSettings = function () {
     e.innerHTML = '';
-    window.loadEditor();
+    e.style.display = 'none';
+    iframe.style.display = '';
   };
 
   e.innerHTML =
-    "<button class='btn' onclick='window.clearEditor()'>X</button><br><br>";
+    "<button class='btn' onclick='window.closeSettings()'>X</button><br><br>";
 
   var sdiv = document.createElement('div'),
     options = {
@@ -2969,6 +3016,8 @@ document.getElementById('deleteFile').onclick = function () {
       ];
 
     document.querySelector('.language-picker').removeChild(f);
+    
+    var oldData = [f, window.s];
 
     if (document.querySelector('.language-picker').options.length !== 0) {
       var slcted =
@@ -2977,18 +3026,99 @@ document.getElementById('deleteFile').onclick = function () {
         ].innerHTML;
       var sSplit = slcted.split('.');
       window.s = window.Base64.encode(sSplit[0]) + '-' + sSplit[1];
-
-      document.getElementById('editor').innerHTML = '';
-      window.loadEditor();
+      
+      var currentState = eframe.contentWindow.editor.saveViewState();
+    
+      var currentModel = eframe.contentWindow.editor.getModel();
+      
+      eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+      
+      eframe.contentWindow.editor.setModel(eframe.contentWindow.data[window.sf + "." + window.s].model);
+      eframe.contentWindow.editor.restoreViewState(eframe.contentWindow.data[window.sf + "." + window.s].state);
+      eframe.contentDocument.getElementById("editor").style.opacity = 1;
+      eframe.contentWindow.editor.focus();
 
       document.getElementById('deleteFile').style.display = '';
     } else {
       window.s = '';
-      document.getElementById('editor').innerHTML =
-        "<h1 style='text-align: center;'>No file selected.</h1>";
+      eframe.contentDocument.getElementById('editor').style.opacity = 0;
       document.getElementById('deleteFile').style.display = 'none';
     }
   } else {
     // Do Nothing
   }
 };
+
+document.querySelector(".btn-dark-light").onchange = function() {
+		changeTheme(this.selectedIndex);
+};
+
+function changeTheme(theme) {
+	var newTheme = (theme === 1 ? 'vs-dark' : ( theme === 0 ? 'vs' : 'hc-black' ));
+	if (eframe.contentWindow.editor) {
+		eframe.contentWindow.editor.updateOptions({ 'theme' : newTheme });
+		if (newTheme === 'vs-dark') {
+			document.querySelector(".sidenav").style.backgroundColor = "#555555";
+			document.getElementById("container").style.backgroundColor = "#111111";
+			document.body.style.backgroundColor = "#111111";
+			document.querySelector(".left").style.border = "1px solid #222222";
+			document.querySelector(".right").style.border = "1px solid #222222";
+			document.getElementById("container").style.color = "#eee";
+			document.getElementById("iframe").style.backgroundColor = "#1e1e1e";
+			document.getElementById("log").style.color = "#eee";
+			document.querySelector(".tocl").style.color = "#eee";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "#eee";
+			document.querySelector(".popupCloseButton").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "#222";
+			document.querySelector(".popupCloseButton2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "#222";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "rgba(0,0,0,0.8)";
+				btn.style.color = "#eee";
+			});
+		} else if (newTheme === 'vs') {
+			document.querySelector(".sidenav").style.backgroundColor = "#eee";
+			document.getElementById("container").style.backgroundColor = "#fff";
+			document.body.style.backgroundColor = "#fff";
+			document.querySelector(".left").style.border = "1px solid #d5d5d5";
+			document.querySelector(".right").style.border = "1px solid #d5d5d5";
+			document.getElementById("container").style.color = "#eee";
+			document.getElementById("iframe").style.backgroundColor = "#fff";
+			document.getElementById("log").style.color = "black";
+			document.querySelector(".tocl").style.color = "#eee";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc").style.color = "black";
+			document.querySelector(".popupCloseButton").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "#fff";
+			document.querySelector(".popupCloseButton2").style.color = "black";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "#fff";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "rgba(0,0,0,0.8)";
+				btn.style.color = "#eee";
+			});
+		} else if (newTheme === 'hc-black') {
+			document.querySelector(".sidenav").style.backgroundColor = "lime";
+			document.getElementById("container").style.backgroundColor = "#000000";
+			document.body.style.backgroundColor = "#000000";
+			document.querySelector(".left").style.border = "1px solid #222222";
+			document.querySelector(".right").style.border = "1px solid #222222";
+			document.getElementById("container").style.color = "yellow";
+			document.getElementById("iframe").style.backgroundColor = "#000000";
+			document.getElementById("log").style.color = "lime";
+			document.querySelector(".tocl").style.color = "yellow";
+			document.querySelector(".hover_bkgr_fricc2").style.color = "yellow";
+			document.querySelector(".hover_bkgr_fricc").style.color = "yellow";
+			document.querySelector(".popupCloseButton").style.color = "lime";
+			document.querySelector(".hover_bkgr_fricc > div").style.backgroundColor = "black";
+			document.querySelector(".popupCloseButton2").style.color = "lime";
+			document.querySelector(".hover_bkgr_fricc2 > div").style.backgroundColor = "black";
+			var btns = document.querySelectorAll(".btn");
+			btns.forEach(btn => {
+				btn.style.backgroundColor = "#000000";
+				btn.style.color = "yellow";
+			});
+		}
+	}
+}
