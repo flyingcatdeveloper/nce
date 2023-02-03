@@ -44,6 +44,12 @@ body {
   transition: all 0.3s;
 }
 
+#settingsMenu {
+  width: 100%;
+  height: 1%;
+  display: none;
+}
+
 #load {
   padding: 10px;
 }
@@ -249,7 +255,6 @@ img:hover {
   text-align: center;
   transition: all 200ms;
   vertical-align: baseline;
-  white-space: nowrap;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
@@ -259,14 +264,12 @@ textarea {
   resize: none;
 }
 
-.iframe {
+#iframe {
   width: 100%;
-  height: 98%;
+  height: 97%;
   border-radius: 10px;
   background-color: #fff;
   overflow-y: auto;
-  white-space: pre;
-  right: 0;
   padding: 4px;
 }
 
