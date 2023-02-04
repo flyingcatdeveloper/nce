@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.5.1 02/03/2023:
+    - Fixed bug that occurs when creating a new folder
+    - Fixed bug that occurs when deleting a file
+
 Update v1.5.0 02/03/2023:
     - Added better monaco editor support
 
