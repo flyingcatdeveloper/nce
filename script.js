@@ -7,7 +7,7 @@ if (
   window.location.replace('./index.html');
 }
 
-var DEV = false;
+var DEV = true;
 
 window.onerror = function (msg, url, linenumber) {
   if (DEV === true) {
@@ -257,6 +257,7 @@ document.getElementById('createFile').onclick = function () {
     document.getElementById('content').removeChild(newButton);
   };
   document.getElementById('saveFile').onclick = function () {
+    var oldData = [window.sf, window.s];
     if (window.ftype === 'folder') {
       var folder = document.getElementById('name3').value;
       if (window.afs[folder] === undefined && folder !== 'main') {
@@ -270,6 +271,13 @@ document.getElementById('createFile').onclick = function () {
 
         document.querySelector('.folder-picker').appendChild(newOpt);
         document.querySelector('.folder-picker').style.display = '';
+        
+        if (eframe.contentWindow.editor) {
+          if (eframe.contentWindow.data[oldData[0] + "." + oldData[1]]) {
+            var currentState = eframe.contentWindow.editor.saveViewState();
+            eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+          }
+        }
 
         window.s = '';
         window.sf = folder;
@@ -344,17 +352,16 @@ document.getElementById('createFile').onclick = function () {
           ].text;
         var tds = td.split('.');
         
-        var oldData = [window.sf, window.s];
-        
         window.s = window.Base64.encode(tds[0]) + '-' + tds[1];
         
         if (eframe.contentWindow.editor) {
-          
-          var currentState = eframe.contentWindow.editor.saveViewState();
   
           var currentModel = eframe.contentWindow.editor.getModel();
           
-          eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+          if (eframe.contentWindow.data[oldData[0] + "." + oldData[1]]) {
+            var currentState = eframe.contentWindow.editor.saveViewState();
+            eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+          }
           
           eframe.contentWindow.createNewModel(window.sf, window.s, window.afs);
           
@@ -363,8 +370,11 @@ document.getElementById('createFile').onclick = function () {
           eframe.contentWindow.editor.restoreViewState(eframe.contentWindow.data[window.sf + "." + window.s].state);
           eframe.contentDocument.getElementById("editor").style.opacity = 1;
           eframe.contentWindow.editor.focus();
+          eframe.contentDocument.getElementById('editor').style.opacity = 1;
+ 
         } else {
           eframe.contentWindow.loadEditor(window.sf, window.s, window.afs);
+          eframe.contentDocument.getElementById('editor').style.opacity = 1;
         }
 
         document.getElementById('content').removeChild(newInput);
@@ -2629,16 +2639,17 @@ document.querySelector('.folder-picker').onchange = function () {
     var sSplit = slcted.split('.');
     window.s = window.Base64.encode(sSplit[0]) + '-' + sSplit[1];
     
-    var currentState = eframe.contentWindow.editor.saveViewState();
-    
-    var currentModel = eframe.contentWindow.editor.getModel();
-    
-    eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+    if (eframe.contentWindow.data[oldData[0] + "." + oldData[1]]) {
+      var currentState = eframe.contentWindow.editor.saveViewState();
+      eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+    }
     
     eframe.contentWindow.editor.setModel(eframe.contentWindow.data[window.sf + "." + window.s].model);
     eframe.contentWindow.editor.restoreViewState(eframe.contentWindow.data[window.sf + "." + window.s].state);
     eframe.contentDocument.getElementById("editor").style.opacity = 1;
     eframe.contentWindow.editor.focus();
+    eframe.contentDocument.getElementById('editor').style.opacity = 1;
+ 
 
     document.getElementById('deleteFile').style.display = '';
   } else {
@@ -2656,16 +2667,18 @@ document.querySelector('.language-picker').onchange = function () {
     ].innerHTML;
   var tds = td.split('.');
   window.s = window.Base64.encode(tds[0]) + '-' + tds[1];
-  var currentState = eframe.contentWindow.editor.saveViewState();
-    
-  var currentModel = eframe.contentWindow.editor.getModel();
   
-  eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+  if (eframe.contentWindow.data[oldData[0] + "." + oldData[1]]) {
+    var currentState = eframe.contentWindow.editor.saveViewState();
+    eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+  }
   
   eframe.contentWindow.editor.setModel(eframe.contentWindow.data[window.sf + "." + window.s].model);
   eframe.contentWindow.editor.restoreViewState(eframe.contentWindow.data[window.sf + "." + window.s].state);
   eframe.contentDocument.getElementById("editor").style.opacity = 1;
   eframe.contentWindow.editor.focus();
+  eframe.contentDocument.getElementById('editor').style.opacity = 1;
+ 
   if (window.cType === 'css') {
     document.getElementById('deleteFile').style.display = '';
     document.querySelector('.language-picker').style.display = '';
@@ -3018,6 +3031,7 @@ document.getElementById('deleteFile').onclick = function () {
   var uinput = confirm('Do you want to delete this file?');
 
   if (uinput === true) {
+    var oldData = [window.sf, window.s];
     delete window.afs[window.sf][window.s];
 
     var f =
@@ -3026,8 +3040,6 @@ document.getElementById('deleteFile').onclick = function () {
       ];
 
     document.querySelector('.language-picker').removeChild(f);
-    
-    var oldData = [f, window.s];
 
     if (document.querySelector('.language-picker').options.length !== 0) {
       var slcted =
@@ -3037,16 +3049,13 @@ document.getElementById('deleteFile').onclick = function () {
       var sSplit = slcted.split('.');
       window.s = window.Base64.encode(sSplit[0]) + '-' + sSplit[1];
       
-      var currentState = eframe.contentWindow.editor.saveViewState();
-    
-      var currentModel = eframe.contentWindow.editor.getModel();
-      
-      eframe.contentWindow.data[oldData[0] + "." + oldData[1]].state = currentState;
+      eframe.contentWindow.data[oldData[0] + "." + oldData[1]] = null;
       
       eframe.contentWindow.editor.setModel(eframe.contentWindow.data[window.sf + "." + window.s].model);
       eframe.contentWindow.editor.restoreViewState(eframe.contentWindow.data[window.sf + "." + window.s].state);
       eframe.contentDocument.getElementById("editor").style.opacity = 1;
       eframe.contentWindow.editor.focus();
+      eframe.contentDocument.getElementById('editor').style.opacity = 1;
 
       document.getElementById('deleteFile').style.display = '';
     } else {
