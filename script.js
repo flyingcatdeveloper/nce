@@ -7,7 +7,7 @@ if (
   window.location.replace('./index.html');
 }
 
-var DEV = true;
+var DEV = false;
 
 window.onerror = function (msg, url, linenumber) {
   if (DEV === true) {
