@@ -1,5 +1,7 @@
 import { get, set, del, clear, keys } from './db.js';
 
+var DEV = true;
+
 window.onerror = function (msg, url, linenumber) {
   if (DEV === true) {
     alert(
@@ -106,7 +108,7 @@ function loadcode() {
       styl,
       count = -1;
     var split = queryString['f'].split('.');
-    document.write(window.afs[split[0]][decodeURIComponent(split[1])]);
+    document.getElementsByTagName("html")[0].innerHTML = window.afs[split[0]][decodeURIComponent(split[1])];
     var titles = document.getElementsByTagName('title');
     if (!titles.length) {
       document.title = 'NCE View';
@@ -117,27 +119,6 @@ function loadcode() {
     var styles = document.querySelectorAll('link');
     var links = document.querySelectorAll('a');
     
-    var newLoadScript = document.createElement("script");
-    var newLZStringScript = document.createElement("script");
-    var newBase64Script = document.createElement("script");
-    var newConsoleScript = document.createElement("script");
-    var newMsgScript = document.createElement("script");
-    var newManifestFile = document.createElement('link');
-    
-    newLoadScript.src = "./loader.js";
-    newLZStringScript.src = "./lz-string.js";
-    newBase64Script.src = "./base64.js";
-    newConsoleScript.src = "./console";
-    newMsgScript.innerHTML = "var MSG = function (m) { parent.postMessage(m, '*'); };";
-    newManifestFile.rel = "manifest";
-    newManifestFile.href = "./manifest.json";
-    
-    document.head.appendChild(newLoadScript);
-    document.head.appendChild(newLZStringScript);
-    document.head.appendChild(newBase64Script);
-    document.head.appendChild(newConsoleScript);
-    document.head.appendChild(newMsgScript);
-    document.head.appendChild(newManifestFile);
     Array.from({ length: links.length }, () => {
       count += 1;
       if (links[count].hasAttribute('href')) {
@@ -1279,6 +1260,27 @@ function loadcode() {
         document.head.appendChild(newResource);
       }
     });
+    var newLoadScript = document.createElement("script");
+    var newLZStringScript = document.createElement("script");
+    var newBase64Script = document.createElement("script");
+    var newConsoleScript = document.createElement("script");
+    var newMsgScript = document.createElement("script");
+    var newManifestFile = document.createElement('link');
+    
+    newLoadScript.src = "./loader.js";
+    newLZStringScript.src = "./lz-string.js";
+    newBase64Script.src = "./base64.js";
+    newConsoleScript.src = "./console";
+    newMsgScript.innerHTML = "var MSG = function (m) { parent.postMessage(m, '*'); };";
+    newManifestFile.rel = "manifest";
+    newManifestFile.href = "./manifest.json";
+    
+    document.head.appendChild(newLoadScript);
+    document.head.appendChild(newLZStringScript);
+    document.head.appendChild(newBase64Script);
+    document.head.appendChild(newConsoleScript);
+    document.head.appendChild(newMsgScript);
+    document.head.appendChild(newManifestFile);
   } else if (access === false) {
     document.body.innerHTML = 'Access Denied';
   } else {
