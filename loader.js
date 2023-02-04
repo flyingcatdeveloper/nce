@@ -1,6 +1,6 @@
 import { get, set, del, clear, keys } from './db.js';
 
-var DEV = true;
+var DEV = false;
 
 window.onerror = function (msg, url, linenumber) {
   if (DEV === true) {
