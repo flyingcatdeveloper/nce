@@ -54,10 +54,10 @@
 			<div data-title="Save">
 				<img src="https://cdn-icons-png.flaticon.com/512/2874/2874091.png" width="25px" height="25px" class="btn-so" style="cursor: pointer;">
 			</div>
-			<br><br><br>
+			<!-- <br><br><br>
 			<div data-title="Share">
 				<img src="https://cdn-icons-png.flaticon.com/512/2958/2958791.png" width="25px" height="25px" class="btn-share" style="cursor: pointer;">
-			</div>
+			</div> -->
 			<br><br><br>
 			<div data-title="Devlog">
 				<img src="https://cdn-icons-png.flaticon.com/512/569/569837.png" width="25px" height="25px" class="btn-dev" style="cursor: pointer;">
@@ -69,6 +69,10 @@
 			<br><br><br>
 			<div data-title="Download Project">
 				<img src="https://cdn-icons-png.flaticon.com/512/3580/3580085.png" width="25px" height="25px" class="btn-download" style="cursor: pointer;">
+			</div>
+			<br><br><br>
+			<div data-title="Import Project">
+				<img src="https://cdn-icons-png.flaticon.com/512/3889/3889512.png" width="25px" height="25px" class="btn-import" style="cursor: pointer;">
 			</div>
 		</div>
 		<div id="container">
@@ -100,7 +104,7 @@
 					  </label>
 				</div>
 				<div id="settingsMenu"></div>
-				<i id="ver" style="font-size: 2rem;">v1.5.1</i>
+				<i id="ver" style="font-size: 2rem;">v1.5.2</i>
 				<iframe frameborder="0" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -207,6 +211,83 @@
 				    link.click();
 				  });
 				})
+			}
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.0.0/jszip.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.0.0/jszip-load.js"></script>
+		<script>
+			document.querySelector(".btn-import").onclick = function() {
+				var uinput = confirm("Do you want to import this project? It will clear any existing data.");
+				if (uinput) {
+					var newLoad = document.createElement("input");
+
+					newLoad.type = "file";
+					newLoad.accept = ".zip";
+					newLoad.style.opacity = "0";
+
+					document.querySelector(".left").appendChild(newLoad);
+
+					newLoad.onchange = function() {
+						var zipFileToLoad = newLoad.files[0];
+
+						var fr = new FileReader();
+
+						fr.onload = function(fileLoadedEvent) 
+						{
+							var zipFileLoaded = new JSZip(fileLoadedEvent.target.result);
+
+							window.afs = {"main": {}}
+
+							document.getElementById("eframe").contentDocument.getElementById("editor").innerHTML = "";
+							
+							document.querySelector(".folder-picker").innerHTML = "<option>main</option>";
+							document.querySelector(".language-picker").innerHTML = "";
+
+							for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
+							{
+								var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
+
+								var splitFolder = nameOfFileContainedInZipFile.split("/");
+								if (splitFolder.length > 1) {
+									var folder = splitFolder[0];
+									var splitFile = splitFolder[1].split(".");
+									var file = window.Base64.encode(splitFile[0]) + "-" + splitFile[1];
+									window.afs[folder][file] = fileContainedInZipFile.asText();
+									alert(window.afs[folder][file]);
+
+									var newOption = document.createElement("option");
+									var newOption2 = document.createElement("option");
+
+									newOption.innerHTML = nameOfFileContainedInZipFile;
+									newOption2.innerHTML = folder;
+
+									document.querySelector(".folder-picker").appendChild(newOption2);
+									document.querySelector('.language-picker').appendChild(newOption);
+									document.querySelector(".language-picker").style.display = "";
+
+									eframe.contentWindow.loadEditor(folder, file, window.afs);
+								} else {
+									var splitFile = nameOfFileContainedInZipFile.split(".");
+									var file = window.Base64.encode(splitFile[0]) + "-" + splitFile[1];
+									window.afs["main"][file] = fileContainedInZipFile.asText();
+
+									var newOption = document.createElement("option");
+
+									newOption.innerHTML = nameOfFileContainedInZipFile;
+									
+									document.querySelector('.language-picker').appendChild(newOption);
+									document.querySelector(".language-picker").style.display = "";
+
+									eframe.contentWindow.loadEditor("main", file, window.afs);
+								}
+							}
+						};
+
+						fr.readAsArrayBuffer(zipFileToLoad);
+					}
+
+					newLoad.click();
+				}
 			}
 		</script>
 		<!--<script src="./auto.js"></script>-->

@@ -68,9 +68,10 @@ const left = document.querySelector('.left'),
   saveBtn = document.querySelector('.btn-so'),
   dbBtn = document.querySelector('.btn-db2'),
   lpicker = document.querySelector('.language-picker'),
-  shareBtn = document.querySelector('.btn-share'),
+  // shareBtn = document.querySelector('.btn-share'),
   settingsBtn = document.querySelector('.btn-setting'),
-  eframe = document.getElementById("eframe");
+  eframe = document.getElementById("eframe"),
+  importBtn = document.querySelector(".btn-import");
 
 // Variables used for ldm btn
 let ldm = 0;
@@ -193,21 +194,21 @@ run.addEventListener('click', () => {
 //     }
 // });
 
-shareBtn.onclick = function () {
-  document.querySelector('.hover_bkgr_fricc').style.display = 'inline-block';
-  document.getElementById('link').href =
-    './view.html?id=' +
-    queryString['id'] +
-    '&f=' +
-    encodeURIComponent(window.sf) +
-    '.' +
-    encodeURIComponent(window.s);
-  document.getElementById('link').innerHTML =
-    document.getElementById('link').href;
-  document.querySelector('.popupCloseButton').onclick = function () {
-    document.querySelector('.hover_bkgr_fricc').style.display = 'none';
-  };
-};
+// shareBtn.onclick = function () {
+//   document.querySelector('.hover_bkgr_fricc').style.display = 'inline-block';
+//   document.getElementById('link').href =
+//     './view.html?id=' +
+//     queryString['id'] +
+//     '&f=' +
+//     encodeURIComponent(window.sf) +
+//     '.' +
+//     encodeURIComponent(window.s);
+//   document.getElementById('link').innerHTML =
+//     document.getElementById('link').href;
+//   document.querySelector('.popupCloseButton').onclick = function () {
+//     document.querySelector('.hover_bkgr_fricc').style.display = 'none';
+//   };
+// };
 
 document.getElementById('createFile').onclick = function () {
   var newInput = document.createElement('input');
@@ -2365,7 +2366,7 @@ function validate(Data) {
   }
 }
 
-function saveCode(run) {
+function saveCode(run, refresh) {
   var coded = window.Base64.encode(
     window.LZString.compress(JSON.stringify(window.afs))
   );
@@ -2587,7 +2588,7 @@ window.onload = function () {
       xhr.send(data);
     }
   } else {
-    document.querySelector('.btn-share').style.display = 'none';
+    // document.querySelector('.btn-share').style.display = 'none';
 
     createTimestamp(window.localStorage.getItem('li'));
   }
