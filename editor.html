@@ -248,20 +248,26 @@
 								var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
 
 								var splitFolder = nameOfFileContainedInZipFile.split("/");
+								alert(splitFolder.length);
 								if (splitFolder.length > 1) {
 									var folder = splitFolder[0];
 									var splitFile = splitFolder[1].split(".");
 									var file = window.Base64.encode(splitFile[0]) + "-" + splitFile[1];
+									if (window.afs[folder] === undefined) {
+										window.afs[folder] = {};
+
+										var newOption2 = document.createElement("option");
+
+										newOption2.innerHTML = folder;
+
+										document.querySelector(".folder-picker").appendChild(newOption2);
+									}
 									window.afs[folder][file] = fileContainedInZipFile.asText();
-									alert(window.afs[folder][file]);
 
 									var newOption = document.createElement("option");
-									var newOption2 = document.createElement("option");
 
 									newOption.innerHTML = nameOfFileContainedInZipFile;
-									newOption2.innerHTML = folder;
 
-									document.querySelector(".folder-picker").appendChild(newOption2);
 									document.querySelector('.language-picker').appendChild(newOption);
 									document.querySelector(".language-picker").style.display = "";
 
