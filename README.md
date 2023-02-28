@@ -36,9 +36,9 @@ You can have as many files as you want with multiple file functionality!
 
 See all your editors and when you last opened them in one place, anywhere.
 
-### It's completly Free
+### Import your project
 
-Yes, that's right it's free. No paying for some subscription or other junk.
+You can import a project that you downloaded! Great if you want to start working on a new device or you deleted your data.
 
 ### Download your project
 
@@ -48,6 +48,10 @@ Ever worried that you might accidentally delete all your data? Well you can down
 
 Keep updated on whats new with our DevLog, so you can see what is fixed and added.
 
+### Saves your data locally
+
+This project saves your data using localStorage and IndexedDB. You can always come back to your project.
+
 ### Change Your Settings
 
 Change your settings to your preferences. Settings Include:
@@ -55,3 +59,7 @@ Change your settings to your preferences. Settings Include:
   * Autosave
   * Compress editor (Compresses files to save space)
   * Delete Editor
+  
+  ### Notes:
+  
+   * Requires to be hosted, cannot be used properly on the file:// domain
