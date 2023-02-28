@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.5.3 02/28/2023:
+    - Fixed "Import Project" feature
+    - Edited sidenav
+
 Update v1.5.2 02/27/2023:
     - Added a feature where you can import a project
 

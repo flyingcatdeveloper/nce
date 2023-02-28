@@ -63,16 +63,16 @@
 				<img src="https://cdn-icons-png.flaticon.com/512/569/569837.png" width="25px" height="25px" class="btn-dev" style="cursor: pointer;">
 			</div>
 			<br><br><br>
-			<div data-title="Settings">
-				<img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="25px" height="25px" class="btn-setting" style="cursor: pointer; display: none;">
-			</div>
-			<br><br><br>
 			<div data-title="Download Project">
 				<img src="https://cdn-icons-png.flaticon.com/512/3580/3580085.png" width="25px" height="25px" class="btn-download" style="cursor: pointer;">
 			</div>
 			<br><br><br>
 			<div data-title="Import Project">
 				<img src="https://cdn-icons-png.flaticon.com/512/3889/3889512.png" width="25px" height="25px" class="btn-import" style="cursor: pointer;">
+			</div>
+			<br><br><br>
+			<div data-title="Settings">
+				<img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="25px" height="25px" class="btn-setting" style="cursor: pointer; display: none;">
 			</div>
 		</div>
 		<div id="container">
@@ -104,7 +104,7 @@
 					  </label>
 				</div>
 				<div id="settingsMenu"></div>
-				<i id="ver" style="font-size: 2rem;">v1.5.2</i>
+				<i id="ver" style="font-size: 2rem;">v1.5.3</i>
 				<iframe frameborder="0" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -236,7 +236,8 @@
 						{
 							var zipFileLoaded = new JSZip(fileLoadedEvent.target.result);
 
-							window.afs = {"main": {}}
+							window.afs = {};
+							window.afs["main"] = {};
 
 							document.getElementById("eframe").contentDocument.getElementById("editor").innerHTML = "";
 							
@@ -265,12 +266,13 @@
 
 									var newOption = document.createElement("option");
 
-									newOption.innerHTML = nameOfFileContainedInZipFile;
+									newOption.innerHTML = splitFolder[1];
 
-									document.querySelector('.language-picker').appendChild(newOption);
+									if (document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML === folder) {
+										document.querySelector('.language-picker').appendChild(newOption);
+										eframe.contentWindow.loadEditor(folder, file, window.afs);
+									}
 									document.querySelector(".language-picker").style.display = "";
-
-									eframe.contentWindow.loadEditor(folder, file, window.afs);
 								} else {
 									var splitFile = nameOfFileContainedInZipFile.split(".");
 									var file = window.Base64.encode(splitFile[0]) + "-" + splitFile[1];
@@ -280,10 +282,11 @@
 
 									newOption.innerHTML = nameOfFileContainedInZipFile;
 									
-									document.querySelector('.language-picker').appendChild(newOption);
+									if (document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML === "main") {
+										document.querySelector('.language-picker').appendChild(newOption);
+										eframe.contentWindow.loadEditor("main", file, window.afs);
+									}
 									document.querySelector(".language-picker").style.display = "";
-
-									eframe.contentWindow.loadEditor("main", file, window.afs);
 								}
 							}
 						};
