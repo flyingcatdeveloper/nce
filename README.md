@@ -16,16 +16,6 @@ View the console easily with just a click of a button, and turn it off just as e
 
 Open your code directly in a new tab, so you can see it exactly as it would look as a webpage.
 
-### Share Your Projects With Others
-
-Share your projects with anyone so they can see your best work.
-
-### Share Editor Access With Others (Beta)
-
-Share your editor access with others so they can edit your project with you.
-
-NOTE: This is in early beta so some features like removing editors, seeing who has access, etc. may not be available yet.
-
 ### Multiple File Functionality
 
 You can have as many files as you want with multiple file functionality!
