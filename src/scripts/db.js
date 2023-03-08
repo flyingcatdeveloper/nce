@@ -1,4 +1,15 @@
-import { openDB, deleteDB, wrap, unwrap } from '../../lib/idb.js';
+// import { openDB, deleteDB, wrap, unwrap } from '../../lib/idb.js';
+
+var DEV = false;
+
+window.onerror = function (msg, url, linenumber) {
+  if (DEV === true) {
+    alert(
+      'Error message: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber
+    );
+  }
+  return true;
+};
 
 let store_name;
 let db_version;
@@ -11,7 +22,7 @@ function errorMsg(msg) {
   console.error(msg);
 }
 
-export async function get(key) {
+async function get(key) {
   store_name = window.localStorage.getItem('li');
   if (window.localStorage.getItem('db_version') !== null) {
     db_version = parseInt(window.localStorage.getItem('db_version'));
@@ -28,7 +39,8 @@ export async function get(key) {
   let data = (await dbPromise).get(store_name, key);
   return data;
 }
-export async function set(key, val) {
+
+async function set(key, val) {
   store_name = window.localStorage.getItem('li');
   if (window.localStorage.getItem('db_version') !== null) {
     db_version = parseInt(window.localStorage.getItem('db_version'));
@@ -45,7 +57,7 @@ export async function set(key, val) {
   let data = (await dbPromise).put(store_name, val, key);
   return data;
 }
-export async function del(key) {
+async function del(key) {
   store_name = window.localStorage.getItem('li');
   if (window.localStorage.getItem('db_version') !== null) {
     db_version = parseInt(window.localStorage.getItem('db_version'));
@@ -62,7 +74,8 @@ export async function del(key) {
   let data = (await dbPromise).delete(store_name, key);
   return data;
 }
-export async function clear() {
+
+async function clear() {
   store_name = window.localStorage.getItem('li');
   if (window.localStorage.getItem('db_version') !== null) {
     db_version = parseInt(window.localStorage.getItem('db_version'));
@@ -79,7 +92,7 @@ export async function clear() {
   let data = (await dbPromise).clear(store_name);
   return data;
 }
-export async function keys() {
+async function keys() {
   store_name = window.localStorage.getItem('li');
   if (window.localStorage.getItem('db_version') !== null) {
     db_version = parseInt(window.localStorage.getItem('db_version'));
@@ -96,3 +109,9 @@ export async function keys() {
   let data = (await dbPromise).getAllKeys(store_name);
   return data;
 }
+
+window.get = get;
+window.set = set;
+window.del = del;
+window.clear = clear;
+window.keys = keys;
