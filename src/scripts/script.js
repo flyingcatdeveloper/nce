@@ -1,4 +1,4 @@
-// import { get, set, del, clear, keys } from '../scripts/db.js';
+import { get, set, del, clear, keys } from '../scripts/db.js';
 
 if (
   getCookie('li') === '' &&
@@ -18,7 +18,7 @@ window.onerror = function (msg, url, linenumber) {
   return true;
 };
 
-var s2;
+var s;
 var sf;
 var ftype = 'html';
 var afs;

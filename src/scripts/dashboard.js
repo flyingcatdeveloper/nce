@@ -1,4 +1,4 @@
-// import { get, set, del, clear, keys } from '../scripts/db.js';
+import { get, set, del, clear, keys } from '../scripts/db.js';
 
 var DEV = false;
 
@@ -19,7 +19,7 @@ var newDAP;
 var newID;
 var newLink;
 var np;
-// var e;
+var e;
 var newImg;
 let pjs = [];
 

@@ -1,9 +1,6 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
-Update v1.5.5 03/08/2023:
-    - Made available locally
-
 Update v1.5.4 03/08/2023:
     - Tidied up editor source code
 

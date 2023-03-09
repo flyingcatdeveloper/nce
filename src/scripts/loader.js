@@ -1,4 +1,4 @@
-// import { get, set, del, clear, keys } from '../scripts/db.js';
+import { get, set, del, clear, keys } from '../scripts/db.js';
 
 var DEV = false;
 
