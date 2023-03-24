@@ -104,7 +104,7 @@
 					  </label>
 				</div>
 				<div id="settingsMenu"></div>
-				<i id="ver" style="font-size: 2rem;">v1.5.4</i>
+				<i id="ver" style="font-size: 2rem;">v1.5.5</i>
 				<iframe frameborder="0" id="iframe"></iframe>
 					<div style="display: none;" class="tocl tocl-4">
 						<p class="toclp">Console</p>
@@ -219,6 +219,7 @@
 			document.querySelector(".btn-import").onclick = function() {
 				var uinput = confirm("Do you want to import this project? It will clear any existing data.");
 				if (uinput) {
+					var eframe = document.getElementById("eframe");
 					var newLoad = document.createElement("input");
 
 					newLoad.type = "file";
@@ -244,12 +245,13 @@
 							document.querySelector(".folder-picker").innerHTML = "<option>main</option>";
 							document.querySelector(".language-picker").innerHTML = "";
 
+							var lastFile;
 							for (var nameOfFileContainedInZipFile in zipFileLoaded.files)
 							{
 								var fileContainedInZipFile = zipFileLoaded.files[nameOfFileContainedInZipFile];
 
 								var splitFolder = nameOfFileContainedInZipFile.split("/");
-								if (splitFolder.length > 1) {
+								if (splitFolder.length > 1 && splitFolder[1] !== "") {
 									var folder = splitFolder[0];
 									var splitFile = splitFolder[1].split(".");
 									var file = window.Base64.encode(splitFile[0]) + "-" + splitFile[1];
@@ -271,9 +273,13 @@
 									if (document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML === folder) {
 										document.querySelector('.language-picker').appendChild(newOption);
 										eframe.contentWindow.loadEditor(folder, file, window.afs);
+										lastFile = [folder, file];
+									} else if (lastFile !== undefined) {
+										document.querySelector('.language-picker').appendChild(newOption);
+										eframe.contentWindow.loadEditor(lastFile[0], lastFile[1], window.afs);
 									}
 									document.querySelector(".language-picker").style.display = "";
-								} else {
+								} else if (splitFolder[1] !== "") {
 									var splitFile = nameOfFileContainedInZipFile.split(".");
 									var file = window.Base64.encode(splitFile[0]) + "-" + splitFile[1];
 									window.afs["main"][file] = fileContainedInZipFile.asText();
@@ -285,6 +291,10 @@
 									if (document.querySelector(".folder-picker").options[document.querySelector(".folder-picker").selectedIndex].innerHTML === "main") {
 										document.querySelector('.language-picker').appendChild(newOption);
 										eframe.contentWindow.loadEditor("main", file, window.afs);
+										lastFile = ["main", file];
+									} else if (lastFile !== undefined) {
+										document.querySelector('.language-picker').appendChild(newOption);
+										eframe.contentWindow.loadEditor(lastFile[0], lastFile[1], window.afs);
 									}
 									document.querySelector(".language-picker").style.display = "";
 								}

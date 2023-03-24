@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update/Bug Fix v1.5.5 03/24/2023:
+    - Fixed "Import Project" Feature
+    - Updated indexedDB to use the latest version of IDB Keyval
+
 Update v1.5.4 03/08/2023:
     - Tidied up editor source code
 
