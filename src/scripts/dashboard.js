@@ -1,5 +1,10 @@
 import { get, set, del, clear, keys } from '../scripts/db.js';
 
+async function clearData() {
+  const dbs = await window.indexedDB.databases();
+  dbs.forEach(db => { window.indexedDB.deleteDatabase(db.name) })
+}
+
 var DEV = false;
 
 window.onerror = function (msg, url, linenumber) {
@@ -514,8 +519,8 @@ document.querySelector(".btn-clear").onclick = function() {
   if (uinput === true) {
     var accountdata = JSON.parse(window.localStorage.getItem(window.localStorage.getItem('li')));
     accountdata.editor = "";
+    clearData();
     window.localStorage.setItem(window.localStorage.getItem('li'), JSON.stringify(accountdata));
-    clear();
     window.location.reload();
   } else {
     return;

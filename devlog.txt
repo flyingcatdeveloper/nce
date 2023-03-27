@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Bug Fix v1.5.6 03/27/2023:
+    - Fixed the "Clear Data" feature on dashboard to clear data properly
+
 Update/Bug Fix v1.5.5 03/24/2023:
     - Fixed "Import Project" Feature
     - Updated indexedDB to use the latest version of IDB Keyval
