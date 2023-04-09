@@ -49,6 +49,12 @@ Change your settings to your preferences. Settings Include:
   * Autosave
   * Compress editor (Compresses files to save space)
   * Delete Editor
+
+### Download on your computer for offline use
+
+Want to code offline? Want an app for better ease of use? Then all you have to do is download our setup manager in the releases tab and complete the setup.
+
+ * Note: So far we only have compatibility with Windows, other OS support coming in the future.
   
   ### Notes:
   
