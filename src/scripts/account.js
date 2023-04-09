@@ -616,3 +616,12 @@ document.getElementById('rp').addEventListener('focus', () => {
 
   window.addEventListener('keyup', inputListener);
 });
+
+document.getElementById("backLogin").onclick = function() {
+  window.location.replace("../../index.html");
+}
+
+document.getElementById("backSignup").onclick = function() {
+  document.getElementById("login").style.display = "block";
+  document.getElementById("signup").style.display = "none";
+}
