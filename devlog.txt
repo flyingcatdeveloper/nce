@@ -4,6 +4,7 @@
 Update v1.5.7 04/08/2023:
     - Added Windows App
     - Added back buttons
+    - Added confirmation after project is downloaded
 
 Bug Fix v1.5.6 03/27/2023:
     - Fixed the "Clear Data" feature on dashboard to clear data properly
