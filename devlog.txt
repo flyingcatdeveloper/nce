@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.5.7 04/08/2023:
+    - Added Windows App
+    - Added back buttons
+
 Bug Fix v1.5.6 03/27/2023:
     - Fixed the "Clear Data" feature on dashboard to clear data properly
 
