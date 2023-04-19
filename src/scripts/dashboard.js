@@ -5,7 +5,7 @@ async function clearData() {
   dbs.forEach(db => { window.indexedDB.deleteDatabase(db.name) })
 }
 
-var DEV = false;
+var DEV = true;
 
 window.onerror = function (msg, url, linenumber) {
   if (DEV === true) {
@@ -72,15 +72,29 @@ function getImg(id) {
 }
 
 if (
-  (getCookie('li') === '' || getCookie('li') === undefined) &&
-  window.localStorage.getItem('offline') !== 'true'
+  window.localStorage.getItem('offline') === 'true' &&
+  window.localStorage.getItem('li') === '' ||
+  window.localStorage.getItem('offline') === 'true' &&
+  window.localStorage.getItem("li") === null
 ) {
-  window.location = '../../index.html';
+  document.querySelector(".btn-lo").style.display = "none";
+  document.querySelector(".btn-clear").style.display = "none";
+  document.querySelector("#account").style.display = "none";
+  document.querySelector(".btn-logon").style.display = "block";
+
+  var newPara = document.createElement('p');
+
+  newPara.innerHTML = 'Not logged in. Please <a href="./login.html">log in</a>.';
+
+  document.getElementById('load').style.display = 'none';
+  document.getElementById('newProjectForm').style.display = 'none';
+  document.querySelector('.projects-container').appendChild(newPara);
 } else if (
   window.localStorage.getItem('li') !== null &&
   window.localStorage.getItem('offline') === 'true'
 ) {
   document.getElementById('account').style.display = 'none';
+  document.querySelector(".btn-logon").style.display = "none";
   var username = window.localStorage.getItem('li');
 
   var data = JSON.parse(window.localStorage.getItem(username));
@@ -194,27 +208,71 @@ document.getElementById('new').onclick = function () {
     );
   } else if (
     document.getElementById('name').value !== '' &&
-    window.localStorage.getItem('offline') === 'true' &&
-    pjs.includes(document.getElementById('name').value) !== true
+    window.localStorage.getItem('offline') === 'true'
   ) {
-    set(document.getElementById('name').value, {
-      name: document.getElementById('name').value,
-      sources: [],
-    });
-    var accountData = JSON.parse(
-      window.localStorage.getItem(window.localStorage.getItem('li'))
-    );
-    if (accountData.editor !== '') {
-      accountData.editor =
-        accountData.editor + ':' + document.getElementById('name').value;
-    } else {
-      accountData.editor = document.getElementById('name').value;
+    var editorData;
+    function trySet(count) {
+      if (count == 0) {
+        var checkedData;
+        get(document.getElementById('name').value).then((val) => {
+          checkedData = val;
+          if (checkedData === undefined) {
+            set(document.getElementById('name').value, {
+              name: document.getElementById('name').value,
+              sources: [],
+            });
+            editorData = document.getElementById('name').value;
+            var accountData = JSON.parse(
+              window.localStorage.getItem(window.localStorage.getItem('li'))
+            );
+            if (accountData.editor !== '') {
+              accountData.editor =
+                accountData.editor + ':' + editorData;
+            } else {
+              accountData.editor = editorData;
+            }
+            window.localStorage.setItem(
+              window.localStorage.getItem('li'),
+              JSON.stringify(accountData)
+            );
+            window.location = './editor.html?id=' + editorData;
+          } else {
+            count += 1;
+            trySet(count)
+          }
+        })
+      } else {
+        var checkedData;
+        get(document.getElementById('name').value + count).then((val) => {
+          checkedData = val;
+          if (checkedData === undefined) {
+            set(document.getElementById('name').value + count, {
+              name: document.getElementById('name').value,
+              sources: [],
+            });
+            editorData = document.getElementById('name').value + count;
+            var accountData = JSON.parse(
+              window.localStorage.getItem(window.localStorage.getItem('li'))
+            );
+            if (accountData.editor !== '') {
+              accountData.editor =
+                accountData.editor + ':' + editorData;
+            } else {
+              accountData.editor = editorData;
+            }
+            window.localStorage.setItem(
+              window.localStorage.getItem('li'),
+              JSON.stringify(accountData)
+            );
+            window.location = './editor.html?id=' + editorData;
+          } else {
+            count += 1;
+            trySet(count)
+          }
+        })
+      }
     }
-    window.localStorage.setItem(
-      window.localStorage.getItem('li'),
-      JSON.stringify(accountData)
-    );
-    window.location = './editor.html?id=' + document.getElementById('name').value
+    trySet(0);
   } else {
     alert('please enter a name!');
   }
@@ -526,4 +584,8 @@ document.querySelector(".btn-clear").onclick = function() {
     return;
   }
   
+}
+
+document.querySelector(".btn-logon").onclick = function() {
+  window.location.replace("./login.html");
 }

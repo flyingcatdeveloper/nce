@@ -13,15 +13,17 @@
   </head>
 
   <body>
-    <div class="editor-menu">
+    <!-- <div class="editor-menu">
       <img id="logo" src="./img/favicon.png" />
       <button class="btn btn-ls">Login/Signup</button>
-      <button style="display: none" class="btn btn-db">Dashboard</button>
+      <button style="display: none" class="btn btn-db">Dashboard</button> -->
 <!--       <button class="btn btn-soo">Offline</button> -->
-    </div>
+    <!-- </div>
     <div class="container">
       <h1 id="slogan">The free code editor for you.</h1>
-    </div>
+    </div> -->
+
+    <p>loading editor...</p>
 
     <script>
 //       if (window.localStorage.getItem('offline') === 'true') {
@@ -42,46 +44,50 @@
 //       };
 
       window.localStorage.setItem('offline', 'true');
+
+      window.location.replace("./src/views/dashboard.html");
+
+
       
-      document.querySelector('.btn-ls').onclick = function () {
-        window.location.href = './src/views/login.html';
-      };
+      // document.querySelector('.btn-ls').onclick = function () {
+      //   window.location.href = './src/views/login.html';
+      // };
 
-      document.querySelector('.btn-db').onclick = function () {
-        window.location.href = './src/views/dashboard.html';
-      };
+      // document.querySelector('.btn-db').onclick = function () {
+      //   window.location.href = './src/views/dashboard.html';
+      // };
 
-      if (
-        getCookie('li') !== '' ||
-        (window.localStorage.getItem('li') !== null &&
-          window.localStorage.getItem('li') !== '')
-      ) {
-        document.querySelector('.btn-ls').style.display = 'none';
-        document.querySelector('.btn-db').style.display = 'block';
-      }
+      // if (
+      //   getCookie('li') !== '' ||
+      //   (window.localStorage.getItem('li') !== null &&
+      //     window.localStorage.getItem('li') !== '')
+      // ) {
+      //   document.querySelector('.btn-ls').style.display = 'none';
+      //   document.querySelector('.btn-db').style.display = 'block';
+      // }
 
-      function getCookie(cname) {
-        let name = cname + '=';
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-          let c = ca[i];
-          while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-          }
-          if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-          }
-        }
-        return '';
-      }
+      // function getCookie(cname) {
+      //   let name = cname + '=';
+      //   let decodedCookie = decodeURIComponent(document.cookie);
+      //   let ca = decodedCookie.split(';');
+      //   for (let i = 0; i < ca.length; i++) {
+      //     let c = ca[i];
+      //     while (c.charAt(0) == ' ') {
+      //       c = c.substring(1);
+      //     }
+      //     if (c.indexOf(name) == 0) {
+      //       return c.substring(name.length, c.length);
+      //     }
+      //   }
+      //   return '';
+      // }
 
-      function setCookie(cname, cvalue, exdays) {
-        const d = new Date();
-        d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-        let expires = 'expires=' + d.toUTCString();
-        document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
-      }
+      // function setCookie(cname, cvalue, exdays) {
+      //   const d = new Date();
+      //   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+      //   let expires = 'expires=' + d.toUTCString();
+      //   document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+      // }
     </script>
   </body>
 </html>

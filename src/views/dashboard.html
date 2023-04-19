@@ -27,12 +27,13 @@
   <body>
     <div class="editor-menu">
       <img id="logo" src="../../img/favicon.png" />
+      <button class="btn btn-logon">Log In</button>
       <button class="btn btn-lo">Log Out</button>
       <button class="btn btn-clear">Clear Data</button>
       <button class="btn" data-title="Account Settings" id="account">
         Account Settings
       </button>
-      <p id="ver">v1.5.7</p>
+      <p id="ver">v1.5.8</p>
     </div>
 
     <div class="projects-container">
@@ -45,6 +46,9 @@
       <p id="load">loading...</p>
     </div>
   </body>
+  <script>
+    window.localStorage.setItem('offline', 'true');
+  </script>
   <script src="../../lib/idb.min.js"></script>
   <!-- <script
     src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"
