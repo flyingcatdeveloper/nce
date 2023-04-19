@@ -1292,10 +1292,10 @@ function validate(Data) {
   var c = -1;
   if (Data['settings']['Compressed'] === 'true') {
     window.afs = JSON.parse(
-      window.LZString.decompress(window.Base64.decode(Data['afs']))
+      window.LZString.decompress(Data['afs'])
     );
     window.resources = JSON.parse(
-      window.LZString.decompress(window.Base64.decode(Data['sources']))
+      window.LZString.decompress(Data['sources'])
     );
   } else {
     window.afs = Data['afs'];

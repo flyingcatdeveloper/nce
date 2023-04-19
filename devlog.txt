@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.5.9 04/19/2023:
+    - Updated "Compressed" feature to have better compression
+
 Update v1.5.8 04/19/2023:
     - Dashboard is now the main page
     - Updated creating projects so where if the name exists it adds a number after it

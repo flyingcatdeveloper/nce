@@ -2121,7 +2121,7 @@ function validate(Data) {
         Data['compressed'] === 'true'
       ) {
         window.fls = JSON.parse(
-          window.LZString.decompress(window.Base64.decode(Data['afs']))
+          window.LZString.decompress(Data['afs'])
         );
       } else {
         window.fls = Data['afs'];
@@ -2131,7 +2131,7 @@ function validate(Data) {
         Data['compressed'] === 'true'
       ) {
         window.resources = JSON.parse(
-          window.LZString.decompress(window.Base64.decode(Data.sources))
+          window.LZString.decompress(Data.sources)
         );
       } else {
         window.resources = Data.sources;
@@ -2381,16 +2381,10 @@ function saveCode(run, refresh) {
     window.settings['Compressed'] === 'true' &&
     window.afs !== undefined &&
     window.afs !== '' &&
-    window.afs !== null &&
     window.afs !== {}
   ) {
-    data['afs'] = window.Base64.encode(
-      window.LZString.compress(JSON.stringify(window.afs))
-    );
-    var decoded = window.Base64.decode(coded);
-    data['sources'] = window.Base64.encode(
-      window.LZString.compress(JSON.stringify(window.resources))
-    );
+    data['afs'] = window.LZString.compress(JSON.stringify(window.afs));
+    data['sources'] = window.LZString.compress(JSON.stringify(window.resources));
     data['settings'] = window.settings;
     data['compressed'] = 'true';
 
