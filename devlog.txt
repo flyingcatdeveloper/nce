@@ -1,6 +1,10 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.6.0 08/09/2023:
+    - Updated in-editor console to be more useful
+    - Updated window resizing
+
 Update v1.5.9 04/19/2023:
     - Updated "Compressed" feature to have better compression
 

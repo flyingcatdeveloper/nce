@@ -61,3 +61,12 @@ console.clear = function() {
     }
     document.getElementById("log").innerHTML = "";
 }
+
+window.onerror = function (error, url, line) {
+    console.error(error);
+    return false;
+}
+
+window.onunhandledrejection = function (e) {
+    console.error(`${e.reason}`);
+}

@@ -1,15 +1,6 @@
 import { get, set, del, clear, keys } from '../scripts/db.js';
 
-var DEV = false;
-
-window.onerror = function (msg, url, linenumber) {
-  if (DEV === true) {
-    alert(
-      'Error message: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber
-    );
-  }
-  return true;
-};
+var DEV = true;
 
 var queryString = new Array();
 window.onload = function () {
@@ -181,7 +172,13 @@ function loadcode() {
         
         url = scripts[count].src;
         var splitHost = url.split("/");
-        var host = splitHost[2];
+        var beforeCheckHost = splitHost[2];
+        var host;
+        if (beforeCheckHost.includes(":")) {
+          host = beforeCheckHost.split(":")[0];
+        } else {
+          host = beforeCheckHost;
+        }
         if (host === window.location.hostname) {
             paths = url.split('/');
             folder = paths[paths.length - 2];
@@ -877,6 +874,7 @@ function loadcode() {
               var newScript = document.createElement('script');
               newScript.innerHTML = code;
               document.body.appendChild(newScript);
+
             }
           } else {
             function makeHttpObject() {
@@ -895,7 +893,7 @@ function loadcode() {
             request.send(null);
             request.onreadystatechange = function() {
               if (request.readyState == 4)
-                window.eval(request.responseText);
+                alert(request.responseText);
             };
           }
         } else {
@@ -1265,22 +1263,18 @@ function loadcode() {
     var newBase64Script = document.createElement("script");
     var newConsoleScript = document.createElement("script");
     var newMsgScript = document.createElement("script");
-    var newManifestFile = document.createElement('link');
     
     newLoadScript.src = "../scripts/loader.js";
     newLZStringScript.src = "../../lib/lz-string.js";
     newBase64Script.src = "../../lib/base64.js";
     newConsoleScript.src = "../scripts/console.js";
     newMsgScript.innerHTML = "var MSG = function (m) { parent.postMessage(m, '*'); };";
-    newManifestFile.rel = "manifest";
-    newManifestFile.href = "../../manifest.json";
     
     document.head.appendChild(newLoadScript);
     document.head.appendChild(newLZStringScript);
     document.head.appendChild(newBase64Script);
     document.head.appendChild(newConsoleScript);
     document.head.appendChild(newMsgScript);
-    document.head.appendChild(newManifestFile);
   } else if (access === false) {
     document.body.innerHTML = 'Access Denied';
   } else {

@@ -673,3 +673,7 @@ a {
 #deleteFile {
   font-size: 8px;
 }
+
+.btn-icon {
+  margin-left: 0;
+}

@@ -40,41 +40,56 @@
    		</script>
 		<div class="sidenav">
 			<div data-title="Dashboard">
-				<img src="../../img/dashboard.png" width="25px" height="25px" class="btn-db2" style="cursor: pointer;">
+				<img src="../../img/dashboard.png" width="25px" height="25px" class="btn-icon btn-db2" style="cursor: pointer;">
 			</div>
-			<br><br><br>
+			<div class="spacers">
+				<br><br><br>
+			</div>
 			<div data-title="Run">
-				<img src="../../img/run.png" width="25px" height="25px" class="btn-run" style="cursor: pointer;">
+				<img src="../../img/run.png" width="25px" height="25px" class="btn-icon btn-run" style="cursor: pointer;">
 			</div>
-			<br><br><br>
+			<div class="spacers">
+				<br><br><br>
+			</div>
 			<div data-title="Open In New Tab">
-				<img src="../../img/oint.png" width="25px" height="25px" class="btn-ont" style="cursor: pointer;">
+				<img src="../../img/oint.png" width="25px" height="25px" class="btn-icon btn-ont" style="cursor: pointer;">
 			</div>
-			<br><br><br>
+			<div class="spacers">
+				<br><br><br>
+			</div>
 			<div data-title="Save">
-				<img src="../../img/save.png" width="25px" height="25px" class="btn-so" style="cursor: pointer;">
+				<img src="../../img/save.png" width="25px" height="25px" class="btn-icon btn-so" style="cursor: pointer;">
 			</div>
 			<!-- <br><br><br>
 			<div data-title="Share">
 				<img src="https://cdn-icons-png.flaticon.com/512/2958/2958791.png" width="25px" height="25px" class="btn-share" style="cursor: pointer;">
 			</div> -->
-			<br><br><br>
+			<div class="spacers">
+				<br><br><br>
+			</div>
 			<div data-title="Devlog">
-				<img src="../../img/devlog.png" width="25px" height="25px" class="btn-dev" style="cursor: pointer;">
+				<img src="../../img/devlog.png" width="25px" height="25px" class="btn-icon btn-dev" style="cursor: pointer;">
 			</div>
-			<br><br><br>
+			<div class="spacers">
+				<br><br><br>
+			</div>
 			<div data-title="Download Project">
-				<img src="../../img/download.png" width="25px" height="25px" class="btn-download" style="cursor: pointer;">
+				<img src="../../img/download.png" width="25px" height="25px" class="btn-icon btn-download" style="cursor: pointer;">
 			</div>
-			<br><br><br>
+			<div class="spacers">
+				<br><br><br>
+			</div>
 			<div data-title="Import Project">
-				<img src="../../img/import.png" width="25px" height="25px" class="btn-import" style="cursor: pointer;">
+				<img src="../../img/import.png" width="25px" height="25px" class="btn-icon btn-import" style="cursor: pointer;">
 			</div>
-			<br><br><br>
+			<div class="spacers">
+				<br><br><br>
+			</div>
 			<div data-title="Settings">
-				<img src="../../img/settings.png" width="25px" height="25px" class="btn-setting" style="cursor: pointer; display: none;">
+				<img src="../../img/settings.png" width="25px" height="25px" class="btn-icon btn-setting" style="cursor: pointer; display: none;">
 			</div>
 		</div>
+
 		<div id="container">
 			<div class="left">
 				<select style="color: #fff; display: none;" class="btn folder-picker"></select>
@@ -144,22 +159,91 @@
 				
 				document.querySelector(".sidenav").style.width = "5%";
 			}
-			
-			if(window.innerHeight > window.innerWidth){
-				document.getElementById("portrait-error").style.display = "block";
-				document.querySelector(".sidenav").style.display = "none";
-			} else {
-				document.getElementById("portrait-error").style.display = "none";
-				document.querySelector(".sidenav").style.display = "";
-			}
+
+			let snav = document.querySelector(".sidenav");
+				if(window.innerHeight > window.innerWidth){
+					snav.style.width = "100%";
+					snav.style.height = "3%";
+					snav.style.position = "unset";
+					snav.style.zIndex = "0";
+					snav.style.display = "flex";
+					snav.style.textAlign = "center";
+					snav.style.paddingTop = "0";
+					document.getElementById("container").style.marginLeft = "0";
+					document.getElementById("container").style.marginTop = "20px";
+					var spacers = document.querySelectorAll(".spacers");
+					spacers.forEach(function(spacer) {
+						spacer.style.display = "none";
+					})
+					var btnIcons = document.querySelectorAll(".btn-icon");
+					btnIcons.forEach(function(btnIcon) {
+						btnIcon.style.marginLeft = "4rem";
+						btnIcon.style.height = "20px";
+						btnIcon.style.width = "20px";
+					})
+				} else {
+					snav.style.width = "3%";
+					snav.style.height = "100%";
+					snav.style.position = "absolute";
+					snav.style.zIndex = "1";
+					snav.style.display = "block";
+					snav.style.textAlign = "left";
+					snav.style.paddingTop = "20px";
+					document.getElementById("container").style.marginLeft = "40px";
+					document.getElementById("container").style.marginTop = "0";
+					var spacers = document.querySelectorAll(".spacers");
+					spacers.forEach(function(spacer) {
+						spacer.style.display = "block";
+					})
+					var btnIcons = document.querySelectorAll(".btn-icon");
+					btnIcons.forEach(function(btnIcon) {
+						btnIcon.style.marginLeft = "0";
+						btnIcon.style.height = "25px";
+						btnIcon.style.width = "25px";
+					})
+				}
 			
 			window.addEventListener("resize", () => {
 				if(window.innerHeight > window.innerWidth){
-					document.getElementById("portrait-error").style.display = "block";
-					document.querySelector(".sidenav").style.display = "none";
+					snav.style.width = "100%";
+					snav.style.height = "3%";
+					snav.style.position = "unset";
+					snav.style.zIndex = "0";
+					snav.style.display = "flex";
+					snav.style.textAlign = "center";
+					snav.style.paddingTop = "0";
+					document.getElementById("container").style.marginLeft = "0";
+					document.getElementById("container").style.marginTop = "20px";
+					var spacers = document.querySelectorAll(".spacers");
+					spacers.forEach(function(spacer) {
+						spacer.style.display = "none";
+					})
+					var btnIcons = document.querySelectorAll(".btn-icon");
+					btnIcons.forEach(function(btnIcon) {
+						btnIcon.style.marginLeft = "4rem";
+						btnIcon.style.height = "20px";
+						btnIcon.style.width = "20px";
+					})
 				} else {
-					document.getElementById("portrait-error").style.display = "none";
-					document.querySelector(".sidenav").style.display = "";
+					snav.style.width = "3%";
+					snav.style.height = "100%";
+					snav.style.position = "absolute";
+					snav.style.zIndex = "1";
+					snav.style.display = "block";
+					snav.style.textAlign = "left";
+					snav.style.paddingTop = "20px";
+					document.getElementById("container").style.marginLeft = "40px";
+					document.getElementById("container").style.marginTop = "0";
+					var spacers = document.querySelectorAll(".spacers");
+					spacers.forEach(function(spacer) {
+						spacer.style.display = "block";
+					})
+					var btnIcons = document.querySelectorAll(".btn-icon");
+					btnIcons.forEach(function(btnIcon) {
+						btnIcon.style.marginLeft = "0";
+						btnIcon.style.height = "25px";
+						btnIcon.style.width = "25px";
+					})
 				}
 			})
 		</script>
