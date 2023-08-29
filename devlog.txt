@@ -1,6 +1,9 @@
  NEKO Code Editor Devlog
 |-----------------------|
 
+Update v1.6.1 08/29/2023:
+    - Updated styling
+
 Update v1.6.0 08/09/2023:
     - Updated in-editor console to be more useful
     - Updated window resizing

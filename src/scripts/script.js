@@ -3136,3 +3136,27 @@ function changeTheme(theme) {
 		}
 	}
 }
+
+var open = false;
+
+document.querySelector("#nce-btn").onclick = function() {
+  if (open == false) {
+    document.getElementById("nce-dropdown").style.display = "block";
+    open = true;
+  } else if (open == true) {
+    document.getElementById("nce-dropdown").style.display = "none";
+    open = false;
+  }
+}
+
+window.onclick = function(e) {
+  if (!e.target.matches('#nce-btn') || e.target.matches("#eframe") || e.target.matches("#iframe")) {
+    document.getElementById("nce-dropdown").style.display = "none";
+  }
+}
+
+document.querySelector(".btn-loie").onclick = function() {
+  setCookie('li', '', 1);
+  window.localStorage.setItem('li', '');
+  window.location = '../../index.html';
+}

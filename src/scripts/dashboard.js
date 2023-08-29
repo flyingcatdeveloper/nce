@@ -62,7 +62,7 @@ function getImg(id) {
     get(id).then((val) => {
       if (val.epic !== null && val.epic !== undefined && val.epic !== '') {
         document.getElementById(id + '.img').innerHTML =
-          "<img src='" + val.epic + "' style='width: 390px; height: 410px;'>";
+          "<img src='" + val.epic + "' style='width: 100%; height: 100%;'>";
       } else {
         document.getElementById(id + '.img').innerHTML =
           'Image Unavailable.<br><br>';
@@ -108,23 +108,25 @@ if (
       newDAP = document.createElement('p');
       newLink = document.createElement('a');
       newImg = document.createElement('div');
+      var newSplit1 = document.createElement("hr");
+      var newSplit2 = document.createElement("hr");
 
+      newProject.setAttribute('class', 'pj');
       pjs.push(data['editor']);
       newLink.setAttribute('class', 'project-btn');
       newImg.innerHTML = '...';
       newImg.setAttribute('id', data['editor'] + '.img');
       getImg(data['editor']);
-      newLink.style =
-        'color: blue; text-decoration: underline; font-weight: bold; cursor: pointer; font-family: Arial;';
       newLink.innerHTML = data['editor'];
       newDAP.setAttribute('id', data['editor']);
       newDAP.innerHTML = 'loading...';
       loadTimestamp(data['editor']);
       newLink.href = './editor.html?id=' + data['editor'];
-      newDAP.style = 'color: #555555; font-size: 0.6rem;';
 
       newProject.appendChild(newImg);
+      newProject.appendChild(newSplit1);
       newProject.appendChild(newLink);
+      newProject.appendChild(newSplit2);
       newProject.appendChild(newDAP);
       document.querySelector('.projects-container').appendChild(newLine);
       document.querySelector('.projects-container').appendChild(newProject);

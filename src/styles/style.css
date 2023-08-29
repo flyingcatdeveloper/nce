@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500&display=swap');
+@import url('./scp.css');
 
 @keyframes slide-in {
   0% {
@@ -25,6 +25,47 @@
     opacity: 100%;
     margin-left: 8px;
   }
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#nce-dropdown {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 3%;
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 9999999;
+  border-radius: 8px;
+}
+
+#nce-dropdown p:hover {
+  padding: 4px;
+  cursor: pointer;
+  color: #eee;
+  background: linear-gradient(to right, #9c27b0, #e040fb);
+}
+
+.navi {
+  cursor: pointer;
+  border-radius: 5em;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+  color: #fff;
+  background: linear-gradient(to right, #9c27b0, #e040fb);
+  border: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 7px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 
 .ui-autocomplete {
@@ -67,7 +108,6 @@ body {
   width: 100%;
   height: 2rem;
   background-color: #fff;
-  display: flex;
   justify-content: flex-start;
   align-items: center;
   padding: 5px 0 5px 10px;
@@ -90,25 +130,20 @@ body {
 }
 
 .btn {
-  background-color: rgb(0, 0, 0, 0.8);
-  border-radius: 4px;
-  border-width: 0;
-  color: #fff;
   cursor: pointer;
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  list-style: none;
-  margin-right: 8px;
-  padding: 2px 4px;
-  text-align: center;
-  transition: all 0.3s;
-  vertical-align: baseline;
-  white-space: nowrap;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  border-radius: 5em;
+  margin-left: 1%;
+  margin-right: 1%;
+  color: #fff;
+  background: linear-gradient(to right, #9c27b0, #e040fb);
+  border: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  font-family: 'Source Code Pro', Arial, sans-serif;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 
 img:hover {
@@ -180,27 +215,19 @@ img:hover {
 }
 
 #container {
-  position: absolute;
-  bottom: 0;
-  top: 0rem;
-  width: 98%;
+  height:100vh;
+  width: 100%;
   display: flex;
   transition: all 0.3s;
-  margin-left: 40px; /* Same as the width of the sidenav */
   background-color: #fff;
 }
 
 .left,
 .right {
-  margin: 2px;
   height: 100%;
   border-radius: 10px;
   width: 50%;
   border: 1px solid #d5d5d5;
-}
-
-.right {
-  flex: 1;
 }
 .editor-html,
 #tags {
@@ -240,24 +267,21 @@ img:hover {
 }
 
 .tocl {
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #eee;
-  border-radius: 4px;
-  border-width: 0;
-  display: inline-block;
-  font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial,
-    sans-serif;
-  font-size: 1rem;
-  font-weight: 1px;
-  height: 3%;
-  width: 100%;
-  list-style: none;
   text-align: center;
-  transition: all 200ms;
-  vertical-align: baseline;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  cursor: pointer;
+  border-radius: 5em;
+  margin-left: 1%;
+  margin-right: 1%;
+  color: #fff;
+  background: linear-gradient(to right, #9c27b0, #e040fb);
+  border: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  font-family: 'Source Code Pro', Arial, sans-serif;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 
 textarea {
@@ -275,9 +299,9 @@ textarea {
 
 #ver {
   font-family: 'Source Code Pro', monospace;
-  font-size: 1rem;
+  font-size: 1.5rem;
   text-align: right;
-  color: lightgray;
+  color: gray;
   transition: all 0.3s;
 }
 
@@ -482,27 +506,12 @@ textarea {
   text-align: center;
 }
 
-.sidenav {
-  margin: 0;
-  font-size: 15px;
-  height: 100%;
-  width: 3%;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #eee;
-  overflow-x: hidden;
-  padding-top: 20px;
-  padding-left: 7px;
-}
-@media screen and (max-height: 450px) {
-  .sidenav {
-    padding-top: 15px;
-  }
-  .sidenav a {
-    font-size: 18px;
-  }
+.nav {
+  overflow-x: auto;
+  display: flex;
+  width: 100%;
+  height: 20px;
+  background-color: lightgrey;
 }
 
 body {
@@ -586,7 +595,7 @@ form.form6 {
   background: rgba(136, 126, 126, 0.04);
   padding: 10px 20px;
   border: none;
-  border-radius: 20px;
+  border-radius: 8px;
   outline: none;
   box-sizing: border-box;
   border: 2px solid rgba(0, 0, 0, 0.02);
@@ -676,4 +685,41 @@ a {
 
 .btn-icon {
   margin-left: 0;
+}
+
+.pj {
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: lightgray;
+  width: 50%;
+  height: 40%;
+}
+
+.pj a {
+  cursor: pointer;
+  border-radius: 5em;
+  margin-left: 1%;
+  margin-right: 1%;
+  color: #fff;
+  background: linear-gradient(to right, #9c27b0, #e040fb);
+  border: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  font-family: 'Source Code Pro', Arial, sans-serif;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+
+}
+
+.pj p {
+  color: gray;
+  font-size: 0.6rem;
+}
+
+.pj hr {
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
